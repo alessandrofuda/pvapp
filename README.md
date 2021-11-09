@@ -1,6 +1,14 @@
 ## PvApp
 ###### Leads management
 
-BE: laravel 8.x (API Rest Server only)
+To get up PHP 8.0 Dev environment: `sail up` (bash alias  created via ~./bash_aliases conf) 
 
-FE: vue.js
+BE: Laravel 8 (API Rest only)
+
+FE: Vue.js framework
+
+Browser: http://localhost:8082
+
+Auth scaffold: [inertia - laravel/ui - breeze - todefine.. ??]
+
+
