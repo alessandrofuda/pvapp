@@ -44,10 +44,8 @@ services:
         ports:
             - "3309:3306"
         environment:
-            # docker create db and 'root' user with below info
-            # non-root user can be created directly into db (for ex. via web with adminer)
-            MYSQL_DATABASE: pvapp # ${DB_DATABASE}  #  get it from .env file!
             MYSQL_ROOT_PASSWORD: secret # ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: pvapp # ${DB_DATABASE}  #  get it from .env file!
             MYSQL_USER: pvapp # ${DB_USERNAME}
             MYSQL_PASSWORD: pvapp # ${DB_PASSWORD}
             SERVICE_NAME: mysql
