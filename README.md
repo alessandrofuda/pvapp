@@ -1,12 +1,16 @@
 ## PvApp
 ###### Leads management
 
-BE: Laravel 8 (API Rest only)
+**Dev environment**: Docker (php:8.0-fpm - nginx - mysql - supervisor - scheduler)
 
-FE & routing: Vue.js framework
+**BE & Api Routing**: Laravel 8 (API Rest only)
 
-Browser: http://localhost:8082
+**FE & routing**: Vue.js framework
 
-Auth scaffold: [inertia - laravel/ui - breeze - todefine.. ??]
+**Browser**: http://localhost:8082
+
+**Auth scaffold**: Laravel Fortify (FE agnostic)
+
+**API Auth**: Laravel Sanctum
 
 
