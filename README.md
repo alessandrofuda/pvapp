@@ -1,5 +1,10 @@
 ## PvApp
+
 ###### Leads management
+
+---
+
+### Software Architecture
 
 **Dev environment**: Docker Containers orchestrated through Docker-compose
 - frontend (CLI Vue js)
