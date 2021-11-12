@@ -3,7 +3,7 @@ FROM php:8.0-fpm
 ENV NODE_VERSION=16
 
 # Copy composer.lock and composer.json
-COPY composer.lock composer.json /var/www/
+COPY backend/composer.lock backend/composer.json /var/www/
 
 # Set working directory
 WORKDIR /var/www
@@ -28,7 +28,7 @@ RUN docker-php-ext-install pdo_mysql exif pcntl bcmath gd intl zip
 RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer
 
 # Install node
-RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && apt-get install -y nodejs
+# RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && apt-get install -y nodejs
 
 # Clear caches & temps
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -41,10 +41,10 @@ RUN useradd -u 1000 -ms /bin/bash -g www www
 RUN usermod -a -G www www-data
 
 # Copy existing application directory contents
-COPY . /var/www
+COPY ./backend /var/www
 
 # Copy existing application directory permissions
-COPY --chown=www:www . /var/www
+COPY --chown=www:www ./backend /var/www
 
 # Change current user to www
 USER www
