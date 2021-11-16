@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // alter .env path
+        app()->useEnvironmentPath(base_path('..'));
+        dump('dsfkjhdfskjhdhsfkdfs');
+        dd(base_path('..'));
     }
 }
