@@ -1,6 +1,22 @@
 version: '3'
 services:
-    #JS Service Frontend
+    #Nginx Service
+    webserver:
+        hostname: pvapp_webserver
+        image: nginx  # :1.10.3
+        container_name: pvapp_webserver
+        # restart: unless-stopped
+        tty: true
+        ports:
+            - "3000:80"
+            - "8080:8088"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - app-network
+
+    #Node JS Service - Frontend
     frontend:
         hostname: pvapp_frontend
         image: node:16.13.0
@@ -9,10 +25,10 @@ services:
         tty: true
         user: node
         expose:
-            - "8080"
-        working_dir: /var/www
+            - "3000"
+        working_dir: /var/www/frontend
         volumes:
-            - ./frontend/:/var/www
+            - ./frontend/:/var/www/frontend
         environment: # IMP!: these variables overrides .env of application!!
             SERVICE_NAME: pvapp_frontend
             SERVICE_TAGS: dev
@@ -38,25 +54,6 @@ services:
             SERVICE_NAME: backend
             SERVICE_TAGS: dev
             APP_ENV: local # ${APP_ENV} from .env
-        networks:
-            - app-network
-
-    #Nginx Service
-    webserver:
-        image: nginx  # :1.10.3
-        container_name: pvapp_webserver
-        # restart: unless-stopped
-        tty: true
-        ports:
-            # - "8080:8080"
-            # - "8081:8081"
-            - "8082:80"
-        volumes:
-            # - ./frontend/:/var/www
-            # - ./backend/:/var/www/backend
-            - ./:/var/www
-            # - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
-            - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
         networks:
             - app-network
 
