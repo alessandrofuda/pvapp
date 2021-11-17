@@ -15,6 +15,7 @@
 - supervisor (queues/jobs worker monitoring)
 - scheduler (crontab process)
 
+**Docker global/env. config**: `.env.global` (root) env variables injected into containers via Docker-compose.yml
 
 **STACK**: LEMP (php:8.0-fpm)
 
