@@ -8,7 +8,7 @@ COPY backend/composer.lock backend/composer.json /var/www/
 # Set working directory
 WORKDIR /var/www
 
-RUN apt-get update && apt-get install -y \
+RUN apk update && apk install -y \
     git \
     curl \
     libpng-dev \
@@ -31,7 +31,7 @@ RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-di
 # RUN curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && apt-get install -y nodejs
 
 # Clear caches & temps
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apk clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Add group/user for laravel application
 RUN groupadd -g 1000 www
