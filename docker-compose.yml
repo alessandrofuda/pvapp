@@ -3,7 +3,7 @@ services:
     #Nginx Service
     webserver:
         hostname: pvapp_webserver
-        image: nginx  # :1.10.3
+        image: nginx:1.17.6
         container_name: pvapp_webserver
         # restart: unless-stopped
         tty: true
@@ -59,7 +59,7 @@ services:
 
     #MySQL Service
     db:
-        image: mysql  # :5.7.29
+        image: mysql:8.0.18
         container_name: pvapp_db
         # restart: unless-stopped
         tty: true
