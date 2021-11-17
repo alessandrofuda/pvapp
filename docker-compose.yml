@@ -50,10 +50,11 @@ services:
         volumes:
             - ./backend/:/var/www/backend
             - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-        environment: # IMP!: these variables overrides .env of application!!
-            SERVICE_NAME: backend
-            SERVICE_TAGS: dev
-            APP_ENV: local # ${APP_ENV} from .env
+        # environment:
+            # SERVICE_NAME: backend
+            # SERVICE_TAGS: dev
+        env_file: # IMPORTANT!: these others variables overrides .env of application!!
+            - .env.global
         networks:
             - app-network
 
