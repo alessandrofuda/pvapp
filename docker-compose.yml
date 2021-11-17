@@ -3,7 +3,7 @@ services:
     #Nginx Service
     webserver:
         hostname: pvapp_webserver
-        image: nginx:1.17.6-alpine
+        image: nginx:1.17.6
         container_name: pvapp_webserver
         # restart: unless-stopped
         tty: true
@@ -19,7 +19,7 @@ services:
     #Node JS Service - Frontend
     frontend:
         hostname: pvapp_frontend
-        image: node:16.13.0-alpine
+        image: node:16.13.0
         container_name: pvapp_frontend
         # restart: unless-stopped
         tty: true
