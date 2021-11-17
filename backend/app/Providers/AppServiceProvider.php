@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Custom\EnvironmentPathCustomization;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // alter .env path one level UP !!!
+        // see: /bootstrap/app.php  --> $app->useEnvironmentPath(base_path('..'));
     }
 
     /**
@@ -23,9 +26,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // alter .env path
-        app()->useEnvironmentPath(base_path('..'));
-        dump('dsfkjhdfskjhdhsfkdfs');
-        dd(base_path('..'));
+        //
     }
 }

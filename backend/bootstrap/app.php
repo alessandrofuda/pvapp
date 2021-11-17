@@ -15,6 +15,11 @@ $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 
+
+// CUSTOM alter .env path | one level UP  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! CUSTOM
+$app->useEnvironmentPath(base_path('..'));
+
+
 /*
 |--------------------------------------------------------------------------
 | Bind Important Interfaces
