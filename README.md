@@ -22,8 +22,6 @@
 
 **FE & routing**: Vue.js framework
 
-**Browser**: http://localhost:8082
-
 **Auth scaffold**: Laravel Fortify (FE agnostic, routes: `php artisan route:list`)
 
 **API Auth**: Laravel Sanctum
