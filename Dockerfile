@@ -8,7 +8,7 @@ COPY backend/composer.lock backend/composer.json /var/www/
 # Set working directory
 WORKDIR /var/www
 
-RUN apk update && apk install -y \
+RUN apk update && apk install \
     git \
     curl \
     libpng-dev \
