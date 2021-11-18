@@ -9,7 +9,7 @@
 **Dev environment**: Docker **Containers** orchestrated through Docker-compose
 
 - frontend (CLI Vue js) ---> http://localhost:3000 
-- backend (Laravel) ---> http://localhost:8080
+- backend (Laravel) ---> http://localhost:8081
 - webserver (nginx) ---> reverse proxy, port mapping (NO `proxy_pass`!)
 - db (mysql) ---> mysql://localhost:3309   
 - supervisor (queues/jobs worker monitoring)
