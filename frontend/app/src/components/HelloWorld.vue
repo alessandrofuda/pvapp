@@ -33,11 +33,15 @@
 </template>
 
 <script>
+
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
-  }
+  },
+  created() {
+    window.axios.get('/test').then(r => console.log(r.data));
+  },
 }
 </script>
 
