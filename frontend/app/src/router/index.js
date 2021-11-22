@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
+import Login from '../views/auth/Login.vue'
+import Register from '../views/auth/Register.vue'
+import ApplicationForm from '../views/ApplicationForm.vue'
 import PageNotFound from '../views/errors/PageNotFound.vue'
 
 
@@ -10,20 +13,32 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     component: Home
   },
   {
     path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: About // () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    name: 'about',
+    component: About
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: Register
+  },
+  {
+    path: '/application-form',
+    name: 'application-form',
+    component: ApplicationForm
   },
   {
     path: '*',
-    name: '404 Not Found',
+    name: 'page-not-found',
     component: PageNotFound,
   }
 ]
@@ -31,6 +46,7 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
+  // linkActiveClass: 'active',
   routes
 })
 
