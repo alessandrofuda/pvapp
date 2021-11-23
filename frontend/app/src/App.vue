@@ -1,12 +1,13 @@
 <template>
   <div id="app">
-    <!--div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div-->
     <router-view/>
-    <footer class="basic-layout-footer">
-      &copy; Awesome Company
-    </footer>
   </div>
 </template>
+<style lang="scss">
+  body {
+    background-color: #eae5e5 !important;
+    .copy {
+      font-size: small;
+    }
+  }
+</style>

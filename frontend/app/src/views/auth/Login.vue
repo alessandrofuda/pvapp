@@ -1,101 +1,103 @@
 <template>
-  <auth-layout>
-    <div class="login-form">
-      <b-container-fluid>
+  <auth-layout class="login-form">
+      <b-container>
         <b-row>
-          <b-col class="sx-block">AAA</b-col>
           <b-col>
-            <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-              <b-form-group
-                  id="input-group-1"
-                  label="Email address:"
-                  label-for="input-1"
-                  description="We'll never share your email with anyone else."
-              >
-                <b-form-input
-                    id="input-1"
-                    v-model="form.email"
-                    type="email"
-                    placeholder="Enter email"
-                    required
-                ></b-form-input>
-              </b-form-group>
-
-              <b-form-group id="input-group-2" label="Your Name:" label-for="input-2">
-                <b-form-input
-                    id="input-2"
-                    v-model="form.name"
-                    placeholder="Enter name"
-                    required
-                ></b-form-input>
-              </b-form-group>
-
-              <b-form-group id="input-group-3" label="Food:" label-for="input-3">
-                <b-form-select
-                    id="input-3"
-                    v-model="form.food"
-                    :options="foods"
-                    required
-                ></b-form-select>
-              </b-form-group>
-
-              <b-form-group id="input-group-4" v-slot="{ ariaDescribedby }">
-                <b-form-checkbox-group
-                    v-model="form.checked"
-                    id="checkboxes-4"
-                    :aria-describedby="ariaDescribedby"
-                >
-                  <b-form-checkbox value="me">Check me out</b-form-checkbox>
-                  <b-form-checkbox value="that">Check that out</b-form-checkbox>
-                </b-form-checkbox-group>
-              </b-form-group>
-
-              <b-button type="submit" variant="primary">Submit</b-button>
-              <b-button type="reset" variant="danger">Reset</b-button>
-            </b-form>
+            <b-card>
+              <b-card-header>
+                <h3 class="text-center text-uppercase">
+                  <b-icon-box-arrow-in-right></b-icon-box-arrow-in-right>
+                  <span class="ml-2">Login</span>
+                </h3>
+              </b-card-header>
+              <b-card-text>
+                <b-form @submit="login" novalidate :validated="validations.bForm">
+                  <b-form-group id="email" label-for="email">
+                    <b-icon-envelope-fill></b-icon-envelope-fill>
+                    <b-form-input
+                        id="email"
+                        v-model="form.email"
+                        type="email"
+                        placeholder="Email"
+                        aria-de_____scribedby="input-1-live-feedback"
+                        req___uired
+                    ></b-form-input>
+                    <b-form-invalid-feedback :state="validations.email" i__d="input-1-li___ve-feedback">This is a required field and must be an email.</b-form-invalid-feedback>
+                  </b-form-group>
+                  <b-form-group id="password" label-for="password">
+                    <b-icon-lock-fill></b-icon-lock-fill>
+                    <b-form-input
+                        id="password"
+                        v-model="form.password"
+                        type="password"
+                        placeholder="Password"
+                        required
+                    ></b-form-input>
+                  </b-form-group>
+                  <b-form-group>
+                    <b-button size="lg" class="w-100" type="submit" variant="primary">Login</b-button>
+                  </b-form-group>
+                </b-form>
+              </b-card-text>
+              <b-card-footer class="text-ri">
+                <p class="mt-4 mb-1 text-muted">Non sei iscritto? <a href="/register">Iscriviti</a></p>
+                <p class="text-muted"><a href="/forgot-password">Password dimenticata?</a></p>
+              </b-card-footer>
+            </b-card>
+            <p class="copy text-center text-muted">PvApp &copy; {{ year }}</p>
           </b-col>
         </b-row>
-      </b-container-fluid>
-    </div>
+      </b-container>
   </auth-layout>
 </template>
 
 <script>
 import AuthLayout from '../layouts/authLayout'
-
+import { email, required } from '@vuelidate/validators'
+// import useVuelidate from '@vuelidate/core'
+//
 export default {
   name: 'Login',
-  components: AuthLayout,
+  components: {AuthLayout},
   data() {
     return {
       form: {
-        email: '',
-        name: '',
-        food: null,
-        checked: []
+        email: null,
+        name: null,
       },
-      foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
-      show: true
+      year: new Date().getFullYear(),
+      validations: {
+        bForm: null,
+        email: null,
+        password: null
+      }
+    }
+  },
+  // setup: () => ({ v$: useVuelidate() }),
+  validations () {
+    return {
+      form: {
+        email: { required, email },
+        password: { required }
+      }
     }
   },
   methods: {
-    onSubmit(event) {
+    login(event) {
       event.preventDefault()
       alert(JSON.stringify(this.form))
-    },
-    onReset(event) {
-      event.preventDefault()
-      // Reset our form values
-      this.form.email = ''
-      this.form.name = ''
-      this.form.food = null
-      this.form.checked = []
-      // Trick to reset/clear native browser form validation state
-      this.show = false
-      this.$nextTick(() => {
-        this.show = true
-      })
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .login-form {
+    max-width: 450px;
+    margin:auto;
+    padding:60px 0;
+    .form-group {
+      padding:20px 0;
+    }
+  }
+</style>

@@ -2,7 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
+// import {Vuelidate} from 'vuelidate'
 
 // Import Bootstrap and BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -10,7 +11,9 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 // Make BootstrapVue available throughout project
 Vue.use(BootstrapVue)
-Vue.use(IconsPlugin) // optional, BootstrapVue icon components plugin
+Vue.use(BootstrapVueIcons) // optional, BootstrapVue icon components plugin
+// Vue.use(Vuelidate)
+
 
 Vue.config.productionTip = false
 
