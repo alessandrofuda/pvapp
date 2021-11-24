@@ -3,28 +3,23 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
-// import {Vuelidate} from 'vuelidate'
 
 // Import Bootstrap and BootstrapVue CSS files (order is important)
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
+import './assets/app.scss'
 
 // Make BootstrapVue available throughout project
 Vue.use(BootstrapVue)
-Vue.use(BootstrapVueIcons) // optional, BootstrapVue icon components plugin
-// Vue.use(Vuelidate)
-
+Vue.use(BootstrapVueIcons)
 
 Vue.config.productionTip = false
-
-
 
 window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.axios.defaults.headers.common['Accept'] = 'application/json';
 window.axios.defaults.baseURL = process.env.VUE_APP_BASE_URL_API;
 window.axios.defaults.withCredentials = true // says to axios send all requests with credentials (all headers and COOKIES!)
-
 
 
 new Vue({

@@ -1,0 +1,37 @@
+// Define variable overrides
+
+
+// Then import Bootstrap and BootstrapVue SCSS files (order is important)
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootstrap-vue/src/index.scss';
+
+// General style overrides and custom classes
+body {
+  background-color: #eae5e5 !important;
+  .card {
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    .card-header {
+      border: none;
+      color: #ffffff;
+      background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+      padding: 1rem;
+      box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+      border-radius: .25rem !important;
+      text-align: center;
+      .b-icon {
+        margin-right: 10px;
+      }
+    }
+  }
+  input {
+    &.form-control::placeholder {
+      color: #b0b3b5;
+    }
+  }
+  .copy {
+    font-size: small;
+  }
+  a {
+    color: #6aa2da;
+  }
+}
