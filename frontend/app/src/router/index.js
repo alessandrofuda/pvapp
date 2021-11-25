@@ -32,6 +32,11 @@ const routes = [
     component: Register
   },
   {
+    path: '/forgot-password',
+    name: 'forgot-password',
+    // component: ForgotPassword
+  },
+  {
     path: '/application-form',
     name: 'application-form',
     component: ApplicationForm
