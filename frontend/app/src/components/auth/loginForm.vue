@@ -26,6 +26,10 @@
       <b-form-invalid-feedback id="password-live-feedback">This is a required field (min {{ form.pswMinLength }} characters).</b-form-invalid-feedback>
     </b-form-group>
     <b-button size="lg" class="w-100" type="submit" variant="primary">Login</b-button>
+    <b-alert class="my-5 py-3" :show="alert.show" :variant="alert.variant"  dismissible>
+      {{ alert.msg }}
+    </b-alert>
+    <b-overlay :show="loading" no-wrap></b-overlay>
   </b-form>
 </template>
 <script>
@@ -41,7 +45,13 @@
           email: null,
           password: null,
           pswMinLength: 3
-        }
+        },
+        alert: {
+          show: false,
+          variant: null,
+          msg: ''
+        },
+        loading: false
       }
     },
     validations() {
@@ -64,28 +74,34 @@
         return $dirty ? !$error : null;
       },
       login(event) {
-          event.preventDefault()
-          this.$v.form.$touch();
-          if (this.$v.form.$anyError) {
-            return;
-          }
-          window.axios.get('/sanctum/csrf-cookie')
-            .then(resp => {
-
-              console.log(resp)
-
-              window.axios.post('/login', this.form, resp)
-                  .then(resp2 => {
-                    console.log(resp2)
-                  })
-                  .catch(err => {
-                    console.error(err)
-                  })
-                  .finally(() => this.loading = false)
-
+        event.preventDefault()
+        this.loading = true
+        this.$v.form.$touch();
+        if (this.$v.form.$anyError) {
+          this.loading = false
+          return;
+        }
+        window.axios.get('/sanctum/csrf-cookie')
+          .then(() => {
+            window.axios.post('/login', this.form)
+                .then(() => {
+                  // console.log(resp)
+                })
+                .catch( err => {
+                  this.alert.variant = 'danger'
+                  this.alert.msg = Object.values(err.response.data.errors).join(' ')
+                })
+                .finally(() => {
+                  this.loading = false
+                  this.alert.show = true
+                })
             })
-
-
+            .catch((error) => {
+              console.error(error)
+            })
+            .finally(() => {
+              this.loading = false
+            })
       }
     }
   }
