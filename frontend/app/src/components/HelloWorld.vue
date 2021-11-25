@@ -40,7 +40,7 @@ export default {
     msg: String
   },
   created() {
-    window.axios.get('/test').then(r => console.log(r.data));
+    window.axios.get('/api/test').then(r => console.log(r.data));
   },
 }
 </script>
