@@ -15,7 +15,17 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => [
+        'api/*',
+        'sanctum/csrf-cookie',
+        'login',                    // custom (fortify routes)
+        'logout',                   // custom (fortify routes)
+        'register',                 // custom (fortify routes)
+        'forgot-password',           // custom (fortify routes)
+        'reset-password/*',           // custom (fortify routes)
+        'two-factor-challenge',         // custom (fortify routes)
+        'user/*',                       // custom (fortify routes)
+    ],
 
     'allowed_methods' => ['*'],
 

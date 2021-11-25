@@ -13,8 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// fortify auth routes --> see 'php artisan route:list'
+
 Route::get('/', function () {
     dump('CSRF_TOKEN: ' . csrf_token());
+    dump(config('cors.allowed_origins'));
     return view('welcome'); //
 });
 

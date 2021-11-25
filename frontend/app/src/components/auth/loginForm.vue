@@ -69,14 +69,23 @@
           if (this.$v.form.$anyError) {
             return;
           }
-          window.axios.post('/login', this.form)
+          window.axios.get('/sanctum/csrf-cookie')
             .then(resp => {
-                  console.log(resp)
+
+              console.log(resp)
+
+              window.axios.post('/login', this.form, resp)
+                  .then(resp2 => {
+                    console.log(resp2)
+                  })
+                  .catch(err => {
+                    console.error(err)
+                  })
+                  .finally(() => this.loading = false)
+
             })
-            .catch(err => {
-              console.error(err)
-            })
-            .finally(() => this.loading = false)
+
+
       }
     }
   }
