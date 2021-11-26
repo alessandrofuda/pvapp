@@ -1,7 +1,9 @@
 <template>
   <div class="auth-layout">
     <main class="auth-layout-main">
-      <router-view></router-view>
+      <b-container>
+        <router-view></router-view>
+      </b-container>
     </main>
   </div>
 </template>

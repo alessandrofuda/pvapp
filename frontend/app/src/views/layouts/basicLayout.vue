@@ -5,7 +5,9 @@
       <router-link to="/about">About</router-link>
     </nav>
     <main class="basic-layout-main">
-      <slot/>
+      <b-container>
+        <router-view></router-view>
+      </b-container>
     </main>
     <footer class="basic-layout-footer">
       &copy; Awesome Company

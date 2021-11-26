@@ -1,6 +1,6 @@
 <template>
   <!--auth-layout class="login-form"-->
-      <b-container class="login-form">
+      <div class="login-form">
         <b-row>
           <b-col>
             <b-card>
@@ -21,7 +21,7 @@
             <p class="copy text-center text-muted">PvApp &copy; {{ year }}</p>
           </b-col>
         </b-row>
-      </b-container>
+      </div>
   <!--/auth-layout-->
 </template>
 

@@ -25,6 +25,44 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'home',
+    component: Home,
+    meta: {
+      middleware: 'guest',
+      title: 'Home'
+    }
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: About,
+    meta: {
+      middleware: 'guest',
+      title: 'About'
+    }
+  },
+  {
+    path: '/user-quote-form',
+    name: 'user-quote-form',
+    component: UserQuoteForm,
+    meta: {
+      middleware: 'guest',
+      title: 'Quotation Form'
+    }
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Dashboard,
+    meta: {
+      middleware: 'auth',
+      role: 'is_operator',
+      title: 'Dashboard'
+    }
+  },
+  {
+    path: '/',
+    name: 'authGroup',
     component: AuthLayout,
     meta: {
       middleware: 'guest'
@@ -63,44 +101,6 @@ const routes = [
         }
       }
     ]
-  },
-  {
-    path: '/',
-    name: 'home',
-    component: Home,
-    meta: {
-      middleware: 'guest',
-      title: 'Home'
-    }
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: About,
-    meta: {
-      middleware: 'guest',
-      title: 'About'
-    }
-  },
-
-  {
-    path: '/user-quote-form',
-    name: 'user-quote-form',
-    component: UserQuoteForm,
-    meta: {
-      middleware: 'guest',
-      title: 'Quotation Form'
-    }
-  },
-  {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: Dashboard,
-    meta: {
-      middleware: 'auth',
-      role: 'is_operator',
-      title: 'Dashboard'
-    }
   },
   // all others 404 urls (always last position!)
   {
