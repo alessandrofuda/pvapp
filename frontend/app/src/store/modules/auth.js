@@ -1,37 +1,58 @@
-import axios from 'axios';
+import router from '@/router';
 
-// initial state
-const state = {
-    user: null
-};
-
-// getters
-const getters = {
-    isAuthenticated: state => !!state.user, // !! convert object to Boolean (If == 0, null, undefined) => false  ---> else => true
-};
-
-// actions
-const actions = {
-    async LogIn({commit}, User) {
-        await axios.post('login', User)
-        await commit('setUser', User.get('username'))
-    },
-};
-
-// mutations
-const mutations = {
-    setUser(state, username){
-        state.user = username
-    },
-};
-
-
-
-// ---------------
 
 export default {
-    state,
-    mutations,
-    actions,
-    getters
+    namespaced: true,
+    state: {
+        authenticated: false,
+        user: {}
+    },
+    getters: {
+        authenticated(state) {
+            return state.authenticated
+        },
+        user(state) {
+            return state.user
+        }
+    },
+    mutations: {
+        SET_AUTHENTICATED (state, value) {
+            state.authenticated = value
+        },
+        SET_USER (state, value) {
+            state.user = value
+        }
+    },
+    actions: {
+        login({commit}) {
+            return window.axios.get('/api/user')
+                .then(({data}) => {
+                    console.log(data)
+                    commit('SET_USER', data)
+                    commit('SET_AUTHENTICATED', true)
+                    router.push({name: 'dashboard'})
+                })
+                .catch(() => {
+                    commit('SET_USER', {})
+                    commit('SET_AUTHENTICATED', false)
+                })
+        }
+    }
 };
+
+
+// // state (defaults)
+// const
+//
+// // getters
+// const ;
+//
+// // mutations
+// const ;
+//
+// // actions
+// const ;
+
+
+
+
