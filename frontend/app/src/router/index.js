@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AuthLayout from '../views/layouts/authLayout.vue'
+import BasicLayout from '../views/layouts/basicLayout.vue'
 import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
 // import ForgotPassword from '../views/auth/ForgotPassword.vue'
@@ -24,44 +25,66 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: Home,
+    path: '',
+    name: 'guestsGroup',
+    component: BasicLayout,
     meta: {
-      middleware: 'guest',
-      title: 'Home'
-    }
+      middleware: 'guest'
+    },
+    children: [
+      {
+        path: '/',
+        name: 'home',
+        component: Home,
+        meta: {
+          title: 'Home'
+        }
+      },
+      {
+        path: '/about',
+        name: 'about',
+        component: About,
+        meta: {
+          title: 'About'
+        }
+      },
+      {
+        path: '/user-quote-form',
+        name: 'user-quote-form',
+        component: UserQuoteForm,
+        meta: {
+          title: 'Quotation Form'
+        }
+      }
+    ]
   },
   {
-    path: '/about',
-    name: 'about',
-    component: About,
+    path: '',
+    name: 'privateGroup',
+    component: BasicLayout,
     meta: {
-      middleware: 'guest',
-      title: 'About'
-    }
+      middleware: 'auth'
+    },
+    children: [
+      {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
+        meta: {
+          role: 'is_operator',
+          title: 'Dashboard'
+        }
+      },
+      {
+        // ...
+      },
+      {
+        // ...
+      }
+    ]
   },
   {
-    path: '/user-quote-form',
-    name: 'user-quote-form',
-    component: UserQuoteForm,
-    meta: {
-      middleware: 'guest',
-      title: 'Quotation Form'
-    }
-  },
-  {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: Dashboard,
-    meta: {
-      middleware: 'auth',
-      role: 'is_operator',
-      title: 'Dashboard'
-    }
-  },
-  {
-    path: '/',
+    path: '',
     name: 'authGroup',
     component: AuthLayout,
     meta: {
@@ -102,8 +125,7 @@ const routes = [
       }
     ]
   },
-  // all others 404 urls (always last position!)
-  {
+  {  // all others 404 urls (always last position!)
     path: '*',
     name: 'page-not-found',
     component: PageNotFound,
