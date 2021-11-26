@@ -35,6 +35,7 @@
 <script>
   import { validationMixin } from "vuelidate"
   import { required, minLength, email } from "vuelidate/lib/validators"
+  import { mapActions } from "vuex"
 
   export default {
     name: 'LoginForm',
@@ -69,11 +70,14 @@
       }
     },
     methods: {
+      ...mapActions({
+        signIn:'auth/login' // store/modules/auth/login({commit})
+      }),
       validateState(name) {
         const { $dirty, $error } = this.$v.form[name];
         return $dirty ? !$error : null;
       },
-      login(event) {
+      async login(event) {
         event.preventDefault()
         this.loading = true
         this.$v.form.$touch();
@@ -81,26 +85,24 @@
           this.loading = false
           return;
         }
-        window.axios.get('/sanctum/csrf-cookie')
-          .then(() => {
-            window.axios.post('/login', this.form)
-                .then(() => {
-                  // console.log(resp)
-                })
-                .catch( err => {
-                  this.alert.variant = 'danger'
-                  this.alert.msg = Object.values(err.response.data.errors).join(' ')
-                })
-                .finally(() => {
-                  this.loading = false
-                  this.alert.show = true
-                })
+
+        await window.axios.get('/sanctum/csrf-cookie')
+        await window.axios.post('/login', this.form)
+            .then(({status}) => {
+              if(status === 200) {
+                this.signIn()
+              }else {
+                this.alert.variant = 'danger'
+                this.alert.msg = `Invalid status code on login: ${status}`
+              }
             })
-            .catch((error) => {
-              console.error(error)
+            .catch(({response}) => {
+              this.alert.variant = 'danger'
+              this.alert.msg = response ? Object.values(response.data.errors).join(' ') : 'General Error (or already loggedIn)'
             })
             .finally(() => {
               this.loading = false
+              this.alert.show = true
             })
       }
     }

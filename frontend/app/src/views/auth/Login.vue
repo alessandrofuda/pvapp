@@ -1,6 +1,6 @@
 <template>
-  <auth-layout class="login-form">
-      <b-container>
+  <!--auth-layout class="login-form"-->
+      <b-container class="login-form">
         <b-row>
           <b-col>
             <b-card>
@@ -22,16 +22,16 @@
           </b-col>
         </b-row>
       </b-container>
-  </auth-layout>
+  <!--/auth-layout-->
 </template>
 
 <script>
-import AuthLayout from '../layouts/authLayout'
+// import AuthLayout from '../layouts/authLayout'
 import LoginForm from '@/components/auth/loginForm'
 
 export default {
   name: 'Login',
-  components: {AuthLayout, LoginForm},
+  components: {LoginForm}, // AuthLayout,
   data() {
     return {
       year: new Date().getFullYear()
