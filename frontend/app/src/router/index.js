@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Store from '@/store'
 import AuthLayout from '../views/layouts/authLayout.vue'
 import BasicLayout from '../views/layouts/basicLayout.vue'
 import Login from '../views/auth/Login.vue'
@@ -28,16 +29,15 @@ const routes = [
     path: '',
     name: 'guestsGroup',
     component: BasicLayout,
-    meta: {
-      middleware: 'guest'
-    },
+    meta: { middleware: "guest" },
     children: [
       {
         path: '/',
         name: 'home',
         component: Home,
         meta: {
-          title: 'Home'
+          title: 'Home',
+          fffff:'ggggg'
         }
       },
       {
@@ -60,11 +60,9 @@ const routes = [
   },
   {
     path: '',
-    name: 'privateGroup',
+    name: 'privatesGroup',
     component: BasicLayout,
-    meta: {
-      middleware: 'auth'
-    },
+    meta: { middleware: 'auth' },
     children: [
       {
         path: '/dashboard',
@@ -74,22 +72,14 @@ const routes = [
           role: 'is_operator',
           title: 'Dashboard'
         }
-      },
-      {
-        // ...
-      },
-      {
-        // ...
       }
     ]
   },
   {
     path: '',
-    name: 'authGroup',
+    name: 'loginRegisterGroup',
     component: AuthLayout,
-    meta: {
-      middleware: 'guest'
-    },
+    meta: { middleware: "guest" },
     children: [
       {
         path: '/login',
@@ -137,6 +127,29 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   linkActiveClass: 'active',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+
+
+  console.log()
+
+
+  document.title = `${to.meta.title} - ${process.env.VUE_APP_NAME}`
+  if(to.matched.some(r => r.meta.middleware === 'guest')){
+    if(Store.state.auth.authenticated && to.matched.some(r => r.name === 'loginRegisterGroup')){
+      next({name:"dashboard"})
+    }
+    next()
+  } else if(to.matched.some(r => r.meta.middleware === 'auth')) {
+    if(Store.state.auth.authenticated){
+      next()
+    }else{
+      next({name:"login"})
+    }
+  } else {
+      console.error('Route meta middleware not defined')
+  }
 })
 
 export default router
