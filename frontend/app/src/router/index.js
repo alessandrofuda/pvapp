@@ -20,9 +20,6 @@ Vue.use(VueRouter)
 // - middleware: 'guest' || 'auth'
 // - role: 'is_admin' || 'is_operator'
 // - title: 'example'  --> to set: document.title = `${to.meta.title} - ${process.env.VUE_APP_NAME}` in router.beforeEach(..)
-//
-// Meta Handling
-// router.beforeEach((to, from, next) => { ... });
 
 const routes = [
   {
@@ -130,26 +127,38 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-
-
-  console.log()
-
-
   document.title = `${to.meta.title} - ${process.env.VUE_APP_NAME}`
-  if(to.matched.some(r => r.meta.middleware === 'guest')){
-    if(Store.state.auth.authenticated && to.matched.some(r => r.name === 'loginRegisterGroup')){
+
+  if(hasMiddleware('guest', to)) {
+    if(Store.state.auth.authenticated && belongsToLoginRegisterGroup(to)){
       next({name:"dashboard"})
     }
     next()
-  } else if(to.matched.some(r => r.meta.middleware === 'auth')) {
-    if(Store.state.auth.authenticated){
+
+  } else if(hasMiddleware('auth', to)) {
+    if(Store.state.auth.authenticated) {
       next()
     }else{
       next({name:"login"})
     }
+
   } else {
-      console.error('Route meta middleware not defined')
+    console.error('Route meta middleware not defined')
+    next()
   }
 })
 
+
+
+// utilities
+function hasMiddleware(middlewareName, toRoute) { // bool
+  return toRoute.matched.some(record => record.meta.middleware === middlewareName)
+}
+
+function belongsToLoginRegisterGroup(toRoute) { // bool
+  return toRoute.matched.some(r => r.name === 'loginRegisterGroup')
+}
+// ---- -----
+
 export default router
+
