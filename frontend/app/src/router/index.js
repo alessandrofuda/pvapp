@@ -5,8 +5,8 @@ import AuthLayout from '../views/layouts/authLayout.vue'
 import BasicLayout from '../views/layouts/basicLayout.vue'
 import Login from '../views/auth/Login.vue'
 import Register from '../views/auth/Register.vue'
-// import ForgotPassword from '../views/auth/ForgotPassword.vue'
-// import ResetPassword from '../views/auth/ResetPassword.vue'
+import ForgotPassword from '../views/auth/ForgotPassword.vue'
+import ResetPassword from '../views/auth/ResetPassword.vue'
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
 import UserQuoteForm from '../views/UserQuoteForm.vue'
@@ -32,26 +32,25 @@ const routes = [
         path: '/',
         name: 'home',
         component: Home,
-        meta: {
-          title: 'Home',
-          fffff:'ggggg'
-        }
+        meta: { title: 'Home' }
       },
       {
         path: '/about',
         name: 'about',
         component: About,
-        meta: {
-          title: 'About'
-        }
+        meta: { title: 'About' }
       },
       {
         path: '/user-quote-form',
         name: 'user-quote-form',
         component: UserQuoteForm,
-        meta: {
-          title: 'Quotation Form'
-        }
+        meta: { title: 'Quotation Form' },
+      },
+      {
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
+        meta: { title: 'Dashboard' }
       }
     ]
   },
@@ -65,10 +64,7 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: Dashboard,
-        meta: {
-          role: 'is_operator',
-          title: 'Dashboard'
-        }
+        meta: { title: 'Dashboard', role: 'is_operator' }
       }
     ]
   },
@@ -82,33 +78,25 @@ const routes = [
         path: '/login',
         name: 'login',
         component: Login,
-        meta: {
-          title: 'Login'
-        }
+        meta: { title: 'Login' }
       },
       {
         path: '/register',
         name: 'register',
         component: Register,
-        meta: {
-          title: 'Register'
-        }
+        meta: { title: 'Register' }
       },
-      { // TODO
+      {
         path: '/forgot-password',
         name: 'forgot-password',
-        // component: ForgotPassword,
-        meta: {
-          title: 'Forgot password'
-        }
+        component: ForgotPassword,
+        meta: { title: 'Forgot password' }
       },
-      { // TODO
-        path: '/reset-password',
+      {
+        path: '/reset-password/:token',
         name: 'reset-password',
-        // component: ResetPassword,
-        meta: {
-          title: 'Reset password'
-        }
+        component: ResetPassword,
+        meta: { title: 'Reset password' }
       }
     ]
   },
