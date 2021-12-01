@@ -15,12 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function() {
-    return 'api cors OK!';
+    return 'test api: cors OK!';
 });
 
 // Route::post('login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    $request->user()['role'] = $request->user()->role(); // 'ruoloooooooooooooo';
+    // dd($request->user());
     return $request->user();
 });

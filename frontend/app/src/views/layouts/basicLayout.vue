@@ -2,7 +2,9 @@
   <div class="basic-layout">
     <b-container>
       <nav id="nav" class="nav">
-        <span v-if="isLogged" class="mr-2">Hello <b>{{ name }}</b>, </span>
+        <span v-if="isLogged" class="mr-2">
+          Hello <b>{{ name }}</b> <span>(<i>{{ role || 'no role' }}</i>)</span>,
+        </span>
         <span>
           <router-link to="/">Home</router-link> |
           <router-link to="/about">About</router-link> |
@@ -37,7 +39,6 @@ export default {
   name: 'basicLayout',
   data() {
     return {
-      // name: null,
       app_name: process.env.VUE_APP_NAME,
       year: new Date().getFullYear(),
       alert: {
@@ -54,6 +55,9 @@ export default {
     },
     name() {
       return Store.state.auth.user.name || null
+    },
+    role() {
+      return Store.state.auth.user.role
     }
   },
   methods: {

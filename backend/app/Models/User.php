@@ -55,4 +55,9 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($token));
     }
 
+    public function role()
+    {
+        return 'ruuuooollooooo'; // todo: roles table, role_id col in users table, eloquent relations
+    }
+
 }
