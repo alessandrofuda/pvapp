@@ -120,13 +120,8 @@ export default {
         return;
       }
 
-      console.log(this.form)
-
       await window.axios.post('/register', this.form)
           .then(({status}) => {
-
-            console.log(status)
-
             if(status === 201) {
               this.signIn()
             }else {
