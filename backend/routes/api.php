@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +23,12 @@ Route::get('/test', function() {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     $request->user()['role'] = $request->user()->role();
     return $request->user();
+});
+
+Route::group(['middleware' => 'auth:sanctum'], function() {
+    Route::get('/user', [UserController::class, 'user']);
+
+    Route::group(['middleware' => 'isAdmin'], function() {
+        Route::resource('users', AdminUserController::class); // --> todo: use API resources
+    });
 });
