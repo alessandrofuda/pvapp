@@ -51,6 +51,9 @@ class User extends Authenticatable
     ];
 
 
+    protected $appends = ['role'];
+
+
     /**
      * Send the password reset notification. --> override from Illuminate\Auth\Passwords\CanResetPassword
      *
@@ -62,7 +65,7 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($token));
     }
 
-    public function role() : string
+    public function getRoleAttribute() : string
     {
         return array_search($this->role_id, self::ROLE);
     }
