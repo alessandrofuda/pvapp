@@ -13,6 +13,12 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    // roles (no need roles table neither roles db seed ( --> better performances)
+    const ROLE = [
+        'admin' => 1,
+        'operator' => 2
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -22,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -55,9 +62,9 @@ class User extends Authenticatable
         $this->notify(new ResetPasswordNotification($token));
     }
 
-    public function role()
+    public function role() : string
     {
-        return 'ruuuooollooooo'; // todo: roles table, role_id col in users table, eloquent relations
+        return array_search($this->role_id, self::ROLE);
     }
 
 }

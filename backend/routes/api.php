@@ -18,11 +18,7 @@ Route::get('/test', function() {
     return 'test api: cors OK!';
 });
 
-// Route::post('login', [AuthController::class, 'login']);
-
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    $request->user()['role'] = $request->user()->role(); // 'ruoloooooooooooooo';
-    // dd($request->user());
+    $request->user()['role'] = $request->user()->role();
     return $request->user();
 });
