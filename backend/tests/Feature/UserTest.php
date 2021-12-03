@@ -50,12 +50,11 @@ class UserTest extends TestCase
 
     }
 
-    public function test_any_user_can_create_new_profile()
+    public function test_any_guest_user_can_create_new_profile()
     {
         $this->assertDatabaseCount('users', 0);
-        $user = User::factory()->create(['role_id'=>User::ROLE['operator']]);
 
-        $response = $this->actingAs($user)->postJson('register', [
+        $response = $this->postJson('register', [
             'name' => 'Giovannino',
             'email'=>'giovannino@giovannino.com',
             'password'=>'password',
@@ -63,10 +62,10 @@ class UserTest extends TestCase
         ]);
 
         $response->assertStatus(201);
-        $this->assertDatabaseCount('users', 1+1);
+        $this->assertDatabaseCount('users', 1);
 
     }
-    // TODO: optimize remove duplicated code
+    // TODO: optimize remove duplicated code // //  test /LOGIN route
 
 
     public function test_each_user_can_shows_only_their_own_profile()
