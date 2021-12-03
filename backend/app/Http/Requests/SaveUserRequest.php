@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreUserRequest extends FormRequest
+class SaveUserRequest extends FormRequest
 {
     use PasswordValidationRules;
 
@@ -35,9 +35,9 @@ class StoreUserRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                Rule::unique(User::class),
+                Rule::unique(User::class)->ignore($this->user),
             ],
-            'password' => $this->passwordRules(),
+            'password' => array_merge(['sometimes'], $this->passwordRules())
         ];
     }
 }

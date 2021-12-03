@@ -2,7 +2,7 @@
 
 namespace App\Actions\Fortify;
 
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\SaveUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +21,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        $rules = (new StoreUserRequest)->rules();
+        $rules = (new SaveUserRequest)->rules();
         Validator::make($input, $rules)->validate();
 
         return User::create([

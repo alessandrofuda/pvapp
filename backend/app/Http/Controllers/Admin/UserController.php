@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\SaveUserRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -27,7 +28,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreUserRequest $request)
+    public function store(SaveUserRequest $request)
     {
         $user = (new CreateNewUser())->create($request->all());
         return response()->json(['user' => $user], 201);
@@ -52,20 +53,26 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(UpdateUserRequest $request, $id) // todo
+    public function update(SaveUserRequest $request, $id)
     {
-        User::find($id)->update($request->all());
-        return response()->json([], 204);
+        $user = User::find($id)->update($request->all());
+        return response()->json(['updated' => $user]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        try {
+            $deleted = User::findOrFail($id)->delete();
+        }catch (Exception $e) {
+            $deleted = 'Exception: '.$e->getMessage();
+        }
+
+        return response()->json(['deleted' => $deleted]);
     }
 }
