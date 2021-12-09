@@ -31,7 +31,16 @@ class UsersTest extends TestCase
 
     public function test_user_can_get_their_own_profile()
     {
-        // $this->actingAs($this->utility->createUser())->getJson('api/user');
+        $this->assertDatabaseCount('users', 0);
+        $user = $this->utility->createUser();
+        $user->name = 'newName';
+        $user2 = $this->utility->createUser();
+        $this->assertDatabaseCount('users', 2);
+
+        $resp = $this->actingAs($user)->getJson('api/user');
+
+        $resp->assertOk();
+        $this->assertEquals('newName', json_decode($resp->getContent())->name);
     }
 
     public function test_user_can_get_only_their_own_profile()
