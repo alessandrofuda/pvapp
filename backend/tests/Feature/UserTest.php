@@ -6,17 +6,27 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Tests\TestsUtility;
 
 class UserTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected array $userAttributes;
+    private TestsUtility $utility;
+
+    protected function setUp() : void
+    {
+        parent::setUp();
+        $this->utility = new TestsUtility();
+        $this->userAttributes = $this->utility->userAttributes();
+    }
+
     public function test_admin_can_get_all_users()
     {
-        $admin = User::factory()->create(['role_id' => User::ROLE['admin']]);
         User::factory()->count(3)->create();
 
-        $response = $this->actingAs($admin)->getJson('/api/admin/users');
+        $response = $this->actingAs($this->utility->createAdmin())->getJson('/api/admin/users');
 
         $response->assertStatus(200);
         $content = json_decode($response->getContent());
@@ -25,10 +35,9 @@ class UserTest extends TestCase
 
     public function test_user_cant_get_users()
     {
-        $user = User::factory()->create(['role_id' => User::ROLE['operator']]);
         User::factory()->count(3)->create();
 
-        $response = $this->actingAs($user)->getJson('/api/admin/users');
+        $response = $this->actingAs($this->utility->createUser())->getJson('/api/admin/users');
 
         $response->assertStatus(403);
     }
@@ -36,14 +45,8 @@ class UserTest extends TestCase
     public function test_admin_can_create_new_user_profile()
     {
         $this->assertDatabaseCount('users', 0);
-        $admin = User::factory()->create(['role_id'=>User::ROLE['admin']]);
 
-        $response = $this->actingAs($admin)->postJson('api/admin/users', [
-            'name' => 'Giovannino',
-            'email'=>'giovannino@giovannino.com',
-            'password'=>'password',
-            'password_confirmation'=>'password'
-        ]);
+        $response = $this->actingAs($this->utility->createAdmin())->postJson('api/admin/users', $this->userAttributes);
 
         $response->assertStatus(201);
         $this->assertDatabaseCount('users', 1+1);
@@ -54,18 +57,12 @@ class UserTest extends TestCase
     {
         $this->assertDatabaseCount('users', 0);
 
-        $response = $this->postJson('register', [
-            'name' => 'Giovannino',
-            'email'=>'giovannino@giovannino.com',
-            'password'=>'password',
-            'password_confirmation'=>'password'
-        ]);
+        $response = $this->postJson('register', $this->userAttributes);
 
         $response->assertStatus(201);
         $this->assertDatabaseCount('users', 1);
 
     }
-    // TODO: optimize remove duplicated code // //  test /LOGIN route
 
 
     public function test_each_user_can_shows_only_their_own_profile()
