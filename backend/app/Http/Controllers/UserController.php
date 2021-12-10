@@ -21,7 +21,7 @@ class UserController extends Controller
             abort(403);
         }
 
-        $user = User::findOrFail($request->user()->id)->update($request->all());
+        $user = User::findOrFail($request->user()->id)->update($request->except(['id', 'role_id'])); // $request->all()
         return response()->json(['updated' => $user]);
     }
 

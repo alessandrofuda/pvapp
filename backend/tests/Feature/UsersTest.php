@@ -73,19 +73,59 @@ class UsersTest extends TestCase
 
     }
 
-    public function test_user_cant_modify_their_owno_id()
+    public function test_user_cant_modify_their_own_id()
     {
+        $user = User::factory()->create(['role_id'=>User::ROLE['operator']]);
+        $originalUserId = $user->id;
+        $this->userAttributes['id'] = 99;
+        $resp = $this->actingAs($user)->putJson('api/user', $this->userAttributes);
 
+        $resp->assertOk();
+        $this->assertDatabaseMissing('users', ['id' => 99]);
+        $this->assertDatabaseHas('users', ['id' => $originalUserId]);
     }
 
     public function test_user_cant_edit_others_users_profiles()
     {
+        $user = User::factory()->create(['role_id' => User::ROLE['operator']]);
+        $user2 = User::factory()->create(['role_id' => User::ROLE['operator']]);
+        $this->assertEquals(1, $user->id);
+        $this->assertEquals(2, $user2->id);
 
+        $this->userAttributes['id'] = 2;
+        $this->userAttributes['name'] = 'newName';
+
+        $this->actingAs($user)->putJson('api/user', $this->userAttributes);
+
+        $this->assertNotEquals('newName', $user2->name);
+    }
+
+    public function test_each_user_can_delete_their_own_profile()
+    {
+        $user = User::factory()->create(['role_id' => User::ROLE['operator']]);
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseHas('users', ['id'=>1]);
+
+        $resp = $this->actingAs($user)->deleteJson('api/user');
+
+        $resp->assertOk();
+        $this->assertDatabaseMissing('users', ['id' => 1]);
     }
 
     public function test_each_user_can_delete_only_their_own_profile()
     {
+        $user = User::factory()->create(['role_id' => User::ROLE['operator']]);
+        $user2 = User::factory()->create(['role_id' => User::ROLE['operator']]);
+        $this->assertDatabaseCount('users', 2);
+        $this->assertDatabaseHas('users', ['id'=>1]);
+        $this->assertDatabaseHas('users', ['id'=>2]);
 
+        $this->userAttributes['id'] = 2;
+        $resp = $this->actingAs($user)->deleteJson('api/user', $this->userAttributes);
+
+        $resp->assertOk();
+        $this->assertDatabaseMissing('users', ['id' => 1]);
+        $this->assertDatabaseHas('users', ['id' => 2]);
     }
 
 }

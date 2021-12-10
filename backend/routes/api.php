@@ -15,10 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', function() {
-    return 'test api: cors OK!';
-});
-
+//Route::get('/test', function() {
+//    return 'test api: cors OK!';
+//});
 
 
 Route::group(['middleware' => 'auth:sanctum'], function() {
