@@ -12,6 +12,9 @@ class UsersTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected array $userAttributes;
+    protected TestsUtility $utility;
+
     protected function setUp() : void
     {
         parent::setUp();
@@ -45,10 +48,32 @@ class UsersTest extends TestCase
 
     public function test_user_can_get_only_their_own_profile()
     {
-        // $this->getJson('api/user')
+        $user = User::factory()->create(['name' => 'name1', 'role_id' =>User::ROLE['operator']]);
+        $user2 = User::factory()->create(['name' => 'name2', 'role_id' =>User::ROLE['operator']]);
+        $this->assertDatabaseCount('users', 2);
+        $this->assertDatabaseHas('users', ['name' => 'name1']);
+        $this->assertDatabaseHas('users', ['name' => 'name2']);
+
+        $resp = $this->actingAs($user)->getJson('api/user');
+
+        $resp->assertJson(['name'=>'name1']);
+        $resp->assertJsonMissing(['name'=>'name2']);
     }
 
     public function test_user_can_edit_only_their_own_profile()
+    {
+        $user = User::factory()->create(['role_id'=>User::ROLE['operator']]);
+        $user2 = User::factory()->create(['name'=>'user2','role_id'=>User::ROLE['operator']]);
+
+        $resp = $this->actingAs($user)->putJson('api/user', $this->userAttributes);
+
+        $resp->assertOk();
+        $this->assertDatabaseHas('users', ['name'=>$this->userAttributes['name']]);
+        $this->assertDatabaseMissing('users', ['name'=>$user->name]);
+
+    }
+
+    public function test_user_cant_modify_their_owno_id()
     {
 
     }

@@ -22,7 +22,9 @@ Route::get('/test', function() {
 
 
 Route::group(['middleware' => 'auth:sanctum'], function() {
-    Route::get('/user', [UserController::class, 'user']);
+    Route::get('user', [UserController::class, 'user']);
+    Route::put('user', [UserController::class, 'update']);
+    Route::delete('user', [UserController::class, 'destroy']);
 
     // admin
     Route::group(['middleware' => 'isAdmin', 'prefix' => 'admin', 'as' => 'admin.'], function() {

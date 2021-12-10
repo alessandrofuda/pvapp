@@ -55,7 +55,7 @@ class UserController extends Controller
      */
     public function update(SaveUserRequest $request, $id)
     {
-        $user = User::find($id)->update($request->all());
+        $user = User::findOrFail($id)->update($request->all());
         return response()->json(['updated' => $user]);
     }
 
