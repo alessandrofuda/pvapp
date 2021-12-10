@@ -70,4 +70,9 @@ class User extends Authenticatable
         return array_search($this->role_id, self::ROLE);
     }
 
+    public function isAdmin() : bool
+    {
+        return $this->role_id === self::ROLE['admin'];
+    }
+
 }

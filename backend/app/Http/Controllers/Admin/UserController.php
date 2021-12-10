@@ -69,10 +69,12 @@ class UserController extends Controller
     {
         try {
             $deleted = User::findOrFail($id)->delete();
+            $status = 200;
         }catch (Exception $e) {
             $deleted = 'Exception: '.$e->getMessage();
+            $status = 500;
         }
 
-        return response()->json(['deleted' => $deleted]);
+        return response()->json(['deleted' => $deleted], $status);
     }
 }
