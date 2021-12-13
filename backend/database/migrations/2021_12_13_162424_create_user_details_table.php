@@ -34,9 +34,9 @@ class CreateUserDetailsTable extends Migration
             $table->string('invoice_fiscal_code', 25)->nullable();
             $table->string('invoice_vat', 15)->nullable();
             $table->string('notes', 500)->nullable();
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
