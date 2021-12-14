@@ -62,14 +62,17 @@ class UsersTest extends TestCase
 
     public function test_user_can_edit_only_their_own_profile()
     {
-        $user = User::factory()->create(['role_id'=>User::ROLE['operator']]);
-        $user2 = User::factory()->create(['name'=>'user2','role_id'=>User::ROLE['operator']]);
+        $user  = User::factory()->create(['name'=>'user1','role_id'=>User::ROLE['operator']]); // id --> 1
+        $user2 = User::factory()->create(['name'=>'user2','role_id'=>User::ROLE['operator']]); // id --> 2
 
+        $this->userAttributes['id'] = 2;
+        $this->userAttributes['name'] = 'newUserName';
         $resp = $this->actingAs($user)->putJson('api/user', $this->userAttributes);
 
         $resp->assertOk();
-        $this->assertDatabaseHas('users', ['name'=>$this->userAttributes['name']]);
-        $this->assertDatabaseMissing('users', ['name'=>$user->name]);
+        $this->assertDatabaseHas('users', ['name'=>'user1']);
+        $this->assertDatabaseHas('users', ['name'=>'user2']);
+        $this->assertDatabaseMissing('users', ['name' => 'newUserName']);
 
     }
 

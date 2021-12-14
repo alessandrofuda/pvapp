@@ -40,6 +40,7 @@ class SaveUserRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user ?? ($this->user()->id ?? null)),
             ],
+            'areas' => ['required', 'string'], // TODO
             'password' => array_merge(['sometimes'], $this->passwordRules())
         ];
     }

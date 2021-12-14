@@ -23,10 +23,13 @@ class TestsUtility
     public function userAttributes() : array
     {
         return [
-            'name' => 'Giovannino',
+            'firstname' => 'Giovannino',
+            'lastname' => 'Rossi',
+            'phone' => '+39 999.999999999',
             'email'=>'giovannino@giovannino.com',
             'password'=>'password',
-            'password_confirmation'=>'password'
+            'password_confirmation' => 'password',
+            'areas' => 'tests areas'
         ];
     }
 }

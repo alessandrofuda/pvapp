@@ -19,13 +19,13 @@ class CreateUserDetailsTable extends Migration
             $table->string('last_name');
             $table->unsignedBigInteger('user_id');
             $table->string('phone', 20);
-            $table->string('area', 300);
+            $table->string('areas', 300);
             // $table->boolean('is_client')->default(0);
-            $table->string('payer_id', 20);
-            $table->string('payer_firstname', 50);
-            $table->string('payer_lastname', 50);
+            $table->string('payer_id', 20)->nullable();
+            $table->string('payer_firstname', 50)->nullable();
+            $table->string('payer_lastname', 50)->nullable();
             $table->string('payer_phone', 30)->nullable();
-            $table->string('payer_email', 60);
+            $table->string('payer_email', 60)->nullable();
             $table->string('invoice_company_name', 200)->nullable();
             $table->string('invoice_address', 200)->nullable();
             $table->string('invoice_cap', 5)->nullable();
