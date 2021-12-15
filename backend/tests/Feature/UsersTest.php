@@ -70,9 +70,10 @@ class UsersTest extends TestCase
         $resp = $this->actingAs($user)->putJson('api/user', $this->userAttributes);
 
         $resp->assertOk();
-        $this->assertDatabaseHas('users', ['name'=>'user1']);
-        $this->assertDatabaseHas('users', ['name'=>'user2']);
-        $this->assertDatabaseMissing('users', ['name' => 'newUserName']);
+
+        $this->assertEquals('newUserName', User::find(1)->name);
+        $this->assertEquals('user2', User::find(2)->name);
+        $this->assertDatabaseMissing('users', ['name' => 'user1']);
 
     }
 
