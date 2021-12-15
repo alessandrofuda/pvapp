@@ -11,13 +11,21 @@ class Lead extends Model
 
     protected $fillable = [
         'form',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
+        'service_ids',
+        'name',
+        'surname',
+        'email',
+        'phone',
+        'municipality',
+        'province',
+        'region',
+        'price',
+        'description',
+        'phone_verified',
+        'approved',
+        'sales_counter',
+        'notes',
+        'fake_lead'
     ];
 
     const SERVICE = [

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Models\UserDetail;
+use Database\Factories\LeadFactory;
 use Database\Factories\UserDetailFactory;
 use Database\Factories\UserFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -54,6 +55,18 @@ class FactoriesTest extends TestCase
         });
         $db_columns_filtered = array_values($db_columns_filtered);
         $factory_attributes = array_keys((new UserDetailFactory)->definition());
+
+        $this->assertEqualsCanonicalizing($factory_attributes, $db_columns_filtered);
+    }
+
+    public function test_LeadFactory_is_aligned_with_real_db()
+    {
+        $db_columns = Schema::getColumnListing('leads');
+        $db_columns_filtered = array_filter($db_columns, function($item) {
+            return ($item != 'id' && $item != 'created_at' && $item != 'updated_at');
+        });
+        $db_columns_filtered = array_values($db_columns_filtered);
+        $factory_attributes = array_keys((new LeadFactory)->definition());
 
         $this->assertEqualsCanonicalizing($factory_attributes, $db_columns_filtered);
     }

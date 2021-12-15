@@ -77,7 +77,7 @@ class GuestsTest extends TestCase
         ]);
         $this->assertDatabaseCount('areas', 1);
 
-        $resp = $this->getJson('api/cities-prov-regions');
+        $resp = $this->getJson('api/municipalities');
 
         $resp->assertOk();
         // $resp->getContent();

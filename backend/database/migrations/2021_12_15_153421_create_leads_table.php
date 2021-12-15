@@ -28,7 +28,7 @@ class CreateLeadsTable extends Migration
             $table->text('description')->nullable();
             $table->boolean('phone_verified')->nullable();  // ->default(0);
             $table->boolean('approved')->default(0);
-            $table->integer('sells_counter')->default(0);
+            $table->integer('sales_counter')->default(0);
             $table->text('notes')->nullable();
             $table->boolean('fake_lead')->default(0);
             $table->timestamps();
