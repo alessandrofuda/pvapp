@@ -21,4 +21,9 @@ class UserDetail extends Model
         'phone',
         'areas'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
