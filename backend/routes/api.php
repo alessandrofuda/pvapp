@@ -3,6 +3,7 @@
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\LeadController as AdminLeadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 // guest routes
 Route::get('municipalities', [LeadController::class, 'municipalities']);
 Route::post('lead', [LeadController::class, 'store']);
+Route::get('leads', [LeadController::class, 'index']);
 
 Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('user', [UserController::class, 'user']);
@@ -32,6 +34,6 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     // admin
     Route::group(['middleware' => 'isAdmin', 'prefix' => 'admin', 'as' => 'admin.'], function() {
         Route::apiResource('users', AdminUserController::class);
-        // Route::apiResource('leads', AdminLeadsController::class);
+        Route::apiResource('leads', AdminLeadController::class);
     });
 });

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -130,6 +131,31 @@ class UsersTest extends TestCase
         $resp->assertOk();
         $this->assertDatabaseMissing('users', ['id' => 1]);
         $this->assertDatabaseHas('users', ['id' => 2]);
+    }
+
+    public function test_logged_in_operator_cant_submit_application_form()
+    {
+        $operator = User::factory()->create(['role_id' => User::ROLE['operator']]);
+        $lead = Lead::factory()->make()->toArray();
+        $lead['area'] = 'Cinisello Balsamo, MI, Lombardia';
+
+        $resp = $this->actingAs($operator)->postJson('api/lead', $lead);
+
+        $resp->assertForbidden();
+        $this->assertDatabaseCount('leads', 0);
+
+    }
+
+    public function test_logged_in_operator_cant_update_application_form()
+    {
+//        $operator = User::factory()->create(['role_id' => User::ROLE['operator']]);
+//        $lead = Lead::factory()->make();
+//
+//        $resp = $this->actingAs($operator)->postJson('api/lead', $lead->toArray());
+//
+//        $resp->assertForbidden();
+//        $this->assertDatabaseCount('leads', 0);
+
     }
 
 }

@@ -34,5 +34,23 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('delete-user', function(User $user) {
             return $user->isAdmin() || (auth()->check() && $user->id === auth()->user()->id);
         });
+
+        Gate::define('create-lead', function(User $user) {
+            if($user->isAdmin()) {
+                return true;
+            }
+
+            if(auth()->check() && auth()->user()->role_id === User::ROLE['operator']) {
+                return false;
+            }
+        });
+
+//        Gate::define('update-lead', function(User $user) {
+//
+//        });
+
+//        Gate::define('delete-lead', function(User $user) {
+//
+//        });
     }
 }

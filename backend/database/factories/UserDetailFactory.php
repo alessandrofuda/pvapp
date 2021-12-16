@@ -32,6 +32,7 @@ class UserDetailFactory extends Factory
             'invoice_prov' => strtoupper($this->faker->lexify('??')),
             'invoice_fiscal_code' => strtoupper($this->faker->lexify('?????????????????')),
             'invoice_vat' => $this->faker->numerify('IT##########'),
+            'invoice_SDI' => $this->faker->lexify('?????'),
             'notes' => $this->faker->text(100)
         ];
     }

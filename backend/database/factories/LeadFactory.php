@@ -15,11 +15,11 @@ class LeadFactory extends Factory
     {
         return [
             'form' => $this->faker->text(50),
-            'service_ids' => $this->faker->randomElement([$this->faker->numerify('#,#,#'), $this->faker->numerify('#,#'), $this->faker->numerify('#')]),
+            'services_ids' => $this->faker->randomElement([$this->faker->numerify('#,#,#'), $this->faker->numerify('#,#'), $this->faker->numerify('#')]),
             'name' => $this->faker->name,
             'surname' => $this->faker->lastName,
             'email' => $this->faker->email,
-            'phone' => $this->faker->phoneNumber,
+            'phone' => $this->faker->e164PhoneNumber(),
             'municipality' => $this->faker->city,
             'province' => $this->faker->lexify('??'),
             'region' => 'TestRegion',

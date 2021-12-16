@@ -33,6 +33,7 @@ class CreateUserDetailsTable extends Migration
             $table->string('invoice_prov', 2)->nullable();
             $table->string('invoice_fiscal_code', 25)->nullable();
             $table->string('invoice_vat', 15)->nullable();
+            $table->string('invoice_SDI', 10)->nullable();
             $table->string('notes', 500)->nullable();
             $table->timestamps();
 

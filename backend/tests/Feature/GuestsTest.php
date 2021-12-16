@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -80,32 +81,48 @@ class GuestsTest extends TestCase
         $resp = $this->getJson('api/municipalities');
 
         $resp->assertOk();
-        // $resp->getContent();
-        $resp->assertJson(['data' => ['TestCity, MI, Lombardia'] ]);
+        $resp->assertJson(['municipalities' => ['TestCity, MI, Lombardia'] ]);
     }
 
     public function test_guest_user_can_submit_application_form()
     {
+        $lead = Lead::factory()->make(['name' => 'TestLead'])->toArray();
+        $lead['area'] = 'ComuneTest, MI, Regione';
+        $this->assertDatabaseCount('leads', 0);
 
-    }
+        $resp = $this->postJson('api/lead', $lead);
 
-
-
-
-
-    public function test_guest_user_can_view_leads_page()
-    {
-
+        $resp->assertCreated();
+        $this->assertDatabaseCount('leads', 1);
+        $this->assertDatabaseHas('leads', ['name' => 'TestLead']);
     }
 
     public function test_guest_user_can_get_leads()
     {
+        $verified_leads = Lead::factory()->count(10)->create(['approved' => true]);
+        $unverified_leads = Lead::factory()->count(5)->create(['approved' => false]);
+        $this->assertDatabaseCount('leads', 15);
 
+        $resp = $this->getJson('api/leads');
+
+        $resp->assertOk();
+        $leads = json_decode($resp->getContent())->leads;
+        $this->assertEquals(10, count($leads));
     }
 
-    public function test_guest_user_view_leads_with_hidden_fields()
-    {
-
-    }
+//    public function test_guest_user_can_view_leads_page()
+//    {
+//        // todo frontend-side check/test
+//    }
+//
+//    public function test_logged_user_cant_view_leads_page()
+//    {
+//        // todo frontend-side check/test
+//    }
+//
+//    public function test_guest_user_view_leads_with_hidden_fields()
+//    {
+//        // todo frontend-side check/test
+//    }
 
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -85,4 +86,19 @@ class AdminsTest extends TestCase
         $risp2->assertForbidden();
         $this->assertDatabaseCount('users', 2);
     }
+
+    public function test_admin_can_submit_application_form()
+    {
+        $admin = User::factory()->create(['role_id' => User::ROLE['admin']]);
+        $lead = Lead::factory()->make()->toArray();
+        $lead['area'] = 'Cinisello Balsamo, MI, Lombardia';
+        $this->assertDatabaseCount('leads', 0);
+
+        $resp = $this->actingAs($admin)->postJson('api/lead', $lead);
+
+        $resp->assertCreated();
+        $this->assertDatabaseCount('leads', 1);
+    }
+
+    // TODO to test all Admin-side CRUD
 }
