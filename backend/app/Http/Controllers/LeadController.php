@@ -32,15 +32,13 @@ class LeadController extends Controller
 
     public function store(saveLeadRequest $request) : JsonResponse
     {
-//        if(auth()->check() && $request->user()->role_id === User::ROLE['operator']) {
-//            // abort(403);
-//            return response()->json(['status' => 'Forbidden'], 403);
-//        }
-
-        if(! Gate::allows('create-lead')) {
-            // abort(403);
+        if(auth()->check() && $request->user()->role_id === User::ROLE['operator']) { // TODO switch to GATE facade !! -- not works
             return response()->json(['status' => 'Forbidden'], 403);
         }
+
+//        if(! Gate::allows('create-lead')) {
+//            return response()->json(['status' => 'Forbidden'], 403);
+//        }
 
         $lead = Lead::create($request->all());
         return response()->json(['lead' => $lead], 201);

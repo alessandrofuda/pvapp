@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SaveUserRequest;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -15,7 +16,7 @@ class UserController extends Controller
         return $request->user();
     }
 
-    public function update(SaveUserRequest $request)
+    public function update(SaveUserRequest $request) : JsonResponse
     {
         if(!Gate::allows('update-user', $request->user())) {
             abort(403);
@@ -25,10 +26,11 @@ class UserController extends Controller
         return response()->json(['updated' => $user]);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request) : JsonResponse
     {
         if(!Gate::allows('delete-user', $request->user())) {
             abort(403);
+            // return response()->json(['status' => 'Forbidden'], 403);
         }
 
         try {

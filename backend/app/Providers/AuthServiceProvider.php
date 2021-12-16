@@ -16,6 +16,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        'App\Models\Lead' => 'App\Policies\LeadPolicy',
     ];
 
     /**
@@ -35,22 +36,5 @@ class AuthServiceProvider extends ServiceProvider
             return $user->isAdmin() || (auth()->check() && $user->id === auth()->user()->id);
         });
 
-        Gate::define('create-lead', function(User $user) {
-            if($user->isAdmin()) {
-                return true;
-            }
-
-            if(auth()->check() && auth()->user()->role_id === User::ROLE['operator']) {
-                return false;
-            }
-        });
-
-//        Gate::define('update-lead', function(User $user) {
-//
-//        });
-
-//        Gate::define('delete-lead', function(User $user) {
-//
-//        });
     }
 }
