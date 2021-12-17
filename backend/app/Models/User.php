@@ -75,9 +75,19 @@ class User extends Authenticatable
         return $this->role_id === self::ROLE['admin'];
     }
 
+    public function isOperator() : bool
+    {
+        return $this->role_id === self::ROLE['operator'];
+    }
+
     public function detail()
     {
         return $this->hasOne(UserDetail::class);
+    }
+
+    public function hasPurchasedLead(Lead $lead) : bool
+    {
+        dd('..wip...');  // return Transaction::where('lead_id',$lead->id)->where('user_id', $this->id)->get();
     }
 
 }

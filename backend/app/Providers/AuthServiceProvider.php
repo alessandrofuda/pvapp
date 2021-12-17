@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -16,7 +17,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-        'App\Models\Lead' => 'App\Policies\LeadPolicy',
     ];
 
     /**
@@ -28,12 +28,47 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('update-user', function (User $user) {
+        // Admin crud
+        Gate::define('create-admin', function(User $user) {
+            return $user->isAdmin();
+        });
+        Gate::define('read-admin', function(User $user) {
+            return $user->isAdmin();
+        });
+        Gate::define('update-admin', function(User $user) {
+            return $user->isAdmin();
+        });
+        Gate::define('delete-admin', function(User $user) {
+            return $user->isAdmin() && User::where('role_id', User::ROLE['admin']->get() > 1);
+        });
+
+        // Operator (installer) crud
+        Gate::define('create-operator', function(User $user) {
+            return $user->isAdmin() || !auth()->check();
+        });
+        Gate::define('read-operator', function(User $user) {
+            return $user->isAdmin() || (auth()->check() && $user->id === auth()->user()->id);
+        });
+        Gate::define('update-operator', function (User $user) {
             return $user->isAdmin() || (auth()->check() && $user->id === auth()->user()->id);
         });
 
-        Gate::define('delete-user', function(User $user) {
+        Gate::define('delete-operator', function(User $user) {
             return $user->isAdmin() || (auth()->check() && $user->id === auth()->user()->id);
+        });
+
+        // Lead crud
+        Gate::define('create-lead', function(User $user) {  // IMP! this works ONLY for Authenticated users!
+            return $user->isAdmin() || !$user->isOperator() || !auth()->check();  // $user->role_id !== User::ROLE['operator']
+        });
+        Gate::define('read-lead', function(User $user, Lead $lead) {
+            return $user->isAdmin() || $user->hasPurchasedLead($lead);
+        });
+        Gate::define('update-lead', function(User $user) {
+            return $user->isAdmin();
+        });
+        Gate::define('delete-lead', function(User $user) {
+            return $user->isAdmin();
         });
 
     }

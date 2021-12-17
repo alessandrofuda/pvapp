@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\saveLeadRequest;
 use App\Models\Lead;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
@@ -32,13 +30,10 @@ class LeadController extends Controller
 
     public function store(saveLeadRequest $request) : JsonResponse
     {
-        if(auth()->check() && $request->user()->role_id === User::ROLE['operator']) { // TODO switch to GATE facade !! -- not works
-            return response()->json(['status' => 'Forbidden'], 403);
+        // IMP ! gate works ONLY for authenticated users (if NOT it return ALWAYS false!)
+        if(auth()->check() && !Gate::allows('create-lead')) {
+            abort(403);
         }
-
-//        if(! Gate::allows('create-lead')) {
-//            return response()->json(['status' => 'Forbidden'], 403);
-//        }
 
         $lead = Lead::create($request->all());
         return response()->json(['lead' => $lead], 201);
