@@ -11,14 +11,18 @@ use Illuminate\Support\Facades\Gate;
 
 class OperatorController extends Controller
 {
-    public function show(Request $request)
+    public function show(Request $request) : JsonResponse
     {
-        return $request->user();
+        if(!Gate::allows('read-operator')) {
+            abort(403);
+        }
+
+        return response()->json(['user' => $request->user()]);
     }
 
     public function update(SaveUserRequest $request) : JsonResponse
     {
-        if(!Gate::allows('update-operator', $request->user())) {
+        if(!Gate::allows('update-operator')) {
             abort(403);
         }
 
@@ -28,7 +32,7 @@ class OperatorController extends Controller
 
     public function destroy(Request $request) : JsonResponse
     {
-        if(!Gate::allows('delete-operator', $request->user())) {
+        if(!Gate::allows('delete-operator')) {
             abort(403);
         }
 

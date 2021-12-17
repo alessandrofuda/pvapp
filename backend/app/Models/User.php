@@ -87,6 +87,7 @@ class User extends Authenticatable
 
     public function hasPurchasedLead(Lead $lead) : bool
     {
+        // return true;
         dd('..wip...');  // return Transaction::where('lead_id',$lead->id)->where('user_id', $this->id)->get();
     }
 

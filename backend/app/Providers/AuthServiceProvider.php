@@ -35,6 +35,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('read-admin', function(User $user) {
             return $user->isAdmin();
         });
+        Gate::define('read-admins', function(User $user) {
+            return $user->isAdmin();
+        });
         Gate::define('update-admin', function(User $user) {
             return $user->isAdmin();
         });
@@ -49,10 +52,12 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('read-operator', function(User $user) {
             return $user->isAdmin() || (auth()->check() && $user->id === auth()->user()->id);
         });
+        Gate::define('read-operators', function(User $user) {
+            return $user->isAdmin();
+        });
         Gate::define('update-operator', function (User $user) {
             return $user->isAdmin() || (auth()->check() && $user->id === auth()->user()->id);
         });
-
         Gate::define('delete-operator', function(User $user) {
             return $user->isAdmin() || (auth()->check() && $user->id === auth()->user()->id);
         });
@@ -64,6 +69,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('read-lead', function(User $user, Lead $lead) {
             return $user->isAdmin() || $user->hasPurchasedLead($lead);
         });
+        // Gate::define('read-leads', function(User $user) {  // IMP! this works ONLY for Authenticated users!
+        //     return $user->isAdmin() || $user->isOperator() || !auth()->check();
+        // });
         Gate::define('update-lead', function(User $user) {
             return $user->isAdmin();
         });

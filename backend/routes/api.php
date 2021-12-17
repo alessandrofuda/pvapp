@@ -29,9 +29,9 @@ Route::get('leads', [LeadController::class, 'index']);
 Route::group(['middleware' => 'auth:sanctum'], function() {
     // operators
     Route::group(['middleware' => 'isOperator', 'as' => 'operator.'], function() {
-         Route::get('user', [OperatorController::class, 'show']);
-         Route::put('user', [OperatorController::class, 'update']);
-         Route::delete('user', [OperatorController::class, 'destroy']);
+         Route::get('user', [OperatorController::class, 'show'])->name('user.show');
+         Route::put('user', [OperatorController::class, 'update'])->name('user.update');
+         Route::delete('user', [OperatorController::class, 'destroy'])->name('user.destroy');
     });
     // admins
     Route::group(['middleware' => 'isAdmin', 'prefix' => 'admin', 'as' => 'admin.'], function() {

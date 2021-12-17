@@ -15,7 +15,7 @@ class TestsUtility
         return User::factory()->create(['role_id' => User::ROLE['admin']]);
     }
 
-    public function createUser() : Authenticatable|Model
+    public function createOperator() : Authenticatable|Model
     {
         return User::factory()->create(['role_id' => User::ROLE['operator']]);
     }
