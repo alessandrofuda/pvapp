@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Admin crud
+        // Admins crud
         Gate::define('create-admin', function(User $user) {
             return $user->isAdmin();
         });
@@ -42,7 +42,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->isAdmin() && User::where('role_id', User::ROLE['admin']->get() > 1);
         });
 
-        // Operator (installer) crud
+        // Operators (installer) crud
         Gate::define('create-operator', function(User $user) {
             return $user->isAdmin() || !auth()->check();
         });
@@ -57,9 +57,9 @@ class AuthServiceProvider extends ServiceProvider
             return $user->isAdmin() || (auth()->check() && $user->id === auth()->user()->id);
         });
 
-        // Lead crud
+        // Leads crud
         Gate::define('create-lead', function(User $user) {  // IMP! this works ONLY for Authenticated users!
-            return $user->isAdmin() || !$user->isOperator() || !auth()->check();  // $user->role_id !== User::ROLE['operator']
+            return $user->isAdmin() || !$user->isOperator() || !auth()->check();
         });
         Gate::define('read-lead', function(User $user, Lead $lead) {
             return $user->isAdmin() || $user->hasPurchasedLead($lead);

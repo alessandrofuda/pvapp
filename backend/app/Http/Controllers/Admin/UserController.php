@@ -7,65 +7,36 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SaveUserRequest;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
+    public function index() : JsonResponse
     {
         $users = User::all();
         return response()->json(['users' => $users]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(SaveUserRequest $request)
+    public function store(SaveUserRequest $request) : JsonResponse
     {
         $user = (new CreateNewUser())->create($request->all());
         return response()->json(['user' => $user], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
+    public function show(int $id) : JsonResponse
     {
         $user = User::find($id);
-        return response()->json(['user' => $user]);  // in NOT-admin version --> TODO middleware: UserCanEditOnlyTheirOwnProfile
+        return response()->json(['user' => $user]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(SaveUserRequest $request, $id)
+    public function update(SaveUserRequest $request, int $id) : JsonResponse
     {
         $user = User::findOrFail($id)->update($request->all());
         return response()->json(['updated' => $user]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy($id)
+    public function destroy(int $id) : JsonResponse
     {
         try {
             $deleted = User::findOrFail($id)->delete();

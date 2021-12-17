@@ -133,7 +133,7 @@ class OperatorsTest extends TestCase
         $this->assertDatabaseHas('users', ['id' => 2]);
     }
 
-    public function test_logged_in_operator_cant_submit_lead_form()
+    public function test_logged_in_operator_cant_submit_lead()
     {
         $operator = User::factory()->create(['role_id' => User::ROLE['operator']]);
         $lead = Lead::factory()->make()->toArray();
@@ -146,15 +146,16 @@ class OperatorsTest extends TestCase
 
     }
 
-    public function test_logged_in_operator_cant_update_application_form()
+    public function test_logged_in_operator_cant_update_lead()
     {
-//        $operator = User::factory()->create(['role_id' => User::ROLE['operator']]);
-//        $lead = Lead::factory()->make();
-//
-//        $resp = $this->actingAs($operator)->postJson('api/lead', $lead->toArray());
-//
-//        $resp->assertForbidden();
-//        $this->assertDatabaseCount('leads', 0);
+        $operator = User::factory()->create(['role_id' => User::ROLE['operator']]);
+        $lead = Lead::factory()->make()->toArray();
+        $lead['area'] = 'Cinisello Balsamo, MI, Lombardia';
+
+        $resp = $this->actingAs($operator)->putJson('api/lead', $lead);
+
+        $resp->assertStatus(405);
+        $this->assertDatabaseCount('leads', 0);
 
     }
 

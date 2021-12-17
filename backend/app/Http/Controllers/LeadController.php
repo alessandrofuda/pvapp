@@ -38,4 +38,5 @@ class LeadController extends Controller
         $lead = Lead::create($request->all());
         return response()->json(['lead' => $lead], 201);
     }
+
 }

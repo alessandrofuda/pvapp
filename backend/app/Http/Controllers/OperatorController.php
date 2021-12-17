@@ -9,9 +9,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
-class UserController extends Controller
+class OperatorController extends Controller
 {
-    public function user(Request $request)
+    public function show(Request $request)
     {
         return $request->user();
     }
@@ -22,7 +22,7 @@ class UserController extends Controller
             abort(403);
         }
 
-        $user = User::findOrFail($request->user()->id)->update($request->except(['id', 'role_id'])); // $request->all()
+        $user = User::findOrFail($request->user()->id)->update($request->except(['id', 'role_id']));
         return response()->json(['updated' => $user]);
     }
 
@@ -30,7 +30,6 @@ class UserController extends Controller
     {
         if(!Gate::allows('delete-operator', $request->user())) {
             abort(403);
-            // return response()->json(['status' => 'Forbidden'], 403);
         }
 
         try {
