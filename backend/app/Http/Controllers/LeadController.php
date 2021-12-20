@@ -48,11 +48,12 @@ class LeadController extends Controller
 
         // check phone (if already present --> update lead)
         // check mail (if already present --> update lead)
-        $this->leads = DB::table('leads')->get(['phone', 'email']);
-        if($this->alreadyPresentInLeadsTable($params['phone']) && $this->overThreeeSubmissionsToday()) {
-            // update
-        }elseif ($this->alreadyPresentInLeadsTable($params['email'])) {
-            // update
+        $this->leads = DB::table('leads')->get(['phone', 'email']); //
+        // dd($this->leads);
+        if($this->alreadyPresentInLeadsTable($params['phone'], 'phone') && $this->overThreeSubmissionsToday()) {
+            // update TODO
+        }elseif ($this->alreadyPresentInLeadsTable($params['email'], 'email')) {
+            // update TODO
         }else {
             $lead = Lead::create($params);
             return response()->json(['lead' => $lead], 201);
@@ -66,13 +67,14 @@ class LeadController extends Controller
 
     private function alreadyPresentInLeadsTable(string $string, string $column) : bool
     {
-        DB::table('leads')->select($column)->where($column, 'LIKE', $string)->get();
-        return ;
+        $array = $this->leads->pluck($column)->toArray();
+        return in_array($string, $array);
     }
 
-    private function overThreeeSubmissionsToday() : bool
+    private function overThreeSubmissionsToday() : bool
     {
-        return;
+
+        // return; TODO
     }
 
 }
