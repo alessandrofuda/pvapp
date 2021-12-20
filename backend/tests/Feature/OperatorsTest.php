@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Area;
 use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -16,14 +17,14 @@ class OperatorsTest extends TestCase
 
     protected TestsUtility $utility;
     protected Authenticatable $operator;
-    protected array $userAttributes;
+    protected array $userRequestAttributes;
 
     protected function setUp() : void
     {
         parent::setUp();
         $this->utility = new TestsUtility();
         $this->operator = $this->utility->createOperator();
-        $this->userAttributes = $this->utility->userAttributes();
+        $this->userRequestAttributes = $this->utility->userRequestAttributes();
     }
 
     public function test_operator_cant_get_all_users()
@@ -70,9 +71,9 @@ class OperatorsTest extends TestCase
         $user  = User::factory()->create(['name'=>'user1','role_id'=>User::ROLE['operator']]); // id --> 2
         $user2 = User::factory()->create(['name'=>'user2','role_id'=>User::ROLE['operator']]); // id --> 3
 
-        $this->userAttributes['id'] = 3;
-        $this->userAttributes['name'] = 'newUserName';
-        $resp = $this->actingAs($user)->putJson('api/user', $this->userAttributes);
+        $this->userRequestAttributes['id'] = 3;
+        $this->userRequestAttributes['name'] = 'newUserName';
+        $resp = $this->actingAs($user)->putJson('api/user', $this->userRequestAttributes);
 
         $resp->assertOk();
         $this->assertEquals('newUserName', User::find(2)->name);
@@ -85,8 +86,8 @@ class OperatorsTest extends TestCase
     {
         $user = User::factory()->create(['role_id'=>User::ROLE['operator']]);
         $originalUserId = $user->id;
-        $this->userAttributes['id'] = 99;
-        $resp = $this->actingAs($user)->putJson('api/user', $this->userAttributes);
+        $this->userRequestAttributes['id'] = 99;
+        $resp = $this->actingAs($user)->putJson('api/user', $this->userRequestAttributes);
 
         $resp->assertOk();
         $this->assertDatabaseMissing('users', ['id' => 99]);
@@ -100,10 +101,10 @@ class OperatorsTest extends TestCase
         $this->assertEquals(2, $user->id);
         $this->assertEquals(3, $user2->id);
 
-        $this->userAttributes['id'] = 3;
-        $this->userAttributes['name'] = 'newName';
+        $this->userRequestAttributes['id'] = 3;
+        $this->userRequestAttributes['name'] = 'newName';
 
-        $this->actingAs($user)->putJson('api/user', $this->userAttributes);
+        $this->actingAs($user)->putJson('api/user', $this->userRequestAttributes);
 
         $this->assertNotEquals('newName', $user2->name);
     }
@@ -126,8 +127,8 @@ class OperatorsTest extends TestCase
         $this->assertDatabaseHas('users', ['id'=>1]);
         $this->assertDatabaseHas('users', ['id'=>2]);
 
-        $this->userAttributes['id'] = 2;
-        $resp = $this->actingAs($this->operator)->deleteJson('api/user', $this->userAttributes);
+        $this->userRequestAttributes['id'] = 2;
+        $resp = $this->actingAs($this->operator)->deleteJson('api/user', $this->userRequestAttributes);
 
         $resp->assertOk();
         $this->assertDatabaseMissing('users', ['id' => 1]);
@@ -138,6 +139,8 @@ class OperatorsTest extends TestCase
     {
         $lead = Lead::factory()->make()->toArray();
         $lead['area'] = 'Cinisello Balsamo, MI, Lombardia';
+        Area::factory()->create(['city'=>'Cinisello Balsamo', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
+        $this->assertDatabaseCount('areas', 1);
 
         $resp = $this->actingAs($this->operator)->postJson('api/lead', $lead);
 

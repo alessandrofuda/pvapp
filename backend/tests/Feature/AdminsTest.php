@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Area;
 use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -16,14 +17,14 @@ class AdminsTest extends TestCase
 
     protected TestsUtility $utility;
     protected Authenticatable $admin;
-    protected array $userAttributes;
+    protected array $userRequestAttributes;
 
     protected function setUp() : void
     {
         parent::setUp();
         $this->utility = new TestsUtility();
         $this->admin = $this->utility->createAdmin();
-        $this->userAttributes = $this->utility->userAttributes();
+        $this->userRequestAttributes = $this->utility->userRequestAttributes();
     }
 
     public function test_admin_can_get_all_users()
@@ -41,7 +42,7 @@ class AdminsTest extends TestCase
     public function test_admin_can_create_new_user_profile()
     {
         $this->assertDatabaseCount('users', 1);
-        $response = $this->actingAs($this->admin)->postJson('api/admin/users', $this->userAttributes);
+        $response = $this->actingAs($this->admin)->postJson('api/admin/users', $this->userRequestAttributes);
 
         $response->assertStatus(201);
         $this->assertDatabaseCount('users', 1+1);
@@ -65,15 +66,15 @@ class AdminsTest extends TestCase
         $user = User::factory()->create(['id'=>6, 'name'=>'name']);
         $this->assertDatabaseHas('users', ['name'=> 'name']);
 
-        $userAttributes = $this->userAttributes;
-        $userAttributes['name'] = 'newName';
+        $userRequestAttributes = $this->userRequestAttributes;
+        $userRequestAttributes['name'] = 'newName';
 
-        $risp = $this->actingAs($this->admin)->putJson('api/admin/users/'.$user['id'], $userAttributes);
+        $risp = $this->actingAs($this->admin)->putJson('api/admin/users/'.$user['id'], $userRequestAttributes);
 
         $risp->assertOk();
         $this->assertDatabaseHas('users', ['name'=>'newName']);
 
-        $risp2 = $this->actingAs($this->utility->createOperator())->putJson('api/admin/users/'.$user['id'], $userAttributes);
+        $risp2 = $this->actingAs($this->utility->createOperator())->putJson('api/admin/users/'.$user['id'], $userRequestAttributes);
         $risp2->assertForbidden();
     }
 
@@ -95,6 +96,8 @@ class AdminsTest extends TestCase
         $lead = Lead::factory()->make()->toArray();
         $lead['area'] = 'Cinisello Balsamo, MI, Lombardia';
         $this->assertDatabaseCount('leads', 0);
+        Area::factory()->create(['city'=>'Cinisello Balsamo', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
+        $this->assertDatabaseCount('areas', 1);
 
         $resp = $this->actingAs($this->admin)->postJson('api/lead', $lead);
 
@@ -118,6 +121,8 @@ class AdminsTest extends TestCase
         $lead = Lead::factory()->make()->toArray();
         $lead['area'] = 'Cinisello Balsamo, MI, Lombardia';
         $this->assertDatabaseCount('leads', 0);
+        Area::factory()->create(['city'=>'Cinisello Balsamo', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
+        $this->assertDatabaseCount('areas', 1);
 
         $resp = $this->actingAs($this->admin)->postJson('api/admin/leads', $lead);
 
@@ -134,6 +139,8 @@ class AdminsTest extends TestCase
         $lead_attributes = $lead_factory->make()->toArray();
         $lead_attributes['area'] = 'Ciny, MI, Lombardia';
         $lead_attributes['name'] = 'UpdatedName';
+        Area::factory()->create(['city'=>'Ciny', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
+        $this->assertDatabaseCount('areas', 1);
 
         $resp = $this->actingAs($this->admin)->putJson('api/admin/leads/1', $lead_attributes);
 
