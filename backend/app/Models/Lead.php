@@ -28,12 +28,16 @@ class Lead extends Model
         'fake_lead'
     ];
 
-    const SERVICE = [
+    public const SERVICE = [
         'pv_plant' => 1,
         'storage_batteries' => 2,
         'heat_pump' => 3,
         'energy_efficiency' => 4,
         'domotic' => 5,
         'maintenance_repair' => 6
+    ];
+
+    public const PRICE = [
+        'default' => 12.00,
     ];
 }

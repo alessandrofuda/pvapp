@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\LeadAreaValidation;
 use App\Rules\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -30,7 +31,7 @@ class saveLeadRequest extends FormRequest
             'surname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'string', 'max:255'],  // Rule::unique(User::class)->ignore($this->user ?? ($this->user()->id ?? null)),
             'phone' => ['required', 'string', 'between:7,30', new PhoneNumber ],
-            'area' => ['required', 'string', 'max:255'], // TODO add regex rule: 'comune, prov, region'
+            'area' => ['required', 'string', 'between:10,255', new LeadAreaValidation],
             'description' => ['string', 'max:5000']
         ];
     }

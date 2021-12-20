@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\saveLeadRequest;
+use App\Models\Area;
 use App\Models\Lead;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,18 @@ class LeadController extends Controller
             abort(403);
         }
 
-        $lead = Lead::create($request->all());
+        $params = $request->all();
+        $areas = explode(',', $request->get('area'));
+        $params['form'] = 'default lead form';
+        $params['municipality'] = trim($areas[0]);
+        $params['province'] = trim($areas[1]);
+        $params['region'] = trim($areas[2]);
+        $params['price'] = Lead::PRICE['default'];
+
+        // check phone (if already present --> update lead)
+        // check mail (if already present --> update lead)
+
+        $lead = Lead::create($params);
         return response()->json(['lead' => $lead], 201);
     }
 
