@@ -43,12 +43,36 @@ class LeadController extends Controller
         $params['province'] = trim($areas[1]);
         $params['region'] = trim($areas[2]);
         $params['price'] = Lead::PRICE['default'];
+        $params['phone'] = $this->sanitizePhone($request->get('phone'));
+        $params['email'] = trim($request->get('email'));
 
         // check phone (if already present --> update lead)
         // check mail (if already present --> update lead)
+        $this->leads = DB::table('leads')->get(['phone', 'email']);
+        if($this->alreadyPresentInLeadsTable($params['phone']) && $this->overThreeeSubmissionsToday()) {
+            // update
+        }elseif ($this->alreadyPresentInLeadsTable($params['email'])) {
+            // update
+        }else {
+            $lead = Lead::create($params);
+            return response()->json(['lead' => $lead], 201);
+        }
+    }
 
-        $lead = Lead::create($params);
-        return response()->json(['lead' => $lead], 201);
+    private function sanitizePhone(string $phone) : string
+    {
+        return str_replace(['.', '-', '/', ' '], '', $phone);
+    }
+
+    private function alreadyPresentInLeadsTable(string $string, string $column) : bool
+    {
+        DB::table('leads')->select($column)->where($column, 'LIKE', $string)->get();
+        return ;
+    }
+
+    private function overThreeeSubmissionsToday() : bool
+    {
+        return;
     }
 
 }
