@@ -141,6 +141,75 @@ class LeadGenerationTest extends TestCase
         $this->assertDatabaseCount('leads', 0);
     }
 
+    public function test_if_guest_submit_lead_with_phone_that_already_exists_it_update_the_previous()
+    {
+        Lead::factory()->create(['phone'=>'123456789']);
+        $this->assertDatabaseCount('leads', 1);
+        Area::factory()->create(['city'=>'City Test', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
+        $this->leadRequestAttributes['phone'] = '123456789';
+        $this->leadRequestAttributes['name'] = 'new Name';
+
+        $resp = $this->postJson('api/lead', $this->leadRequestAttributes);
+
+        $resp->assertStatus(200);
+        $this->assertDatabaseCount('leads', 1);
+        $this->assertDatabaseHas('leads', ['phone'=>'123456789']);
+        $this->assertDatabaseHas('leads', ['name'=>'new Name']);
+    }
+
+    public function test_if_guest_submit_lead_with_email_that_already_exists_it_update_the_previous()
+    {
+        Lead::factory()->create(['email'=>'email@test.com']);
+        $this->assertDatabaseCount('leads', 1);
+        Area::factory()->create(['city'=>'City Test', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
+        $this->leadRequestAttributes['email'] = 'email@test.com';
+        $this->leadRequestAttributes['name'] = 'new Name';
+
+        $resp = $this->postJson('api/lead', $this->leadRequestAttributes);
+
+        $resp->assertStatus(200);
+        $this->assertDatabaseCount('leads', 1);
+        $this->assertDatabaseHas('leads', ['email'=>'email@test.com']);
+        $this->assertDatabaseHas('leads', ['name'=>'new Name']);
+    }
+
+    public function test_if_a_lot_of_submissions_in_same_day_block_request_with_rate_limiting()
+    {
+        $this->assertDatabaseCount('leads', 0);
+        Area::factory()->create(['city'=>'City Test', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
+
+        $resp1 = $this->postJson('api/lead', $this->leadRequestAttributes);
+        $resp1->assertCreated();
+        $resp2 = $this->postJson('api/lead', $this->leadRequestAttributes);
+        $resp2->assertOk();
+        $resp3 = $this->postJson('api/lead', $this->leadRequestAttributes);
+        $resp3->assertOk();
+        $resp4 = $this->postJson('api/lead', $this->leadRequestAttributes);
+        $resp4->assertStatus(429);
+
+        $this->assertDatabaseCount('leads', 1);
+
+    }
+
+    public function test_throttling_block_too_many_submissions_from_same_ip() // defined 'leadSubmissions' in RouteServiceProvider
+    {
+        $this->assertDatabaseCount('leads', 0);
+        Area::factory()->create(['city'=>'City Test', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
+        $this->assertDatabaseCount('areas', 1);
+
+        for ($i=0; $i<50; $i++) {
+            $this->leadRequestAttributes['email'] = 'email@test'.$i.'.com';
+            $this->leadRequestAttributes['phone'] = '11111111'.$i;
+
+            $resp = $this->postJson('api/lead', $this->leadRequestAttributes);
+            if($i < 5) {
+                $resp->assertStatus(201);
+            } else {
+                $resp->assertStatus(429);
+            }
+        }
+    }
+
 //    public function test_guest_user_can_view_leads_page()
 //    {
 //        // todo frontend-side check/test
