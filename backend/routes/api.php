@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 // guest routes
 Route::get('municipalities', [LeadController::class, 'municipalities']);
-Route::post('lead', [LeadController::class, 'store']);
+Route::post('lead', [LeadController::class, 'store'])->middleware(['throttle:leadSubmissions']);
 Route::get('leads', [LeadController::class, 'index']);
 
 Route::group(['middleware' => 'auth:sanctum'], function() {

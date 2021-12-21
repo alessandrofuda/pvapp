@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\saveLeadRequest;
-use App\Models\Area;
 use App\Models\Lead;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 
 class LeadController extends Controller
 {
+    public Collection $leads;
+
     public function index() : JsonResponse
     {
         $leads = Lead::where('approved', true)->get();
@@ -31,7 +34,7 @@ class LeadController extends Controller
 
     public function store(saveLeadRequest $request) : JsonResponse
     {
-        // IMP ! gate works ONLY for authenticated users (if NOT it return ALWAYS false!)
+        // IMP ! gate works ONLY for authenticated users (if NOT it ALWAYS returns false!)
         if(auth()->check() && !Gate::allows('create-lead')) {
             abort(403);
         }
@@ -45,19 +48,21 @@ class LeadController extends Controller
         $params['price'] = Lead::PRICE['default'];
         $params['phone'] = $this->sanitizePhone($request->get('phone'));
         $params['email'] = trim($request->get('email'));
+        unset($params['area']);
 
-        // check phone (if already present --> update lead)
-        // check mail (if already present --> update lead)
-        $this->leads = DB::table('leads')->get(['phone', 'email']); //
-        // dd($this->leads);
-        if($this->alreadyPresentInLeadsTable($params['phone'], 'phone') && $this->overThreeSubmissionsToday()) {
-            // update TODO
-        }elseif ($this->alreadyPresentInLeadsTable($params['email'], 'email')) {
-            // update TODO
-        }else {
+        // check phone & mail. If already present --> update lead
+        $this->leads = DB::table('leads')->get(['phone', 'email']);
+
+        if( $this->alreadyPresentInLeadsTable($params['phone'], 'phone') ||
+            $this->alreadyPresentInLeadsTable($params['email'], 'email')) {
+
+            $status = ($lead = $this->updateIfNotManySubmissionsToday($request, $params)) ? 200 : 429;
+
+        } else {
             $lead = Lead::create($params);
-            return response()->json(['lead' => $lead], 201);
+            $status = 201;
         }
+        return response()->json(['lead' => $lead], $status ?? 500);
     }
 
     private function sanitizePhone(string $phone) : string
@@ -71,10 +76,19 @@ class LeadController extends Controller
         return in_array($string, $array);
     }
 
-    private function overThreeSubmissionsToday() : bool
+    private function updateIfNotManySubmissionsToday($request, $params) : bool
     {
+        $maxAttempts = 2;
+        $decaySeconds = 60*60*24;
 
-        // return; TODO
+        return RateLimiter::attempt(
+            'lead-resubmitted-today.IP:'.$request->ip(),
+            $maxAttempts,
+            function() use ($request, $params) {
+                return Lead::where('phone', $this->sanitizePhone($request->get('phone')))->orWhere('email', $request->get('email'))->update($params);
+            },
+            $decaySeconds
+        );
     }
 
 }
