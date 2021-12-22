@@ -31,7 +31,7 @@ class TestsUtility
             'email'=>'giovannino@giovannino.com',
             'password'=>'password',
             'password_confirmation' => 'password',
-            'areas' => 'tests areas'
+            'areas' => 'Lombardia, Roma (Provincia), Piemonte'
         ];
     }
 

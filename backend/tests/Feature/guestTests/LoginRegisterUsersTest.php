@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\guestTests;
 
+use App\Models\Area;
 use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -100,6 +101,38 @@ class LoginRegisterUsersTest extends TestCase
         $resp = $this->deleteJson('api/user');
 
         $resp->assertUnauthorized();
+    }
+
+    public function test_areas_in_registration_form_must_be_correctly_validated()
+    {
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('user_details', 1);
+        Area::factory()->count(10)->create(['prov_name'=>'ProvinceTest', 'region_name'=>'RegionTest']);
+
+        $resp = $this->postJson('register', $this->userRequestAttributes); // TODO
+
+        $resp->assertCreated();
+        $this->assertDatabaseCount('users', 2);
+        $this->assertDatabaseCount('user_details', 2);
+    }
+
+    public function test_wrong_area_in_registration_form_return_validation_error()
+    {
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('user_details', 1);
+        Area::factory()->count(10)->create(['prov_name'=>'ProvinceTest', 'region_name'=>'RegionTest']);
+        $this->userRequestAttributes['areas'] = 'notExistentArea';
+
+        $resp = $this->postJson('register', $this->userRequestAttributes); // TODO
+
+        $resp->assertStatus(422);
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('user_details', 1);
+    }
+
+    public function test_Tutta_Italia_area_in_registration_form_return_NO_Error_validation()
+    {
+        // TODO
     }
 
 }
