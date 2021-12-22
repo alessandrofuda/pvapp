@@ -17,6 +17,8 @@ class LeadController extends Controller
     public function index() : JsonResponse
     {
         $leads = Lead::where('approved', true)->get();
+        $leads->makeHidden(['surname', 'email', 'phone']);
+
         return response()->json(['leads' => $leads]);
     }
 
