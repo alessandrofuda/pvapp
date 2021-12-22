@@ -30,15 +30,15 @@ class CreateNewUser implements CreatesNewUsers
 
         DB::transaction(function() use ($input) {
             $this->user = User::create([
-                'name' => $input['firstname'],
+                'name' => $input['first_name'],
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
                 'role_id' => User::ROLE['operator'],
             ]);
 
             UserDetail::query()->create([
-                'first_name' => $input['firstname'],
-                'last_name' => $input['lastname'],
+                'first_name' => $input['first_name'],
+                'last_name' => $input['last_name'],
                 'user_id' => $this->user->id,
                 'phone' => $input['phone'],
                 'areas' => $input['areas']

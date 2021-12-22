@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveUserRequest;
 use App\Models\User;
+use App\Models\UserDetail;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,8 @@ class OperatorController extends Controller
             abort(403);
         }
 
-        return response()->json(['user' => $request->user()]);
+        $user = User::with('detail')->whereId($request->user()->id)->orderByDesc('created_at')->first();
+        return response()->json(['user' => $user]);
     }
 
     public function update(SaveUserRequest $request) : JsonResponse
@@ -26,8 +28,11 @@ class OperatorController extends Controller
             abort(403);
         }
 
-        $user = User::findOrFail($request->user()->id)->update($request->except(['id', 'role_id']));
-        return response()->json(['updated' => $user]);
+        $userId = $request->user()->id;
+        User::findOrFail($userId)->update($request->except(['id', 'role_id']));
+        UserDetail::where('user_id', $userId)->update($request->except(['name', 'email', 'password', 'password_confirmation']));
+
+        return response()->json(['updated' => true]);
     }
 
     public function destroy(Request $request) : JsonResponse

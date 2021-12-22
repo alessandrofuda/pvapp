@@ -30,8 +30,8 @@ class SaveUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'between:7,30', new PhoneNumber ],
             'email' => [
                 'required',

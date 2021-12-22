@@ -5,6 +5,7 @@ namespace Tests;
 
 use App\Models\Area;
 use App\Models\User;
+use App\Models\UserDetail;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,14 +19,14 @@ class TestsUtility
 
     public function createOperator() : Authenticatable|Model
     {
-        return User::factory()->create(['role_id' => User::ROLE['operator']]);
+        return User::factory()->hasDetail(1)->create(['role_id' => User::ROLE['operator']]); // hasDetail --> magic method! (relationship)
     }
 
     public function userRequestAttributes() : array
     {
         return [
-            'firstname' => 'Giovannino',
-            'lastname' => 'Rossi',
+            'first_name' => 'Giovannino',
+            'last_name' => 'Rossi',
             'phone' => '+39 999.999999999',
             'email'=>'giovannino@giovannino.com',
             'password'=>'password',

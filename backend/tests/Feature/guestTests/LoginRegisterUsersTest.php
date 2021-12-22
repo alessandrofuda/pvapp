@@ -68,4 +68,38 @@ class LoginRegisterUsersTest extends TestCase
         $this->assertDatabaseCount('users', 1);
     }
 
+    public function test_guest_cant_get_users()
+    {
+        User::factory()->count(5)->create();
+        $this->assertDatabaseCount('users', 5);
+
+        $resp = $this->getJson('api/admin/users');
+
+        $resp->assertUnauthorized();
+    }
+
+    public function test_guest_cant_get_user_profile()
+    {
+        User::factory()->count(5)->create();
+        $this->assertDatabaseCount('users', 5);
+
+        $resp = $this->getJson('api/user');
+
+        $resp->assertUnauthorized();
+    }
+
+    public function test_guest_cant_post_user_profile_as_admin_profile()
+    {
+        $resp = $this->postJson('api/admin/users', $this->userRequestAttributes);
+
+        $resp->assertUnauthorized();
+    }
+
+    public function test_guest_cant_delete_user_profile()
+    {
+        $resp = $this->deleteJson('api/user');
+
+        $resp->assertUnauthorized();
+    }
+
 }
