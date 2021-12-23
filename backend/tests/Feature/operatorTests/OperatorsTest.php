@@ -139,7 +139,6 @@ class OperatorsTest extends TestCase
         $lead = Lead::factory()->make()->toArray();
         $lead['area'] = 'Cinisello Balsamo, MI, Lombardia';
         Area::factory()->create(['city'=>'Cinisello Balsamo', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
-        $this->assertDatabaseCount('areas', 1);
 
         $resp = $this->actingAs($this->operator)->postJson('api/lead', $lead);
 

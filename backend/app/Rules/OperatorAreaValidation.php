@@ -24,17 +24,17 @@ class OperatorAreaValidation implements Rule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes($attribute, $value) : bool
     {
-        $areas = explode(',', $value);
-        $db_areas = DB::table('areas')->get(['prov_name', 'region_name'])->toArray(); // ->groupBy('prov_name')
+        $request_areas = array_filter($this->requestAreas($value));
+        $db_areas = $this->dbProvincesRegionsAreas();
 
-        // dump($db_areas);  // TODO
-
-        foreach ($areas as $area) {
-            $area = $this->sanitizeArea($area);
+        foreach ($request_areas as $request_area) {
+            if(!in_array($request_area, $db_areas)) {
+                return false;
+            }
         }
-        //
+        return true;
     }
 
     /**
@@ -42,13 +42,37 @@ class OperatorAreaValidation implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message() : string
     {
         return 'Campo "Area" non valido';
     }
 
-    private function sanitizeArea(string $area)
+
+    private function sanitizeArea(string $area) : string
     {
         return trim(str_replace(['(Provincia)', ','],'', $area));
+    }
+
+    private function requestAreas(mixed $value) : array
+    {
+        $req_areas = explode(',', trim($value, ',.;'));
+
+        return array_map(function($item) {
+                return $this->sanitizeArea($item);
+            }, $req_areas);
+    }
+
+    private function dbProvincesRegionsAreas() : array
+    {
+        $db_areas = DB::table('areas')->select('prov_name', 'region_name')->groupBy('prov_name', 'region_name')->get()->toArray();
+        $db_provinces = array_map(function($item) {
+            return $item->prov_name;
+        }, $db_areas);
+
+        $db_regions = array_map(function($item) {
+            return $item->region_name;
+        }, $db_areas);
+
+        return array_unique(array_merge($db_provinces, $db_regions));
     }
 }
