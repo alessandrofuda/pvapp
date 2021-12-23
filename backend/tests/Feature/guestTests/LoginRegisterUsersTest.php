@@ -3,11 +3,8 @@
 namespace Tests\Feature\guestTests;
 
 use App\Models\Area;
-use App\Models\Lead;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use Tests\TestsUtility;
@@ -29,6 +26,7 @@ class LoginRegisterUsersTest extends TestCase
     public function test_any_guest_user_can_create_new_profile()
     {
         $this->assertDatabaseCount('users', 0);
+
         $response = $this->postJson('register', $this->userRequestAttributes);
 
         $response->assertStatus(201);
@@ -105,34 +103,57 @@ class LoginRegisterUsersTest extends TestCase
 
     public function test_areas_in_registration_form_must_be_correctly_validated()
     {
-        $this->assertDatabaseCount('users', 1);
-        $this->assertDatabaseCount('user_details', 1);
+        $this->assertDatabaseCount('users', 0);
+        $this->assertDatabaseCount('user_details', 0);
         Area::factory()->count(10)->create(['prov_name'=>'ProvinceTest', 'region_name'=>'RegionTest']);
+        $this->userRequestAttributes['areas'] = 'ProvinceTest';
 
-        $resp = $this->postJson('register', $this->userRequestAttributes); // TODO
+        $resp = $this->postJson('register', $this->userRequestAttributes);
 
         $resp->assertCreated();
-        $this->assertDatabaseCount('users', 2);
-        $this->assertDatabaseCount('user_details', 2);
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('user_details', 1);
     }
 
     public function test_wrong_area_in_registration_form_return_validation_error()
     {
-        $this->assertDatabaseCount('users', 1);
-        $this->assertDatabaseCount('user_details', 1);
-        Area::factory()->count(10)->create(['prov_name'=>'ProvinceTest', 'region_name'=>'RegionTest']);
-        $this->userRequestAttributes['areas'] = 'notExistentArea';
+        $this->assertDatabaseCount('users', 0);
+        $this->assertDatabaseCount('user_details', 0);
+        $this->userRequestAttributes['areas'] = 'notExistentArea1, notExistentArea2';
 
-        $resp = $this->postJson('register', $this->userRequestAttributes); // TODO
+        $resp = $this->postJson('register', $this->userRequestAttributes);
 
         $resp->assertStatus(422);
-        $this->assertDatabaseCount('users', 1);
-        $this->assertDatabaseCount('user_details', 1);
+        $this->assertDatabaseCount('users', 0);
+        $this->assertDatabaseCount('user_details', 0);
     }
 
     public function test_Tutta_Italia_area_in_registration_form_return_NO_Error_validation()
     {
-        // TODO
+        $this->assertDatabaseCount('users', 0);
+        $this->assertDatabaseCount('user_details', 0);
+        $this->userRequestAttributes['areas'] = 'Tutta Italia';
+
+        $resp = $this->postJson('register', $this->userRequestAttributes);
+
+        $resp->assertCreated();
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('user_details', 1);
+        $this->assertDatabaseHas('user_details', ['areas' => 'Tutta Italia']);
+    }
+
+    public function test_Estero_area_in_registration_form_return_NO_Error_validation()
+    {
+        $this->assertDatabaseCount('users', 0);
+        $this->assertDatabaseCount('user_details', 0);
+        $this->userRequestAttributes['areas'] = 'Estero';
+
+        $resp = $this->postJson('register', $this->userRequestAttributes);
+
+        $resp->assertCreated();
+        $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('user_details', 1);
+        $this->assertDatabaseHas('user_details', ['areas' => 'Estero']);
     }
 
 }

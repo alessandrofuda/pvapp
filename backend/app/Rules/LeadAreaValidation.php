@@ -26,12 +26,12 @@ class LeadAreaValidation implements Rule
      */
     public function passes($attribute, $value) : bool
     {
-        if($this->isTwoCommaSpacesSeparatedString($value)) { // verify the format: "Municipality, MI, Region"
+        if($this->isTwoCommaSpacesSeparatedString($this->sanitizeArea($value))) { // verify the format: "Municipality, MI, Region"
 
-            $areas = explode(',', $value);
-            $city = trim($areas[0]);
-            $province = trim($areas[1]);
-            $region = trim($areas[2]);
+            $areas = $this->sanitizeAreaAndConvertToArray($value);
+            $city = $areas[0];
+            $province = $areas[1];
+            $region = $areas[2];
 
             $db_areas = DB::table('areas')->get(['city', 'prov_abbr', 'region_name'])->toArray();
             $db_areas_chunks = array_chunk($db_areas, 1000);
@@ -54,14 +54,28 @@ class LeadAreaValidation implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message() : string
     {
-        return 'Campo "Comune di Installazione" non valido.';
+        return 'Campo "Luogo di Installazione" non valido.';
     }
 
+    public function sanitizeAreaAndConvertToArray(string $area) : array
+    {
+        $areas = explode(',', $this->sanitizeArea($area));
+        $areas = array_values(array_filter($areas)); // remove nulls & reindex (IMP!)
+
+        return array_map(function($item) {
+            return trim($item);
+        }, $areas);
+    }
+
+    private function sanitizeArea(string $area) : string
+    {
+        return trim($area, ',.;:"');
+    }
 
     private function isTwoCommaSpacesSeparatedString(string $string) : bool
     {
-        return preg_match('/^[a-z \.\-\p{L}\']+, [a-z]{2}, [a-z \.\-\p{L}\']+$/i', $string);
+        return preg_match('/^[a-z .\-\p{L}\']+, [a-z]{2}, [a-z .\-\p{L}\']+$/i', $string);
     }
 }

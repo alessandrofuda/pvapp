@@ -30,7 +30,7 @@ class saveLeadRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'surname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'string', 'max:255'],  // Rule::unique(User::class)->ignore($this->user ?? ($this->user()->id ?? null)),
-            'phone' => ['required', 'string', 'between:7,30', new PhoneNumber ],
+            'phone' => ['required', 'string', 'between:7,30', new PhoneNumber],
             'area' => ['required', 'string', 'between:10,255', new LeadAreaValidation],
             'description' => ['string', 'max:5000']
         ];

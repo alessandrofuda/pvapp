@@ -97,7 +97,6 @@ class AdminsTest extends TestCase
         $lead['area'] = 'Cinisello Balsamo, MI, Lombardia';
         $this->assertDatabaseCount('leads', 0);
         Area::factory()->create(['city'=>'Cinisello Balsamo', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
-        $this->assertDatabaseCount('areas', 1);
 
         $resp = $this->actingAs($this->admin)->postJson('api/lead', $lead);
 
@@ -122,7 +121,6 @@ class AdminsTest extends TestCase
         $lead['area'] = 'Cinisello Balsamo, MI, Lombardia';
         $this->assertDatabaseCount('leads', 0);
         Area::factory()->create(['city'=>'Cinisello Balsamo', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
-        $this->assertDatabaseCount('areas', 1);
 
         $resp = $this->actingAs($this->admin)->postJson('api/admin/leads', $lead);
 
@@ -140,7 +138,6 @@ class AdminsTest extends TestCase
         $lead_attributes['area'] = 'Ciny, MI, Lombardia';
         $lead_attributes['name'] = 'UpdatedName';
         Area::factory()->create(['city'=>'Ciny', 'prov_abbr'=>'MI', 'region_name'=>'Lombardia']);
-        $this->assertDatabaseCount('areas', 1);
 
         $resp = $this->actingAs($this->admin)->putJson('api/admin/leads/1', $lead_attributes);
 

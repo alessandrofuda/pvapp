@@ -24,6 +24,8 @@ class TestsUtility
 
     public function userRequestAttributes() : array
     {
+        $this->createAreas();
+
         return [
             'first_name' => 'Giovannino',
             'last_name' => 'Rossi',
@@ -33,6 +35,17 @@ class TestsUtility
             'password_confirmation' => 'password',
             'areas' => 'Lombardia, Roma (Provincia), Piemonte'
         ];
+    }
+
+    public function createAreas() : void
+    {
+        Area::factory()->create(['city' => 'a', 'prov_name' => 'Milano', 'region_name' => 'Lombardia']);
+        Area::factory()->create(['city' => 'b', 'prov_name' => 'Monza e Brianza', 'region_name' => 'Lombardia']);
+        Area::factory()->create(['city' => 'c', 'prov_name' => 'Vercelli', 'region_name' => 'Piemonte']);
+        Area::factory()->create(['city' => 'd', 'prov_name' => 'Vercelli', 'region_name' => 'Piemonte']); // test groupBy
+        Area::factory()->create(['city' => 'e', 'prov_name' => 'Roma', 'region_name' => 'Lazio']);
+        Area::factory()->create(['city' => '-', 'prov_name' => 'Estero', 'region_name' => 'Estero']);
+        Area::factory()->create(['city' => '-', 'prov_name' => 'Tutta Italia', 'region_name' => 'Tutta Italia']);
     }
 
     public function leadRequestAttributes() : array

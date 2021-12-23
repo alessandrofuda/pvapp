@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\saveLeadRequest;
 use App\Models\Lead;
+use App\Rules\LeadAreaValidation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -42,11 +43,12 @@ class LeadController extends Controller
         }
 
         $params = $request->all();
-        $areas = explode(',', $request->get('area'));
+        $areas = (new LeadAreaValidation)->sanitizeAreaAndConvertToArray($request->get('area'));
+
         $params['form'] = 'default lead form';
-        $params['municipality'] = trim($areas[0]);
-        $params['province'] = trim($areas[1]);
-        $params['region'] = trim($areas[2]);
+        $params['municipality'] = $areas[0];
+        $params['province'] = $areas[1];
+        $params['region'] = $areas[2];
         $params['price'] = Lead::PRICE['default'];
         $params['phone'] = $this->sanitizePhone($request->get('phone'));
         $params['email'] = trim($request->get('email'));
