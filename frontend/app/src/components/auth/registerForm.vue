@@ -1,6 +1,6 @@
 <template>
   <b-form @submit="register">
-    <b-form-group id="name-group" label-for="name">
+    <b-form-group id="name-group" label-for="name" class="mb-0">
       <b-icon-person-fill></b-icon-person-fill>
       <b-form-input
           id="name"
@@ -12,6 +12,18 @@
           autofocus
       ></b-form-input>
       <b-form-invalid-feedback id="name-live-feedback">This is a required field.</b-form-invalid-feedback>
+    </b-form-group>
+    <b-form-group id="surname-group" label-for="surname" class="pt-0">
+      <!--b-icon-person-fill></b-icon-person-fill-->
+      <b-form-input
+          id="surname"
+          v-model="$v.form.surname.$model"
+          :state="validateState('surname')"
+          type="text"
+          placeholder="Surname (or Company Reference)"
+          aria-describedby="surname-live-feedback"
+      ></b-form-input>
+      <b-form-invalid-feedback id="surname-live-feedback">This is a required field.</b-form-invalid-feedback>
     </b-form-group>
     <b-form-group id="email-group" label-for="email">
       <b-icon-envelope-fill></b-icon-envelope-fill>
@@ -49,6 +61,29 @@
       ></b-form-input>
       <b-form-invalid-feedback id="password-confirmation-live-feedback">Passwords must be identical.</b-form-invalid-feedback>
     </b-form-group>
+
+
+
+    <b-form-group id="area-group" label-for="area">
+      <b-icon-geo-fill></b-icon-geo-fill>
+      <b-form-input
+          id="area"
+          v-model="$v.form.area.$model"
+          :state="validateState('area')"
+          type="text"
+          placeholder="Select an Installation Area"
+          aria-describedby="area-live-feedback"
+          autofocus
+      ></b-form-input>
+      TODO: auto-complete & client-validation
+      <b-form-invalid-feedback id="area-live-feedback">Please select an Installation Area.</b-form-invalid-feedback>
+    </b-form-group>
+
+
+
+
+
+
     <b-button size="lg" class="w-100" type="submit" variant="primary">Register</b-button>
     <b-alert class="my-5 py-3" :show="alert.show" :variant="alert.variant"  dismissible>
       {{ alert.msg }}
@@ -68,6 +103,7 @@ export default {
     return {
       form: {
         name: null,
+        surname: null,
         email: null,
         password: null,
         password_confirmation: null,
@@ -88,6 +124,10 @@ export default {
           required,
           maxLength: maxLength(150),
         },
+        surname: {
+          required,
+          maxLength: maxLength(150),
+        },
         email: {
           required,
           email
@@ -99,7 +139,11 @@ export default {
         password_confirmation: {
           required,
           sameAsPassword: sameAs('password')
-        }
+        },
+        area: {
+          required,
+          maxLength: maxLength(255),
+        },
       }
     }
   },
