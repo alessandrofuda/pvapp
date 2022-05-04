@@ -30,3 +30,7 @@
 **Specific configs**: `.env` moved to root project (through AppServiceProvider setting)
 
 
+
+<br/><br/><br/><br/><br/><br/><br/>
+
+// TODO: fattura elettronica https://openapi.it/digital-trust/fatturazione-elettronica
