@@ -8,7 +8,9 @@ services:
         # restart: unless-stopped
         tty: true
         ports:
+            # opening for browser
             - "3000:80"
+            # opening for API call
             - "8081:8088"
         volumes:
             - ./:/var/www

@@ -59,12 +59,10 @@
       return {
         form: {
           email: {
-            required,
-            email
+            required, email
           },
           password: {
-            required,
-            minLength: minLength(this.form.pswMinLength)
+            required, minLength: minLength(this.form.pswMinLength)
           }
         }
       }

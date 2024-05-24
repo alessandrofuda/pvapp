@@ -22,7 +22,6 @@
     </b-row>
   </div>
 </template>
-
 <script>
 import LoginForm from '@/components/auth/loginForm'
 
@@ -37,7 +36,6 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
   .login-form {
     max-width: 450px;
