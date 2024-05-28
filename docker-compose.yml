@@ -21,7 +21,6 @@ services:
     #Node JS Service - Frontend
     frontend:
         hostname: pvapp_frontend
-        # image: node:16.13.0
         container_name: pvapp_frontend
         build:
             context: .

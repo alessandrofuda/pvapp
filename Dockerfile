@@ -1,6 +1,6 @@
-FROM php:8.0-fpm
+FROM php:8.3-fpm
 
-ENV NODE_VERSION=16
+# ENV NODE_VERSION=16
 
 # Copy composer.lock and composer.json
 COPY backend/composer.lock backend/composer.json /var/www/
