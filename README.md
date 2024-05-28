@@ -12,8 +12,9 @@
 - backend (Laravel) ---> http://localhost:8081
 - webserver (nginx) ---> reverse proxy, port mapping (NO `proxy_pass`!)
 - db (mysql) ---> mysql://localhost:3309   
-- supervisor (queues/jobs worker monitoring)
-- scheduler (crontab process)
+- supervisor (queues/jobs worker monitoring) [TODO]
+- scheduler (crontab process) [TODO]
+- AI RAG service container (cheshire chat) [TODO] 
 
 **Docker global/env. config**: `.env.global` (root) env variables injected into containers via Docker-compose.yml
 
