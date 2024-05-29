@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\adminTests;
 
 use App\Models\Area;
 use App\Models\Lead;
