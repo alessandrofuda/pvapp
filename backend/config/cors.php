@@ -31,7 +31,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('CLIENT_APP_URL')], // ['*'],  // ['http://localhost:8080'], //
+    'allowed_origins' => ['*', 'http://localhost:8080', 'http://localhost:8081'], // 'http://localhost:3000' [env('CLIENT_APP_URL')], ['http://localhost:8080'],
 
     'allowed_origins_patterns' => [],
 

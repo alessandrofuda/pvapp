@@ -40,7 +40,11 @@ export default {
     msg: String
   },
   created() {
-    window.axios.get('/api/test').then(r => console.log(r.data));
+    window.axios.get('http://localhost:8081/api/test')
+        .then( r => {
+          console.log(r)
+        })
+        .catch(e => console.error(e));
   },
 }
 </script>

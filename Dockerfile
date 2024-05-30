@@ -3,7 +3,7 @@ FROM php:8.3-fpm
 # ENV NODE_VERSION=16
 
 # Copy composer.lock and composer.json
-COPY backend/compos_er.l_ock.BACK backend/composer.json /var/www/
+COPY backend/composer.lock backend/composer.json /var/www/
 
 # Set working directory
 WORKDIR /var/www

@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/test', function() {
-//    return 'test api: cors OK!';
-//});
+Route::get('/test', function() {
+    return 'test api: cors OK!';
+});
 
 // guest routes
 Route::get('municipalities', [LeadController::class, 'municipalities']);
