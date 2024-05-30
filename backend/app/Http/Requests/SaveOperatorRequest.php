@@ -9,7 +9,7 @@ use App\Rules\PhoneNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class SaveUserRequest extends FormRequest
+class SaveOperatorRequest extends FormRequest
 {
     use PasswordValidationRules;
 
@@ -31,9 +31,10 @@ class SaveUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'between:7,30', new PhoneNumber ],
+            'name' => ['required', 'string', 'max:255'],
+            'surname' => ['required', 'string', 'max:255'],
+            'company' => ['nullable', 'string', 'max:255'],
+            // 'phone' => ['required', 'string', 'between:7,30', new PhoneNumber ],
             'email' => [
                 'required',
                 'string',
@@ -41,8 +42,8 @@ class SaveUserRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user ?? ($this->user()->id ?? null)),
             ],
+            'password' => array_merge(['sometimes'], $this->passwordRules()),
             'areas' => ['required', 'string', 'between:4,255', new OperatorAreaValidation],
-            'password' => array_merge(['sometimes'], $this->passwordRules())
         ];
     }
 }

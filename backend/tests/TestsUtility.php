@@ -5,7 +5,7 @@ namespace Tests;
 
 use App\Models\Area;
 use App\Models\User;
-use App\Models\UserDetail;
+use App\Models\OperatorDetail;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 

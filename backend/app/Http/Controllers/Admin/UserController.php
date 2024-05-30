@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Actions\Fortify\CreateNewUser;
+use App\Actions\Fortify\CreateNewOperator;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SaveUserRequest;
+use App\Http\Requests\SaveOperatorRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -23,13 +23,13 @@ class UserController extends Controller
         return response()->json(['users' => $users]);
     }
 
-    public function store(SaveUserRequest $request) : JsonResponse
+    public function store(SaveOperatorRequest $request) : JsonResponse
     {
         if(!Gate::any(['create-operator', 'create-admin'])) {
             abort(403);
         }
 
-        $user = (new CreateNewUser())->create($request->all());
+        $user = (new CreateNewOperator())->create($request->all());
         return response()->json(['user' => $user], 201);
     }
 
@@ -43,7 +43,7 @@ class UserController extends Controller
         return response()->json(['user' => $user]);
     }
 
-    public function update(SaveUserRequest $request, int $id) : JsonResponse
+    public function update(SaveOperatorRequest $request, int $id) : JsonResponse
     {
         if(!Gate::any(['update-operator', 'update-admin'])) {
             abort(403);

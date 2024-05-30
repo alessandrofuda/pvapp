@@ -6,7 +6,7 @@
           <b-card-header>
             <h3 class="text-center text-uppercase">
               <b-icon-box-arrow-in-right></b-icon-box-arrow-in-right>
-              <span class="ml-2">Iscriviti</span>
+              <span class="ml-2">Iscrizione Installatore</span>
             </h3>
           </b-card-header>
           <b-card-text>

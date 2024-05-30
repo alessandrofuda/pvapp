@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SaveUserRequest;
+use App\Http\Requests\SaveOperatorRequest;
 use App\Models\User;
-use App\Models\UserDetail;
+use App\Models\OperatorDetail;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class OperatorController extends Controller
         return response()->json(['user' => $user]);
     }
 
-    public function update(SaveUserRequest $request) : JsonResponse
+    public function update(SaveOperatorRequest $request) : JsonResponse
     {
         if(!Gate::allows('update-operator')) {
             abort(403);
@@ -30,7 +30,7 @@ class OperatorController extends Controller
 
         $userId = $request->user()->id;
         User::findOrFail($userId)->update($request->except(['id', 'role_id']));
-        UserDetail::where('user_id', $userId)->update($request->except(['name', 'email', 'password', 'password_confirmation']));
+        OperatorDetail::where('user_id', $userId)->update($request->except(['name', 'email', 'password', 'password_confirmation']));
 
         return response()->json(['updated' => true]);
     }

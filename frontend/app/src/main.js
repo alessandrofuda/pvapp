@@ -9,6 +9,9 @@ import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 // import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './assets/app.scss'
 
+/* css for vue-multiselect, imported globally. Js is imported locally, in page */
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+
 // Make BootstrapVue available throughout project
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)

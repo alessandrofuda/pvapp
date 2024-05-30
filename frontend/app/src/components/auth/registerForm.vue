@@ -58,7 +58,7 @@
           placeholder="Password"
           aria-describedby="password-live-feedback"
       ></b-form-input>
-      <b-form-invalid-feedback id="password-live-feedback">Campo obbligatorio. Minimo (min {{ form.pswMinLength }} caratteri).</b-form-invalid-feedback>
+      <b-form-invalid-feedback id="password-live-feedback">Campo obbligatorio. Minimo (min {{ pswMinLength }} caratteri).</b-form-invalid-feedback>
     </b-form-group>
     <b-form-group id="password-confirmation-group" label-for="password_confirmation">
       <b-icon-exclamation-triangle-fill></b-icon-exclamation-triangle-fill>
@@ -72,19 +72,36 @@
       ></b-form-input>
       <b-form-invalid-feedback id="password-confirmation-live-feedback">Le Passwords devono essere identiche.</b-form-invalid-feedback>
     </b-form-group>
-    <b-form-group id="area-group" label-for="area">
-      <b-icon-geo-fill></b-icon-geo-fill>
-      <b-form-input
-          id="area"
-          v-model="$v.form.area.$model"
-          :state="validateState('area')"
+    <b-form-group id="areas-group" label-for="areas">
+      <!--b-icon-geo-fill></b-icon-geo-fill-->
+
+
+      <div class="text-muted text-center my-3">Seleziona uno o più Aree da cui ricevere le richieste</div>
+
+      <multiselect
+          id="areas"
+          v-model="$v.form.areas.$model"
+          :options="options.areas_opts"
+          :multiple="true"
+          :taggable="true"
+          placeholder="Seleziona aree di Installazione (Province,Regioni o Italia)"
+          label="name"
+          track-by="name">
+      </multiselect>
+      <!--b-form-input
+          id="areas"
+          v-model="$v.form.areas.$model"
+          :state="validateState('areas')"
           type="text"
           placeholder="Seleziona le aree di installazione (Provincie,Regioni o Tutta Italia)"
-          aria-describedby="area-live-feedback"
+          aria-describedby="areas-live-feedback"
           autofocus
       ></b-form-input>
-      <!--TODO: auto-complete & client-validation-->
-      <b-form-invalid-feedback id="area-live-feedback">Seleziona un'area di installazione</b-form-invalid-feedback>
+      <b-form-invalid-feedback id="areas-live-feedback">Seleziona aree di installazione</b-form-invalid-feedback-->
+
+
+
+
     </b-form-group>
     <b-button size="lg" class="w-100 my-3" type="submit" variant="primary">Iscriviti</b-button>
     <b-alert class="my-5 py-3" :show="alert.show" :variant="alert.variant"  dismissible>
@@ -97,9 +114,11 @@
 import { validationMixin } from "vuelidate"
 import { required, minLength, maxLength, email, sameAs } from "vuelidate/lib/validators"
 import { mapActions } from "vuex"
+import Multiselect from "vue-multiselect"
 
 export default {
   name: 'RegisterForm',
+  components: { Multiselect },
   mixins: [validationMixin],
   data() {
     return {
@@ -110,7 +129,15 @@ export default {
         email: null,
         password: null,
         password_confirmation: null,
-        pswMinLength: 8
+        areas: null,
+      },
+      pswMinLength: 8,
+      options: {
+        areas_opts: [
+            {id: 1, name: 'alkjasdlkjdslkjsdlkasdjlksj'},
+            {id: 2, name: 'balkjdaskljads'},
+            {id: 3, name: 'ckjdfslkjdlkasjlkadsjklasdjklsdajkdasj'},
+        ]
       },
       alert: {
         show: false,
@@ -141,15 +168,15 @@ export default {
         },
         password: {
           required,
-          minLength: minLength(this.form.pswMinLength)
+          minLength: minLength(this.pswMinLength)
         },
         password_confirmation: {
           required,
           sameAsPassword: sameAs('password')
         },
-        area: {
+        areas: {
           required,
-          maxLength: maxLength(255),
+          // maxLength: maxLength(255),
         },
       }
     }
@@ -196,5 +223,8 @@ export default {
 <style lang="scss" scoped>
   .form-group {
     padding:10px 0;
+  }
+  #areas {
+    margin-left: 0;
   }
 </style>

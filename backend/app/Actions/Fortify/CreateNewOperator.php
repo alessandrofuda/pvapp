@@ -2,16 +2,16 @@
 
 namespace App\Actions\Fortify;
 
-use App\Http\Requests\SaveUserRequest;
+use App\Http\Requests\SaveOperatorRequest;
 use App\Models\User;
-use App\Models\UserDetail;
+use App\Models\OperatorDetail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
-class CreateNewUser implements CreatesNewUsers
+class CreateNewOperator implements CreatesNewUsers
 {
     use PasswordValidationRules;
 
@@ -25,7 +25,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        $rules = (new SaveUserRequest)->rules();
+        $rules = (new SaveOperatorRequest)->rules();
         Validator::make($input, $rules)->validate();
 
         DB::transaction(function() use ($input) {
@@ -36,7 +36,7 @@ class CreateNewUser implements CreatesNewUsers
                 'role_id' => User::ROLE['operator'],
             ]);
 
-            UserDetail::query()->create([
+            OperatorDetail::query()->create([
                 'first_name' => $input['first_name'],
                 'last_name' => $input['last_name'],
                 'user_id' => $this->user->id,

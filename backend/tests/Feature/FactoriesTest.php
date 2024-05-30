@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Models\UserDetail;
+use App\Models\OperatorDetail;
 use Database\Factories\LeadFactory;
 use Database\Factories\UserDetailFactory;
 use Database\Factories\UserFactory;
@@ -16,10 +16,10 @@ class FactoriesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_when_create_user_via_factory_user_details_have_been_created()
+    public function test_when_create_user_via_factory_operator_details_have_been_created()
     {
         $this->assertDatabaseCount('users', 0);
-        $this->assertDatabaseCount('user_details', 0);
+        $this->assertDatabaseCount('operator_details', 0);
 
         User::factory()
             ->count(5)
@@ -28,7 +28,7 @@ class FactoriesTest extends TestCase
             ->create();
 
         $this->assertDatabaseCount('users', 5);
-        $this->assertDatabaseCount('user_details', 5);
+        $this->assertDatabaseCount('operator_details', 5);
     }
 
     public function test_UserFactory_is_aligned_with_real_db()
@@ -49,7 +49,7 @@ class FactoriesTest extends TestCase
 
     public function test_userDetailFactory_is_aligned_with_real_db()
     {
-        $db_columns = Schema::getColumnListing('user_details');
+        $db_columns = Schema::getColumnListing('operator_details');
         $db_columns_filtered = array_filter($db_columns, function($item) {
             return ($item != 'id' && $item != 'created_at' && $item != 'updated_at');
         });
