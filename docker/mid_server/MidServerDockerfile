@@ -1,0 +1,47 @@
+# Mid Server Mock for remote files/reports fetch.
+FROM ubuntu:16.04
+
+# Set working directory
+# WORKDIR /var/www
+
+RUN apt-get update && apt-get install -y \
+    sudo \
+    nano \
+    netcat \
+    ssh \
+    iputils-ping
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir /var/run/sshd && \
+    chmod 0755 /var/run/sshd
+
+# Add user for laravel application
+# RUN groupadd -g 1000 www
+RUN useradd -p $(openssl passwd -1 password123) -u 1000 -ms /bin/bash -g sudo www
+
+# prepare for ssh connection from client to map id_rsa.pub
+RUN mkdir /home/www/.ssh/
+
+# Add www-data user to www group
+# RUN usermod -a -G www www-data
+
+# Copy existing application directory contents
+# COPY . /var/www
+
+# Copy existing application directory permissions
+# COPY --chown=www:www . /var/www
+
+# Change current user to www
+# USER www  ### FIXED !!!!!! no change user because the CMD below require root privileges
+
+# create directoru for SSH authorized keys
+# RUN mkdir ~/.ssh
+
+# Setup default command and/or parameters.
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D"]
+# "/usr/bin/sudo", ....   , "-o", "ListenAddress=0.0.0.0"
+# to verify: service ssh status
+# to start: service ssh start

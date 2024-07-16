@@ -1,0 +1,150 @@
+services:
+    #PHP Service
+    app:
+        container_name: pvapp_app
+        build:
+            context: .
+            dockerfile: ./docker/Dockerfile
+        image: php82-fpm
+        # restart: unless-stopped
+        tty: true
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+            # - ~/.ssh/dev/id_rsa:/home/www/.ssh/id_rsa
+            # - ~/.ssh/dev/known_hosts:/home/www/.ssh/known_hosts
+        environment: # IMP!: the variables overrides .env of application!!
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+            APP_ENV: ${APP_ENV} # local
+            CONTAINER_ROLE: app
+        networks:
+            - app-network
+
+    #Nginx Service
+    webserver:
+        image: nginx:1.10.3
+        container_name: pvapp_webserver
+        # restart: unless-stopped
+        tty: true
+        ports:
+            #  - "8089:80"
+            - "8080:80"
+        #  - "44385:443"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+        networks:
+            - app-network
+
+    #MySQL Service
+    db:
+        image: mysql:8.0.21
+        container_name: pvapp_db
+        # restart: unless-stopped
+        tty: true
+        ports:
+            - "3316:3306"
+        environment:
+            # docker create db and 'root' user with below info
+            # non-root user can be created directly into db (for ex. via web with adminer)
+            MYSQL_DATABASE: pvapp
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_USER: pvapp
+            MYSQL_PASSWORD: pvapp
+            SERVICE_NAME: mysql
+            SERVICE_TAGS: dev
+        volumes:
+            - dbdata:/var/lib/mysql/
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - app-network
+
+    #MySQL for TESTS
+#    testdb:
+#        image: mysql:8.0.21
+#        container_name: pvapp_testdb
+#        restart: unless-stopped
+#        # tty: true
+#        ports:
+#            - "3316:3306"
+#        environment:
+#            # docker create db and 'root' user with below info
+#            # non-root user can be created directly into db (for ex. via web with adminer)
+#            MYSQL_DATABASE: test_db_pvapp  # ${DB_DATABASE}
+#            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+#            MYSQL_USER: ${DB_USERNAME}
+#            MYSQL_PASSWORD: ${DB_PASSWORD}
+#            # SERVICE_NAME: mysql
+#            # SERVICE_TAGS: dev  # tests
+#        volumes:
+#            - dbdatatest:/var/lib/mysql/
+#            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+#        networks:
+#            - app-network
+
+    # scheduler - crontab
+#    scheduler:
+#        image: php82-fpm
+#        container_name: pvapp_scheduler
+#        depends_on:
+#            - app
+#        volumes:
+#            - .:/var/www
+#            - ~/.ssh/dev/id_rsa:/home/www/.ssh/id_rsa
+#            - ~/.ssh/dev/known_hosts:/home/www/.ssh/known_hosts
+#        environment:
+#            # APP_ENV: local
+#            CONTAINER_ROLE: scheduler
+#        networks:
+#            - app-network
+
+    # Queue worker monitor
+#    queue:
+#        image: php82-fpm
+#        container_name: pvapp_queue
+#        depends_on:
+#            - app
+#        volumes:
+#            - .:/var/www
+#        restart: unless-stopped
+#        # restart: always
+#        environment:
+#            # APP_ENV: local
+#            CONTAINER_ROLE: queue
+#        networks:
+#            - app-network
+
+    # mock external mid-server to connect to import remote files
+#    midserver:
+#        hostname: mid_server
+#        container_name: pvapp_midserver
+#        build:
+#            context: .
+#            dockerfile: ./docker/mid_server/MidServerDockerfile
+#        image: mid_server_image
+#        # restart: unless-stopped
+#        tty: true
+#        ports:
+#            - "2222:22"
+#        working_dir: /var/www
+#        volumes:
+#            - ./docker/mid_server/:/var/www
+#            - ~/.ssh/dev/id_rsa.pub:/home/www/.ssh/authorized_keys
+#        networks:
+#            - app-network
+
+#Docker Networks
+networks:
+    app-network:
+        driver: bridge
+
+#Volumes
+volumes:
+    dbdata:
+        driver: local
+#    dbdatatest:
+#        driver: local
+
+
