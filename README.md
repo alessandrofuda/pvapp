@@ -5,5 +5,11 @@
 `npm run dev`
 (PROD: `npm run build`)
 
-### credentials
-admin pswd: `secret123`
+### dev credentials per role
+--> see users seeder
+
+### roles
+- admin
+- user
+- operator
+
