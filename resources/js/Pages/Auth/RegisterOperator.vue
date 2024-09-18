@@ -9,12 +9,14 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 const form = useForm({
     name: '',
     email: '',
+    phone: '',
+    areas: '',
     password: '',
     password_confirmation: '',
 });
 
 const submit = () => {
-    form.post(route('register'), {
+    form.post(route('operator_register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
@@ -22,8 +24,8 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
-
+        <Head title="Register Operator" />
+        <div class="">Register Operator</div>
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="name" value="Name" />
@@ -50,6 +52,32 @@ const submit = () => {
                     autocomplete="username"
                 />
                 <InputError class="mt-2" :message="form.errors.email" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="phone" value="Phone" />
+                <TextInput
+                    id="phone"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.phone"
+                    required
+                    autocomplete="phone"
+                />
+                <InputError class="mt-2" :message="form.errors.phone" />
+            </div>
+
+            <div class="mt-4">
+                <InputLabel for="areas" value="Areas" />
+                <TextInput
+                    id="areas"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.areas"
+                    required
+                    autocomplete="areas"
+                />
+                <InputError class="mt-2" :message="form.errors.areas" />
             </div>
 
             <div class="mt-4">

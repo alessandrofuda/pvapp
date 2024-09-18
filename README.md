@@ -8,7 +8,7 @@
 ### dev credentials per role
 --> see users seeder
 
-### roles
+### roles (spatie pkg)
 - admin
 - user
 - operator
