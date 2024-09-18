@@ -6,11 +6,13 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+defineProps({ areas: Object })
+
 const form = useForm({
     name: '',
     email: '',
     phone: '',
-    areas: '',
+    areas: null,
     password: '',
     password_confirmation: '',
 });
@@ -67,18 +69,34 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.phone" />
             </div>
 
+
+
+// todo converto to multiselect, searchable // IN BE: grouping by province/regions...
             <div class="mt-4">
                 <InputLabel for="areas" value="Areas" />
-                <TextInput
+                <!--TextInput
                     id="areas"
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.areas"
                     required
                     autocomplete="areas"
-                />
+                /-->
+                <select
+                    id="areas"
+                    v-model="form.areas"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                >
+                    <option disabled value="">Please select one or more Areas</option>
+                    <option v-for="area in areas" :key="area.province_id" :value="area.province_name">
+                        {{ area.province_name }}
+                    </option>
+                </select>
                 <InputError class="mt-2" :message="form.errors.areas" />
             </div>
+
+
+
 
             <div class="mt-4">
                 <InputLabel for="password" value="Password" />

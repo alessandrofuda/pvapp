@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
@@ -20,7 +21,8 @@ class RegisteredOperatorController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Auth/RegisterOperator');
+        $areas = DB::table('areas')->select(['region_id', 'region_name', 'province_id', 'province_name'])->get();
+        return Inertia::render('Auth/RegisterOperator', ['areas' => $areas]);
     }
 
 
