@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
 
 
-class StoreOperatorRequest extends FormRequest
+class SaveOperatorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,7 +29,7 @@ class StoreOperatorRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'phone' => 'min_digits:7|max_digits:15|unique:'.Operator::class,
-            'areas' => 'required|string',
+            'areas' => 'required|array',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }
