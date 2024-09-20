@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveOperatorRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -57,6 +59,7 @@ class RegisteredOperatorController extends Controller
      * Handle an incoming registration request.
      *
      * @throws \Illuminate\Validation\ValidationException
+     * @throws Exception
      */
     public function SaveOperator(SaveOperatorRequest $request): RedirectResponse
     {
@@ -67,16 +70,40 @@ class RegisteredOperatorController extends Controller
         ]);
 
         $user->assignRole('operator');
-
-        $user->operator()->create([
-            'phone' => $request->phone,
-            'areas' => $request->areas
-        ]);
+        $user->operator()->create(['phone' => $request->phone]);
+        $this->assignOperatorAreas($request->areas, $user);
 
         event(new Registered($user));
 
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
+    }
+
+    private function getIdsByAreaType(array $areas, string $type) : array
+    {
+        $ids = array_map(function($area) use ($type) {
+            return ($area['type'] === $type) ? $area['id'] : null;
+        }, $areas);
+
+        return array_values(array_filter($ids)); // remove nulls and reindex
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function assignOperatorAreas(array $areas, User $user) : void
+    {
+        try{
+            $regions_ids = $this->getIdsByAreaType($areas, 'regione');
+            $provinces_ids = $this->getIdsByAreaType($areas, 'provincia');
+            $user->operator->regions()->sync($regions_ids);
+            $user->operator->provinces()->sync($provinces_ids);
+
+        }catch(Exception $e) {
+            $err = 'Error in '.__METHOD__.': '.$e->getMessage();
+            Log::error($err);
+            throw new Exception($err);
+        }
     }
 }

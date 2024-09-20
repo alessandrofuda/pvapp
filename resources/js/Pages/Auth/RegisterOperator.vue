@@ -74,6 +74,7 @@ function nameWithType({name, type}) {
             </div>
             <div class="mt-4 text-center my-4 py-4">
                 <InputLabel  class="mx-3 my-6 px-4 text-base" for="areas" value="Seleziona una o più Aree Geografiche da cui ricevere le richieste di Preventivo" />
+                <div class="text-sm/relaxed text-gray-400">Cerca Provincia - Regione - Tutta Italia - Estero</div>
                 <vue-multiselect
                     v-model="form.areas"
                     :options="areas_opts"
@@ -83,7 +84,6 @@ function nameWithType({name, type}) {
                     track-by="name"
                     :custom-label="nameWithType">
                 </vue-multiselect>
-                <div class="text-sm/relaxed text-gray-400">Cerca per Provincia - Regione - 'Tutta Italia' o Estero</div>
                 <InputError class="mt-2" :message="form.errors.areas" />
             </div>
             <div class="mt-4">
