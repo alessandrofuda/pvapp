@@ -4,5 +4,9 @@
     "Name": "Nome",
     "Phone": "Telefono",
     "Password Confirmation": "Conferma Password",
-    "Sign Up": "Iscriviti"
+    "Sign Up": "Iscriviti",
+    "Remember me": "Ricordami",
+    "Forgot your password?": "Hai dimenticato la password?",
+    "Operators Sign Up": "Iscrizione Installatori",
+    "Ask for a quote": "Richiedi Preventivo"
 }

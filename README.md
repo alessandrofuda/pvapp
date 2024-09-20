@@ -13,3 +13,7 @@
 - user
 - operator
 
+### localization lang on Vue FE
+using `useTrans()` function on vue.js
+(pick-up translations from `lang/it.json` BE and pass to vue via `HandleInertiaRequests` middleware
+

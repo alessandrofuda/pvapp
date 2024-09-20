@@ -3,11 +3,14 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuotesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [HomepageController::class, 'homepage']);
+
+Route::get('quote-form', [QuotesController::class, 'quoteForm'])->name('quote_form');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
