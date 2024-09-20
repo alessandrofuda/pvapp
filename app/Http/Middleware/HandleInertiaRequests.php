@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\File;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -29,12 +31,18 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $file = lang_path( App::currentLocale() . ".json" );  // custom..
+
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
                 'roles' => $request->user()?->getRoleNames()
             ],
+            'locale' => App::currentLocale(), // custom..
+            'locales' => config( 'app.available_locales' ),   // custom..
+            'translations' => File::exists( $file ) ? File::json( $file ) : []   // custom..
         ];
+
     }
 }

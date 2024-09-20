@@ -84,6 +84,23 @@ return [
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
 
+
+
+    /*   CUSTOM ALE 20/09/2024
+    |--------------------------------------------------------------------------
+    | Application Available Locale Configuration
+    |--------------------------------------------------------------------------
+    |
+    | The application locale determines the available locales that will be used
+    | by the translation service provider. You are free to set this array
+    | to any of the locales which will be supported by the application.
+    |
+    */
+
+    'available_locales' => [ 'en', 'it' ],
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Encryption Key

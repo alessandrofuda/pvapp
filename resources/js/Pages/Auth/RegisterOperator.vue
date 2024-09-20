@@ -6,6 +6,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import VueMultiselect from 'vue-multiselect'
+import { useTrans } from '@/composables/trans';
 
 defineProps({ areas_opts: Object })
 
@@ -36,7 +37,7 @@ function nameWithType({name, type}) {
         <div class="text-lg text-center my-3">Iscriviti al Servizio Installatori</div>
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Nome" />
+                <InputLabel for="name" :value="useTrans('Name')" />
                 <TextInput
                     id="name"
                     type="text"
@@ -61,7 +62,7 @@ function nameWithType({name, type}) {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
             <div class="mt-4">
-                <InputLabel for="phone" value="Telefono" />
+                <InputLabel for="phone" :value="useTrans('Phone')" />
                 <TextInput
                     id="phone"
                     type="text"
@@ -100,7 +101,7 @@ function nameWithType({name, type}) {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Ridigita Password" />
+                <InputLabel for="password_confirmation" :value="useTrans('Password Confirmation')" />
                 <TextInput
                     id="password_confirmation"
                     type="password"
@@ -117,11 +118,11 @@ function nameWithType({name, type}) {
                     :href="route('login')"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                    Già registrato?
+                    {{ useTrans('Already registered?') }}
                 </Link>
 
                 <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Iscriviti
+                    {{ useTrans('Sign Up') }}
                 </PrimaryButton>
             </div>
         </form>
