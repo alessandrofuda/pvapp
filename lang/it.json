@@ -2,11 +2,13 @@
     "Register": "Registrati",
     "Already registered?": "Già registrato?",
     "Name": "Nome",
+    "Last Name": "Cognome",
     "Phone": "Telefono",
     "Password Confirmation": "Conferma Password",
     "Sign Up": "Iscriviti",
     "Remember me": "Ricordami",
     "Forgot your password?": "Hai dimenticato la password?",
     "Operators Sign Up": "Iscrizione Installatori",
-    "Ask for a quote": "Richiedi Preventivo"
+    "Ask for a quote": "Richiedi Preventivo",
+    "Not mandatory": "Opzionale"
 }

@@ -10,7 +10,7 @@ use Inertia\Inertia;
 
 Route::get('/', [HomepageController::class, 'homepage']);
 
-Route::get('quote-form', [QuotesController::class, 'quoteForm'])->name('quote_form');
+Route::get('quotes-form', [QuotesController::class, 'quoteForm'])->name('quotes_form');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {

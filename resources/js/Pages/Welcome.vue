@@ -43,7 +43,7 @@ defineProps({
                             <Link v-if="canRegister" :href="route('operator_register')" class="nav-link-bordered">
                                 {{ useTrans('Operators Sign Up') }}
                             </Link>
-                            <Link :href="route('quote_form')" class="nav-link-bordered">
+                            <Link :href="route('quotes_form')" class="nav-link-bordered">
                                 {{ useTrans('Ask for a quote') }}
                             </Link>
                         </template>
