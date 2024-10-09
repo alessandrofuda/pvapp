@@ -11,6 +11,7 @@ use Inertia\Inertia;
 Route::get('/', [HomepageController::class, 'homepage']);
 
 Route::get('quotes-form', [QuotesController::class, 'quoteForm'])->name('quotes_form');
+Route::post('save-lead', [QuotesController::class, 'saveLead'])->name('save_lead');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
