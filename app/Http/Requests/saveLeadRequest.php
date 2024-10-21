@@ -23,11 +23,11 @@ class saveLeadRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'lastname' => 'string',
+            'lastname' => 'nullable|string',
             'email' => 'required|email',
             'phone' => 'required|string',
             'town' => 'required|array',
-            'description' => 'string',
+            'description' => 'nullable|string',
         ];
     }
 }

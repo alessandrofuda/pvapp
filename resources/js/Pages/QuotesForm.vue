@@ -9,6 +9,8 @@ import InputError from "@/Components/InputError.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextArea from "@/Components/TextArea.vue";
+import AlertComponent from "@/Components/AlertComponent.vue";
+import {ref, onMounted} from "vue";
 
 
 defineProps({ towns_opts: Object })
@@ -21,13 +23,39 @@ const form = useForm({
     town: null,
     description: null
 });
+const alert = ref({
+    show: false,  // bool
+    variant: null, // success, error, warning // todo
+    message: null
+})
+
+let testMessage = ref('default TestMessage')
+
+onMounted(() => {
+    console.log('mounted component!')
+})
+
 
 const submit = () => {
-    form.post(route('save_lead'), {
-        onFinish: (resp) => {
-            console.log(resp)
-            form.reset() // todo not works
+    form.post(route('save_lead'), {  // <-- inertia.js
+
+        preserveScroll: true,
+        onSuccess: (resp) => {
+            console.log('dlkjdlkjjsdajklsdjklsdjklsdajlkda')
+            console.log(form)
+            alert.message = 'La tua richiesta è stata inviata correttamente. Ti ricontatteremo per ulteriori dettagli.'
+            testMessage = 'AAAAAAAAAAAAAAA'
+            console.log(alert.message)
+            // alert('success')
         },
+        onError: () => console.log('error'),
+        onFinish: () => console.log('finish') // form.reset(),
+
+
+        // onFinish: (resp) => {
+        //     console.log(resp)
+        //     // form.reset() // todo not works
+        // },
     });
 };
 
@@ -40,6 +68,15 @@ function townWithProvAndReg({town, prov, region}) {
     <guestLayout>
         <Head title="Preventivi" />
         <div class="text-lg text-center my-3">{{useTrans('Ask for a quote')}}</div>
+
+
+<!--        AAAA{{ alert.message }}BBBB-->
+        CCCCC{{testMessage}}DDDDDDDDD
+       <AlertComponent variant="success" :message="alert.message"/>
+
+
+
+
         <form @submit.prevent="submit">
             <div class="my-5">
                 <!--InputLabel for="name" :value="useTrans('Name')" /-->
@@ -72,11 +109,11 @@ function townWithProvAndReg({town, prov, region}) {
                 <!--InputLabel for="email" value="Email" /-->
                 <TextInput
                     id="email"
-                    type="email"
+                    type="text"
                     class="mt-1 block w-full"
                     v-model="form.email"
                     required
-                    autocomplete="username"
+                    autocomplete="name"
                     placeholder="E-mail"
                 />
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -114,7 +151,6 @@ function townWithProvAndReg({town, prov, region}) {
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.description"
-                    required
                     autocomplete=""
                     placeholder="Scrivi eventuali dettagli. Non inserire qui dati sensibili: Cognome, Telefono, Email, indirizzi, ecc.."
                     rows="5"
