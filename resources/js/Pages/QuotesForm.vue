@@ -23,13 +23,8 @@ const form = useForm({
     town: null,
     description: null
 });
-const alert = ref({
-    show: false,  // bool
-    variant: null, // success, error, warning // todo
-    message: null
-})
 
-let testMessage = ref('default TestMessage')
+let successMessage = ref('')
 
 onMounted(() => {
     console.log('mounted component!')
@@ -41,12 +36,7 @@ const submit = () => {
 
         preserveScroll: true,
         onSuccess: (resp) => {
-            console.log('dlkjdlkjjsdajklsdjklsdjklsdajlkda')
-            console.log(form)
-            alert.message = 'La tua richiesta è stata inviata correttamente. Ti ricontatteremo per ulteriori dettagli.'
-            testMessage = 'AAAAAAAAAAAAAAA'
-            console.log(alert.message)
-            // alert('success')
+            successMessage = 'La tua richiesta è stata inviata correttamente. Ti ricontatteremo per ulteriori dettagli.'
         },
         onError: () => console.log('error'),
         onFinish: () => console.log('finish') // form.reset(),
@@ -70,9 +60,8 @@ function townWithProvAndReg({town, prov, region}) {
         <div class="text-lg text-center my-3">{{useTrans('Ask for a quote')}}</div>
 
 
-<!--        AAAA{{ alert.message }}BBBB-->
-        CCCCC{{testMessage}}DDDDDDDDD
-       <AlertComponent variant="success" :message="alert.message"/>
+
+       <AlertComponent variant="success" :message="successMessage"/>
 
 
 
