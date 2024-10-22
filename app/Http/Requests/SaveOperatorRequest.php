@@ -28,9 +28,26 @@ class SaveOperatorRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'phone' => 'min_digits:7|max_digits:15|unique:'.Operator::class,
+            'phone' => 'required|min_digits:7|max_digits:15|unique:'.Operator::class,
             'areas' => 'required|array',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ];
+    }
+
+    public function messages() : array
+    {
+        return [
+            'name.required' => 'Inserisci un Nome di riferimento',
+            'email.required' => 'Inserisci la tua mail',
+            'email.email' => 'E-mail non valida',
+            'email.unique' => 'La mail inserita è già presente nei nostri sistemi',
+            'phone.required' => 'Inserisci il numero di telefono',
+            'phone.min_digits' => 'Il numero di telefono non valido',
+            'phone.max_digits' => 'Il numero di telefono non valido',
+            'phone.unique' => 'Il telefono inserito è già registrato nei nostri sistemi',
+            'areas.required' => 'Cerca e seleziona una o più aree geografiche',
+            'password.required' => 'Inserisci una password',
+            'password.confirmed' => 'Le due passwords digitate non coincidono'
         ];
     }
 }

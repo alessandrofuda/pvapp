@@ -30,4 +30,15 @@ class saveLeadRequest extends FormRequest
             'description' => 'nullable|string',
         ];
     }
+
+    public function messages() : array
+    {
+        return [
+            'name.required' => 'Inserisci un nome di riferimento',
+            'email.required' => 'Inserisci una mail valida',
+            'email.email' => 'Indirizzo e-mail non valido',
+            'phone.required' => 'Inserisci il numero di telefono',
+            'town.required' => 'Seleziona il Comune di Installazione'
+        ];
+    }
 }

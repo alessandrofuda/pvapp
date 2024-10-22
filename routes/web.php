@@ -2,8 +2,12 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\LeadsController;
+use App\Http\Controllers\OperatorsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuotesController;
+use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,6 +21,15 @@ Route::post('save-lead', [QuotesController::class, 'saveLead'])->name('save_lead
 Route::middleware(['auth', 'verified'])->group(function () {
     // dashboard
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+    // operators
+    Route::get('/operators', [OperatorsController::class, 'operators'])->name('operators');
+    // leads
+    Route::get('/leads', [LeadsController::class, 'leads'])->name('leads');
+    // users
+    Route::get('/users', [UsersController::class, 'users'])->name('users');
+    // transactions
+    Route::get('/transactions', [TransactionsController::class, 'transactions'])->name('transactions');
+
 
     // user profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -2,8 +2,8 @@
     import {computed} from "vue";
 
     const props = defineProps({
-        variant: {
-            type: String,
+        color: {
+            type: String,  // ex green, red,..
             required: true,
         },
         message: {
@@ -11,11 +11,11 @@
             required: true,
         }
     });
-    const alertVariantClass = computed(() => { return props.variant === 'success' ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'  } )
+
 </script>
 
 <template>
-    <div v-if="message" :class="`mt-5 flex items-center justify-between p-5 leading-normal ${alertVariantClass} rounded-lg`" role="alert">
+    <div v-if="message" :class="`mt-5 flex items-center justify-between p-5 leading-normal text-${color}-600 bg-${color}-100 rounded-lg`" role="alert">
         <p>{{message}}</p>
 
         <svg onclick="return this.parentNode.remove();" class="inline w-4 h-4 fill-current ml-2 hover:opacity-80 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

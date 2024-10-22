@@ -43,7 +43,6 @@ function nameWithType({name, type}) {
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.name"
-                    required
                     autofocus
                     autocomplete="name"
                 />
@@ -53,10 +52,9 @@ function nameWithType({name, type}) {
                 <InputLabel for="email" value="Email" />
                 <TextInput
                     id="email"
-                    type="email"
+                    type="text"
                     class="mt-1 block w-full"
                     v-model="form.email"
-                    required
                     autocomplete="username"
                 />
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -68,7 +66,6 @@ function nameWithType({name, type}) {
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.phone"
-                    required
                     autocomplete="phone"
                 />
                 <InputError class="mt-2" :message="form.errors.phone" />
@@ -94,7 +91,6 @@ function nameWithType({name, type}) {
                     type="password"
                     class="mt-1 block w-full"
                     v-model="form.password"
-                    required
                     autocomplete="new-password"
                 />
                 <InputError class="mt-2" :message="form.errors.password" />
@@ -107,7 +103,6 @@ function nameWithType({name, type}) {
                     type="password"
                     class="mt-1 block w-full"
                     v-model="form.password_confirmation"
-                    required
                     autocomplete="new-password"
                 />
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />

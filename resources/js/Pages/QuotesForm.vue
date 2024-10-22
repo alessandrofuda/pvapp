@@ -35,17 +35,12 @@ const submit = () => {
     form.post(route('save_lead'), {  // <-- inertia.js
 
         preserveScroll: true,
-        onSuccess: (resp) => {
+        onSuccess: () => {
             successMessage = 'La tua richiesta è stata inviata correttamente. Ti ricontatteremo per ulteriori dettagli.'
+            form.reset()
         },
-        onError: () => console.log('error'),
-        onFinish: () => console.log('finish') // form.reset(),
-
-
-        // onFinish: (resp) => {
-        //     console.log(resp)
-        //     // form.reset() // todo not works
-        // },
+        // onError: () => console.log('error'),
+        // onFinish: () => console.log('finish')
     });
 };
 
@@ -61,7 +56,7 @@ function townWithProvAndReg({town, prov, region}) {
 
 
 
-       <AlertComponent variant="success" :message="successMessage"/>
+       <AlertComponent color="green" :message="successMessage"/>
 
 
 
@@ -74,7 +69,6 @@ function townWithProvAndReg({town, prov, region}) {
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.name"
-                    required
                     autofocus
                     autocomplete="name"
                     placeholder="Nome (o eventuale Ragione Sociale)"
@@ -101,7 +95,6 @@ function townWithProvAndReg({town, prov, region}) {
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.email"
-                    required
                     autocomplete="name"
                     placeholder="E-mail"
                 />
@@ -114,7 +107,6 @@ function townWithProvAndReg({town, prov, region}) {
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.phone"
-                    required
                     autocomplete="phone"
                     placeholder="Telefono ('335 1234567', '+39 06 1234567')"
                 />
