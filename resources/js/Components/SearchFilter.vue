@@ -1,19 +1,20 @@
 <script setup>
-import Dropdown from "@/Components/Dropdown.vue";
+    import Dropdown from "@/Components/Dropdown.vue";
 
-export default {
-    components: {
-        Dropdown,
-    },
-    props: {
-        modelValue: String,
+    const props = defineProps({
+        modelValue: {
+            type: String
+        },
         maxWidth: {
             type: Number,
             default: 300,
-        },
-    },
-    emits: ['update:modelValue', 'reset'],
-}
+        }
+    });
+
+    // Define the emits
+    defineEmits(['update:modelValue', 'reset']);
+
+
 </script>
 <template>
     <div class="flex items-center">

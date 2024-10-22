@@ -1,6 +1,4 @@
 <script setup>
-    import {computed} from "vue";
-
     const props = defineProps({
         color: {
             type: String,  // ex green, red,..
@@ -11,7 +9,6 @@
             required: true,
         }
     });
-
 </script>
 
 <template>
