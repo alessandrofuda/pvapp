@@ -26,6 +26,6 @@ class OperatorsController extends Controller
             Log::error($err);
             throw new Exception($err);
         }
-        return Inertia::render('Operators/Index', compact('operators'));
+        return Inertia::render('Operators/Index', ['operators' => $operators, 'filters' => '..todo..']);
     }
 }
