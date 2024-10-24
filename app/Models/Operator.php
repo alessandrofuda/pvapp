@@ -20,11 +20,11 @@ class Operator extends Model
 
     public function regions() : BelongsToMany
     {
-        return $this->belongsToMany(Area::class, 'operator_areas', 'operator_id', 'region_id')->withTimestamps();;
+        return $this->belongsToMany(Area::class, 'operator_areas', 'operator_id', 'region_id')->withTimestamps();
     }
 
     public function provinces() : BelongsToMany
     {
-        return $this->belongsToMany(Area::class, 'operator_areas', 'operator_id', 'province_id')->withTimestamps();;
+        return $this->belongsToMany(Area::class, 'operator_areas', 'operator_id', 'province_id')->withTimestamps();
     }
 }

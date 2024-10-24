@@ -19,4 +19,9 @@ class Area extends Model
     {
         return $this->belongsToMany(Operator::class, 'operator_areas', 'province_id', 'operator_id'); // to check
     }
+
+    public function region()
+    {
+        // return $this->hasMany()
+    }
 }

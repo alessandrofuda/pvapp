@@ -26,21 +26,23 @@ class OperatorsController extends Controller
     {
         try{
             $operators = User::role('operator')
-                ->with('operator')
+                ->with('operator.regions.pivot.region')
                 ->when($this->search, function($query){
                     $query->where(function($query){
                         $columns = ['name', 'email'];
                         foreach ($columns as $column) {
                             $query->orWhere('users.'.$column, 'LIKE', '%'.$this->search.'%');
                         }
-                        $query->orWhere('operators.phone', 'LIKE', '%'.$this->search.'%');
+                    });
+                    $query->orWhereHas('operator', function($query){
+                        $query->where('phone', 'LIKE', '%'.$this->search.'%');
                     });
                 })
-                // ->get();
                 ->paginate(10)
                 ->withQueryString();
 
-            dd($operators);
+            dump($operators[0]->operator->regions[0]->pivot);
+            dd($operators[0]->operator->regions[1]->pivot);
 
         }catch(Exception $e){
             $err = 'Error in '.__METHOD__.': '.$e->getMessage();
