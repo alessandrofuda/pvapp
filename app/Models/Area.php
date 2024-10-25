@@ -10,18 +10,21 @@ class Area extends Model
 {
     use HasFactory;
 
-    public function region_operators() : BelongsToMany
+//    public function region_operators() : BelongsToMany
+//    {
+//        return $this->belongsToMany(Operator::class, 'operator_areas', 'region_id', 'operator_id'); // to check
+//    }
+//
+//    public function province_operators() : BelongsToMany
+//    {
+//        return $this->belongsToMany(Operator::class, 'operator_areas', 'province_id', 'operator_id'); // to check
+//    }
+
+    public function operators() : BelongsToMany
     {
-        return $this->belongsToMany(Operator::class, 'operator_areas', 'region_id', 'operator_id'); // to check
+        return $this->belongsToMany(Operator::class, 'operator_areas', 'region_id', 'operator_id');
+            // ->withPivot('province_id');  // include even province_id from pivot table
     }
 
-    public function province_operators() : BelongsToMany
-    {
-        return $this->belongsToMany(Operator::class, 'operator_areas', 'province_id', 'operator_id'); // to check
-    }
 
-    public function region()
-    {
-        // return $this->hasMany()
-    }
 }

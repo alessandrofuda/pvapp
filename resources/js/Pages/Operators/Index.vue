@@ -18,13 +18,13 @@ const reset = () => {
 }
 
 
-const fetchOperatorAreas = (regionsArray = null, provincesArray = null) => {
+const concatOperatorAreas = (region_names = null, province_names = null) => {
     let areasArr = []
-    if(regionsArray) {
-        areasArr.push(regionsArray.map(region => region.region_name).join(', '))
+    if(region_names) {
+        areasArr.push(region_names)
     }
-    if(provincesArray) {
-        areasArr.push(provincesArray.map(prov => prov.province_name).join(', '))
+    if(province_names) {
+        areasArr.push(province_names)
     }
 
     return areasArr.join(', ')
@@ -83,12 +83,12 @@ watch(
                                     </td>
                                     <td class="border-t">
                                         <Link class="flex items-center px-6 py-4" :href="`/organizations/${operator.id}/edit`" tabindex="-1">
-                                            {{ operator.operator?.phone }}
+                                            {{ operator.phone }}
                                         </Link>
                                     </td>
                                     <td class="border-t">
                                         <Link class="flex items-center px-6 py-4" :href="`/organizations/${operator.id}/edit`" tabindex="-1">
-                                            {{ fetchOperatorAreas(operator.operator?.regions, operator.operator?.provinces) }}
+                                            {{ concatOperatorAreas(operator.region_names, operator.province_names) }}
                                         </Link>
                                     </td>
                                     <td class="w-px border-t">

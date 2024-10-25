@@ -11,8 +11,8 @@ class OperatorArea extends Model
     use HasFactory;
     protected $table = 'operator_areas';
 
-    public function region() : BelongsTo
-    {
-        return $this->belongsTo(Area::class, 'region_id', 'region_id');
-    }
+//    public function region_name() : BelongsTo
+//    {
+//        return $this->belongsTo(Area::class, 'region_id', 'region_id');
+//    }
 }
