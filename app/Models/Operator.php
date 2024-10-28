@@ -19,10 +19,13 @@ class Operator extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function areas() : BelongsToMany
+    public function regions() : BelongsToMany
     {
-        return $this->belongsToMany(Area::class, 'operator_areas', 'operator_id', 'region_id')
-            // ->withPivot('province_id');  // include even province_id from pivot table
-            ->withTimestamps();
+        return $this->belongsToMany(Area::class, 'operator_areas', 'operator_id', 'region_id')->withTimestamps();
+    }
+
+    public function provinces() : BelongsToMany
+    {
+        return $this->belongsToMany(Area::class, 'operator_areas', 'operator_id', 'province_id')->withTimestamps();
     }
 }

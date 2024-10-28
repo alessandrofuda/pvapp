@@ -1,15 +1,14 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LeadsController;
+use App\Http\Controllers\OperatorDashboardController;
 use App\Http\Controllers\OperatorsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuotesController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UsersController;
-use App\Http\Controllers\Auth\RegisteredOperatorController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -20,18 +19,30 @@ Route::post('save-lead', [QuotesController::class, 'saveLead'])->name('save_lead
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    // dashboard
-    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
-    // operators
-    Route::get('/operators', [OperatorsController::class, 'operators'])->name('operators');
-    Route::get('/operators/create', [RegisteredOperatorController::class, 'createByAdmin'])->name('operator_create_by_admin');
-    Route::post('/operators/store', [RegisteredOperatorController::class, 'storeByAdmin'])->name('operator_store_by_admin');
-    // leads
-    Route::get('/leads', [LeadsController::class, 'leads'])->name('leads');
-    // users
-    Route::get('/users', [UsersController::class, 'users'])->name('users');
-    // transactions
-    Route::get('/transactions', [TransactionsController::class, 'transactions'])->name('transactions');
+    Route::group(['middleware' => ['role:admin']], function () {
+        // admin dashboard
+        Route::get('/admin-dashboard', [AdminDashboardController::class, 'adminDashboard'])->name('admin_dashboard');
+        // operators
+        Route::get('/operators', [OperatorsController::class, 'operators'])->name('operators');
+        Route::get('/operators/create', [OperatorsController::class, 'createByAdmin'])->name('operator_create_by_admin');
+        Route::post('/operators/store', [OperatorsController::class, 'storeByAdmin'])->name('operator_store_by_admin');
+        // leads
+        Route::get('/leads', [LeadsController::class, 'leads'])->name('leads');
+        // users
+        Route::get('/users', [UsersController::class, 'users'])->name('users');
+        // transactions
+        Route::get('/transactions', [TransactionsController::class, 'transactions'])->name('transactions');
+    });
+
+    Route::group(['middleware' => ['role:operator']], function () {
+        // operator dashboard
+        Route::get('/operator-dashboard', [OperatorDashboardController::class, 'operatorDashboard'])->name('operator_dashboard');
+        // todo
+    });
+
+    Route::group(['middleware' => ['role:user']], function () {
+        // todo
+    });
 
 
     // user profile

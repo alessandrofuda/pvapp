@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Operators;
+use App\Http\Requests\SaveOperatorRequest;
 use App\Models\User;
 use Exception;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,11 +19,13 @@ class OperatorsController extends Controller
 {
     public Request $request;
     public ?string $search;
+    private Operators $operators;
 
     public function __construct(Request $request)
     {
         $this->request = $request;
         $this->search = $request->get('search') ?? null;
+        $this->operators = new Operators();
     }
 
     /**
@@ -49,7 +56,7 @@ class OperatorsController extends Controller
                     'users.email',
                     'operators.phone',
                     DB::raw("GROUP_CONCAT(regions.name SEPARATOR ', ') AS region_names"),
-                    DB::raw("GROUP_CONCAT(provinces.name,' (provincia)' SEPARATOR ', ') AS province_names")  // 'regions.name AS region_name', 'provinces.name AS province_name')
+                    DB::raw("GROUP_CONCAT(provinces.name,' (provincia)' SEPARATOR ', ') AS province_names")
                 )
                 ->groupBy('id', 'name', 'email', 'phone')
                 ->orderBy('users.id')
@@ -62,5 +69,38 @@ class OperatorsController extends Controller
             throw new Exception($err);
         }
         return Inertia::render('Operators/Index', ['operators' => $operators, 'filters' => '..todo..']);
+    }
+
+    /**
+     * Display the create operator view for admin.
+     */
+    public function createByAdmin(): Response
+    {
+        $areas = $this->operators->getAreasOpts();
+
+        return Inertia::render('Operators/Create', ['areas_opts' => $areas]);
+    }
+
+    /**
+     * Handle the storage of an operator created by admin.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     * @throws Exception
+     */
+    public function storeByAdmin(SaveOperatorRequest $request): RedirectResponse
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $user->assignRole('operator');
+        $user->operator()->create(['phone' => $request->phone]);
+        $this->operators->assignOperatorAreas($request->areas, $user);
+
+        event(new Registered($user));
+
+        return redirect(route('operators', absolute: false));
     }
 }
