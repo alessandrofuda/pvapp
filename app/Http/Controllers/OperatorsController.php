@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Domain\Operators;
 use App\Http\Requests\SaveOperatorRequest;
+use App\Models\Operator;
 use App\Models\User;
 use Exception;
 use Illuminate\Auth\Events\Registered;
@@ -72,13 +73,12 @@ class OperatorsController extends Controller
     }
 
     /**
-     * Display the create operator view for admin.
+     * Display the create / edit operator view for admin.
      */
-    public function createByAdmin(): Response
+    public function operator(Operator $operator = null): Response
     {
         $areas = $this->operators->getAreasOpts();
-
-        return Inertia::render('Operators/Create', ['areas_opts' => $areas]);
+        return Inertia::render('Operators/EditOrCreate', ['operator' => $operator, 'areas_opts' => $areas]);
     }
 
     /**
@@ -87,19 +87,30 @@ class OperatorsController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      * @throws Exception
      */
-    public function storeByAdmin(SaveOperatorRequest $request): RedirectResponse
+    public function saveOperator(SaveOperatorRequest $request, Operator $operator = null): RedirectResponse
     {
-        $user = User::create([
+        $user_attr = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+        ];
 
-        $user->assignRole('operator');
-        $user->operator()->create(['phone' => $request->phone]);
-        $this->operators->assignOperatorAreas($request->areas, $user);
+        if($operator) {
+            $user = $operator->user();
+            dd($user);
+            $user->update($user_attr);
+            dd($user);
+            dd('edit.. todo');
 
-        event(new Registered($user));
+        }else{
+            $user = User::create($user_attr);
+
+            $user->assignRole('operator');
+            $user->operator()->create(['phone' => $request->phone]);
+            $this->operators->assignOperatorAreas($request->areas, $user);
+
+            event(new Registered($user));
+        }
 
         return redirect(route('operators', absolute: false));
     }

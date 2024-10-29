@@ -6,35 +6,23 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 </script>
 
 <template>
-    <Head title="Admin Dashboard" />
+    <Head title="Operator Dashboard" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Admin Dashboard</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Operator Dashboard</h2>
         </template>
 
         <template #nav-menu>
             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <NavLink :href="route('admin_dashboard')" :active="route().current('admin_dashboard')">
-                    Admin Dashboard
-                </NavLink>
-                <NavLink :href="route('operators')" :active="route().current('operators')">
-                    Operators
-                </NavLink>
-                <NavLink :href="route('leads')" :active="route().current('leads')">
-                    Leads
-                </NavLink>
-                <NavLink :href="route('users')" :active="route().current('users')">
-                    Users
-                </NavLink>
-                <NavLink :href="route('transactions')" :active="route().current('transactions')">
-                    Transactions
+                <NavLink :href="route('operator_dashboard')" :active="route().current('operator_dashboard')">
+                    Operator Dashboard
                 </NavLink>
             </div>
         </template>
 
         <template #mobile-nav-menu-links>
-            <ResponsiveNavLink :href="route('admin_dashboard')" :active="route().current('admin_dashboard')">
+            <ResponsiveNavLink :href="route('operator_dashboard')" :active="route().current('operator_dashboard')">
                 Dashboard
             </ResponsiveNavLink>
         </template>
@@ -43,7 +31,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
-                        <div>You're logged in Admin Dashboard!</div>
+                        <div>You're logged in Operator Dashboard!</div>
                         <div class="mt-4">User: {{ $page.props.auth.user.name }}</div>
                         <div>Role: {{ $page.props.auth.user.roles[0].name }}</div>
                     </div>

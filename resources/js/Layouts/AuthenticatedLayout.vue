@@ -20,31 +20,13 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
-                                    <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
-                                    />
-                                </Link>
+                                <ApplicationLogo
+                                    class="block h-9 w-auto fill-current text-gray-800"
+                                />
                             </div>
 
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
-                                </NavLink>
-                                <NavLink :href="route('operators')" :active="route().current('operators')">
-                                    Operators
-                                </NavLink>
-                                <NavLink :href="route('leads')" :active="route().current('leads')">
-                                    Leads
-                                </NavLink>
-                                <NavLink :href="route('users')" :active="route().current('users')">
-                                    Users
-                                </NavLink>
-                                <NavLink :href="route('transactions')" :active="route().current('transactions')">
-                                    Transactions
-                                </NavLink>
-                            </div>
+                            <!-- Navigation menù Links  -->
+                            <slot name="nav-menu" />
 
                         </div>
 
@@ -123,9 +105,8 @@ const showingNavigationDropdown = ref(false);
                     class="sm:hidden"
                 >
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
+                        <!-- responsive nav menù links -->
+                        <slot name="mobile-nav-menu-links" />
                     </div>
 
                     <!-- Responsive Settings Options -->

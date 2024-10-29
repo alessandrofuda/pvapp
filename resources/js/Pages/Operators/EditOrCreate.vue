@@ -13,11 +13,11 @@
     };
 </script>
 <template>
-    <AuthenticatedLayout>
+    <AuthenticatedLayout class="m-3 p-5">
         <Head title="Create Operator" />
-        <div class="text-lg text-center my-3">Crea un nuovo Operatore</div>
+        <div class="text-lg text-center my-3">Registra un nuovo Operatore</div>
 
-        <operator-form submitButtonLabel="Create Operator" :areas_opts="areas_opts" @formSubmitted="submit">
+        <operator-form submitButtonLabel="Create Operator" :areas_opts="areas_opts" @formSubmitted="submit" class="p-5 m-5">
             <!-- not shared fields, slot -->
             <Link
                 :href="route('operators')"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,7 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Handle an incoming authentication request.
+     * @throws Exception
      */
     public function store(LoginRequest $request): RedirectResponse
     {
@@ -33,7 +35,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $route = match (true) {
+            $request->user()->hasRole('admin') => "admin_dashboard",
+            $request->user()->hasRole('operator') => "operator_dashboard",
+            $request->user()->hasRole('user') => "user_dashboard",
+            default => throw new Exception('No Role found for current logged-in User'),
+        };
+
+        // return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route($route, absolute: false));
     }
 
     /**

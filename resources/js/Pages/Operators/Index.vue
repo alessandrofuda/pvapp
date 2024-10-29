@@ -17,6 +17,8 @@ const reset = () => {
     form.search = null
 }
 
+const editOperatorLink = (operatorId) => { return `/operator/${operatorId}` }
+
 
 const concatOperatorAreas = (region_names = null, province_names = null) => {
     let areasArr = []
@@ -43,7 +45,7 @@ watch(
 </script>
 <template>
     <Head title="Operators" />
-    <AuthenticatedLayout>
+    <AuthenticatedLayout> // todo change to AdminAuthenticatedLayout
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Operators</h2>
         </template>
@@ -52,8 +54,8 @@ watch(
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="flex items-center justify-between mb-6 p-6">
                         <search-filter v-model="form.search" class="mr-4 w-full max-w-md" @reset="reset"></search-filter>
-                        <Link class="btn-indigo" href="/operators/create">
-                            <span>Create</span>
+                        <Link class="btn-indigo" href="/operator">
+                            <span>Add</span>
                             <span class="hidden md:inline">&nbsp;Operator</span>
                         </Link>
                     </div>
@@ -71,28 +73,28 @@ watch(
                             <tbody>
                                 <tr v-for="operator in operators.data" :key="operator.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
                                     <td class="border-t">
-                                        <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="`/organizations/${operator.id}/edit`">
+                                        <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="editOperatorLink(operator.id)">
                                             {{ operator.name }}
                                             <icon v-if="operator.deleted_at" name="trash" class="shrink-0 ml-2 w-3 h-3 fill-gray-400" />
                                         </Link>
                                     </td>
                                     <td class="border-t">
-                                        <Link class="flex items-center px-6 py-4" :href="`/operators/${operator.id}/edit`" tabindex="-1">
+                                        <Link class="flex items-center px-6 py-4" :href="editOperatorLink(operator.id)" tabindex="-1">
                                             {{ operator.email }}
                                         </Link>
                                     </td>
                                     <td class="border-t">
-                                        <Link class="flex items-center px-6 py-4" :href="`/organizations/${operator.id}/edit`" tabindex="-1">
+                                        <Link class="flex items-center px-6 py-4" :href="editOperatorLink(operator.id)" tabindex="-1">
                                             {{ operator.phone }}
                                         </Link>
                                     </td>
                                     <td class="border-t">
-                                        <Link class="flex items-center px-6 py-4" :href="`/organizations/${operator.id}/edit`" tabindex="-1">
+                                        <Link class="flex items-center px-6 py-4" :href="editOperatorLink(operator.id)" tabindex="-1">
                                             {{ concatOperatorAreas(operator.region_names, operator.province_names) }}
                                         </Link>
                                     </td>
                                     <td class="w-px border-t">
-                                        <Link class="flex items-center px-4" :href="`/organizations/${operator.id}/edit`" tabindex="-1">
+                                        <Link class="flex items-center px-4" :href="editOperatorLink(operator.id)" tabindex="-1">
                                             <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />
                                         </Link>
                                     </td>
