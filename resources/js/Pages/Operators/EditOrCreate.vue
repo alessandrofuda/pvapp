@@ -1,8 +1,8 @@
 <script setup>
-    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
     import { Head, Link } from '@inertiajs/vue3';
     import { useTrans } from '@/composables/trans.js';
     import OperatorForm from "@/Components/OperatorForm.vue";
+    import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout.vue";
 
     defineProps({ areas_opts: Object })
 
@@ -13,11 +13,14 @@
     };
 </script>
 <template>
-    <AuthenticatedLayout class="m-3 p-5">
-        <Head title="Create Operator" />
-        <div class="text-lg text-center my-3">Registra un nuovo Operatore</div>
+    <Head title="Operator" />
+    <AdminAuthenticatedLayout class="m-3 p-5">
 
-        <operator-form submitButtonLabel="Create Operator" :areas_opts="areas_opts" @formSubmitted="submit" class="p-5 m-5">
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Registra un nuovo operatore</h2>
+        </template>
+
+        <operator-form submitButtonLabel="Create Operator" :areas_opts="areas_opts" @formSubmitted="submit" class="max-w-7xl mx-auto my-4 py-4 px-4 sm:px-6 lg:px-8">
             <!-- not shared fields, slot -->
             <Link
                 :href="route('operators')"
@@ -26,6 +29,6 @@
                 {{ useTrans('Back to Operators') }}
             </Link>
         </operator-form>
-    </AuthenticatedLayout>
+    </AdminAuthenticatedLayout>
 </template>
 

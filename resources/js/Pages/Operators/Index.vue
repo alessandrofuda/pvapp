@@ -1,11 +1,11 @@
 <script setup>
 import {Head, Link, router} from "@inertiajs/vue3";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import SearchFilter from "@/Components/SearchFilter.vue";
 import {reactive, watch} from "vue";
 import Pagination from "@/Components/Pagination.vue";
 import Icon from "@/Components/Icon.vue";
 import {pickBy, throttle} from "lodash";
+import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout.vue";
 
 const props = defineProps({
     operators: Array
@@ -45,10 +45,12 @@ watch(
 </script>
 <template>
     <Head title="Operators" />
-    <AuthenticatedLayout> // todo change to AdminAuthenticatedLayout
+    <AdminAuthenticatedLayout>
+
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Operators</h2>
         </template>
+
         <div class="py-12">
             <div class="mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -60,7 +62,7 @@ watch(
                         </Link>
                     </div>
                     <div class="counter text-sm/relaxed px-5 text-gray-500">Counter: {{operators.total || 0}} records</div>
-                    <div class="bg-white rounded-md shadow overflow-x-auto">
+                    <div class="bg-white rounded-md shadow overflow-x-auto p-5">
                         <table class="w-full whitespace-nowrap">
                             <thead>
                                 <tr class="text-left font-bold bg-indigo-100 border-indigo-400 border-b-2">
@@ -109,5 +111,5 @@ watch(
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </AdminAuthenticatedLayout>
 </template>
