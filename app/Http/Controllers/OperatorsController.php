@@ -52,7 +52,8 @@ class OperatorsController extends Controller
 
                 // Select the desired fields
                 ->select(
-                    'users.id',
+                    'operators.id AS id',
+                    'users.id AS user_id',
                     'users.name',
                     'users.email',
                     'operators.phone',
@@ -77,6 +78,29 @@ class OperatorsController extends Controller
      */
     public function operator(Operator $operator = null): Response
     {
+        if($operator){
+            // $operator = User::with('operator')->find($operator->user->id);
+//            $operator = DB::table('operators')
+//                ->where('operators.id', $operator->id)
+//                ->leftJoin('users', 'users.id', '=', 'operators.user_id')
+//                ->leftJoin('operator_areas', 'operators.id', '=', 'operator_areas.operator_id')
+//                ->select('operators.id AS id',
+//                        'user_id',
+//                        'name',
+//                        'email',
+//                        'email_verified_at',
+//                        'phone',
+//                        group... 'region_id',
+//                        group... 'province_id'
+//                )
+//                ->groupBy('operator_areas.operator_id')
+//                ->first();
+            $operator = Operator::with(['user', 'regions:id', 'provinces:id']) // only 'id' columns
+                                ->where('id', $operator->id)
+                                ->first();
+        }
+        // dd($operator->regions[0]->pivot->region_id);
+
         $areas = $this->operators->getAreasOpts();
         return Inertia::render('Operators/EditOrCreate', ['operator' => $operator, 'areas_opts' => $areas]);
     }
