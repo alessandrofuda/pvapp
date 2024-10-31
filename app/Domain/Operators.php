@@ -71,4 +71,81 @@ class Operators
         return array_values(array_filter($ids)); // remove nulls and reindex
     }
 
+    /**
+     * @throws Exception
+     */
+    public function groupingOperatorData(array $ungroupedData) : array
+    {
+        try{
+            /*  AI generated, but I don't like it!
+          $groupedData = array_reduce($ungroupedData, function ($result, $item) {
+
+           // Initialize the grouped item if not set
+           if (!isset($result[0])) {
+               $result[0] = [
+                   'id' => $item->id,
+                   'user_id' => $item->user_id,
+                   'name' => $item->name,
+                   'email' => $item->email,
+                   'email_verified_at' => $item->email_verified_at,
+                   'phone' => $item->phone,
+                   'regions' => [],
+                   'provinces' => [],
+               ];
+           }
+
+           // Add region if it exists
+           if ($item->region) {
+               $result[0]['regions'][] = [
+                   'id' => $item->region['id'],
+                   'name' => $item->region['name'],
+                   'type' => 'regione'
+               ];
+           }
+
+           // Add province if it exists
+           if ($item->province) {
+               $result[0]['provinces'][] = [
+                   'id' => $item->province['id'],
+                   'name' => $item->province['name'],
+                   'type' => 'provincia'
+               ];
+           }
+
+           return $result;
+       }, []);*/
+
+            $result = [];
+            foreach ($ungroupedData as $ungroupedItem) {
+                $result['id'] = $ungroupedItem->id;
+                $result['user_id'] = $ungroupedItem->user_id;
+                $result['name'] = $ungroupedItem->name;
+                $result['email'] = $ungroupedItem->email;
+                $result['email_verified_at'] = $ungroupedItem->email_verified_at;
+                $result['phone'] = $ungroupedItem->phone;
+                // $result['regions'] = null; NOO!!
+                // $result['provinces'] = null; NO!!
+
+                if ($ungroupedItem->region) {
+                    $regions = $ungroupedItem->region;
+                    $regions['type'] = 'regione';
+                    $result['regions'][] = $regions;
+                }
+
+                if ($ungroupedItem->province) {
+                    $provinces = $ungroupedItem->province;
+                    $provinces['type'] = 'provincia';
+                    $result['provinces'][] = $provinces;
+                }
+            }
+
+        }catch(Exception $e){
+            $err = 'Error in '.__METHOD__.': '.$e->getMessage();
+            Log::error($err);
+            throw new Exception($err);
+        }
+
+        return $result;
+    }
+
 }

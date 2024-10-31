@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Helpers;
 use App\Domain\Operators;
 use App\Http\Requests\SaveOperatorRequest;
 use App\Models\Operator;
@@ -75,33 +76,36 @@ class OperatorsController extends Controller
 
     /**
      * Display the create / edit operator view for admin.
+     * @throws Exception
      */
     public function operator(Operator $operator = null): Response
     {
-        if($operator){
-            // $operator = User::with('operator')->find($operator->user->id);
-//            $operator = DB::table('operators')
-//                ->where('operators.id', $operator->id)
-//                ->leftJoin('users', 'users.id', '=', 'operators.user_id')
-//                ->leftJoin('operator_areas', 'operators.id', '=', 'operator_areas.operator_id')
-//                ->select('operators.id AS id',
-//                        'user_id',
-//                        'name',
-//                        'email',
-//                        'email_verified_at',
-//                        'phone',
-//                        group... 'region_id',
-//                        group... 'province_id'
-//                )
-//                ->groupBy('operator_areas.operator_id')
-//                ->first();
-            $operator = Operator::with(['user', 'regions:id', 'provinces:id']) // only 'id' columns
-                                ->where('id', $operator->id)
-                                ->first();
+        if ($operator) {
+            $operator_collection = DB::table('operators')
+                ->where('operators.id', $operator->id)
+                ->leftJoin('users', 'users.id', '=', 'operators.user_id')
+                ->leftJoin('operator_areas', 'operators.id', '=', 'operator_areas.operator_id')
+                ->leftJoin('regions', 'operator_areas.region_id', '=', 'regions.id')
+                ->leftJoin('provinces', 'operator_areas.province_id', '=', 'provinces.id')
+                ->select('operators.id AS id',
+                    'user_id',
+                    'users.name AS name',
+                    'email',
+                    'email_verified_at',
+                    'phone',
+                    'regions.id AS region.id',
+                    'regions.name AS region.name',
+                    'province_id AS province.id',
+                    'provinces.name AS province.name'
+                )
+                ->get();
+
+            $ungroupedData = (new Helpers())->convertDotNotationsFieldsToNestedArrays($operator_collection)->toArray();
+            $operator = $this->operators->groupingOperatorData($ungroupedData);
         }
-        // dd($operator->regions[0]->pivot->region_id);
 
         $areas = $this->operators->getAreasOpts();
+
         return Inertia::render('Operators/EditOrCreate', ['operator' => $operator, 'areas_opts' => $areas]);
     }
 

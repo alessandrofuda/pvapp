@@ -1,39 +1,39 @@
 <script setup>
-import {useTrans} from "@/composables/trans.js";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import {useForm, usePage} from "@inertiajs/vue3";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import VueMultiselect from "vue-multiselect";
+    import {useTrans} from "@/composables/trans.js";
+    import InputError from "@/Components/InputError.vue";
+    import InputLabel from "@/Components/InputLabel.vue";
+    import {useForm} from "@inertiajs/vue3";
+    import PrimaryButton from "@/Components/PrimaryButton.vue";
+    import TextInput from "@/Components/TextInput.vue";
+    import VueMultiselect from "vue-multiselect";
 
-defineProps({
-    operator: Object,
-    areas_opts: Object,
-    submitButtonLabel: String
-})
+    const props = defineProps({
+        operator: Object,
+        areas_opts: Object,
+        submitButtonLabel: String,
+        // userRole: String
+    })
 
-const operator = usePage().props.operator;
+    // const operator = usePage().props.operator; // inertia.js method
 
-const form = useForm({
-    name: operator?.user?.name || '',
-    email: operator?.user?.email || '',
-    phone: operator?.phone || '',
-    areas: [ { "id": 17, "name": "Basilicata", "type": "regione" } ], // null,  // todo
-    password: '',
-    password_confirmation: '',
-});
+    const form = useForm({
+        name: props.operator?.name || '',
+        email: props.operator?.email || '',
+        phone: props.operator?.phone || '',
+        areas: [...props.operator?.regions || [], ...props.operator?.provinces || []],
+        password: '',
+        password_confirmation: '',
+    });
 
-const emit = defineEmits(['formSubmitted']);
+    const emit = defineEmits(['formSubmitted']);
 
-const submit = () => {
-    emit('formSubmitted', form)  // Emit form data to parent component
-};
+    const submit = () => {
+        emit('formSubmitted', form)  // Emit form data to parent component
+    };
 
-function nameWithType({name, type}) {
-    return (type === 'provincia') ? `${name} (${type})` : `${name}`
-}
-
+    function nameWithType({name, type}) {
+        return (type === 'provincia') ? `${name} (${type})` : `${name}`
+    }
 </script>
 <!-- SharedForm.vue -->
 <template>
@@ -84,19 +84,11 @@ function nameWithType({name, type}) {
                 track-by="name"
                 :custom-label="nameWithType">
             </vue-multiselect>
-
-
-            <div class="text-left mt-6">
-                Regions:<br> {{operator.regions}}<br/><br>
-                Provinces:<br> {{operator.provinces}}<br/><br>
-
-                Selected values:<br> {{ form.areas }}
-            </div>
-
-
-
             <InputError class="mt-2" :message="form.errors.areas" />
         </div>
+
+
+        <!--div v-if="userRole === 'operator'"-->
         <div class="mt-4">
             <InputLabel for="password" value="Password" />
             <TextInput
@@ -120,6 +112,7 @@ function nameWithType({name, type}) {
             />
             <InputError class="mt-2" :message="form.errors.password_confirmation" />
         </div>
+        <!--/div-->
         <div class="flex items-center justify-end my-6 pt-4">
 
             <!-- Slot for additional unique fields -->
