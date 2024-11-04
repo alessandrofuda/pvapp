@@ -17,6 +17,7 @@
     // const operator = usePage().props.operator; // inertia.js method
 
     const form = useForm({
+        id: props.operator?.id || null,
         name: props.operator?.name || '',
         email: props.operator?.email || '',
         phone: props.operator?.phone || '',
@@ -88,31 +89,31 @@
         </div>
 
 
-        <!--div v-if="userRole === 'operator'"-->
-        <div class="mt-4">
-            <InputLabel for="password" value="Password" />
-            <TextInput
-                id="password"
-                type="password"
-                class="mt-1 block w-full"
-                v-model="form.password"
-                autocomplete="new-password"
-            />
-            <InputError class="mt-2" :message="form.errors.password" />
-        </div>
+        <div v-if="!form.id">
+            <div class="mt-4">
+                <InputLabel for="password" value="Password" />
+                <TextInput
+                    id="password"
+                    type="password"
+                    class="mt-1 block w-full"
+                    v-model="form.password"
+                    autocomplete="new-password"
+                />
+                <InputError class="mt-2" :message="form.errors.password" />
+            </div>
 
-        <div class="mt-4">
-            <InputLabel for="password_confirmation" :value="useTrans('Password Confirmation')" />
-            <TextInput
-                id="password_confirmation"
-                type="password"
-                class="mt-1 block w-full"
-                v-model="form.password_confirmation"
-                autocomplete="new-password"
-            />
-            <InputError class="mt-2" :message="form.errors.password_confirmation" />
+            <div class="mt-4">
+                <InputLabel for="password_confirmation" :value="useTrans('Password Confirmation')" />
+                <TextInput
+                    id="password_confirmation"
+                    type="password"
+                    class="mt-1 block w-full"
+                    v-model="form.password_confirmation"
+                    autocomplete="new-password"
+                />
+                <InputError class="mt-2" :message="form.errors.password_confirmation" />
+            </div>
         </div>
-        <!--/div-->
         <div class="flex items-center justify-end my-6 pt-4">
 
             <!-- Slot for additional unique fields -->

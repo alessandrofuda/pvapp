@@ -11,11 +11,17 @@
     })
 
     const submit = (form) => {
-        form.post(route('save_operator'), {
-            onFinish: () => form.reset('password', 'password_confirmation'),
-        });
+        if(form.id) {
+            form.put(route('edit_operator', {operator: form.id}), {
+                // onFinish: () =>
+            })
+        }else{
+            form.post(route('save_operator'), {
+                onFinish: () => form.reset('password', 'password_confirmation'),
+            });
+        }
     };
-    const submitBtnLabel = computed(() => props.operator ? 'Update Operator' : 'Create Operator')
+    const submitBtnLabel = computed(() => props.operator ? 'Aggiorna' : 'Salva')
 </script>
 <template>
     <Head title="Operator" />

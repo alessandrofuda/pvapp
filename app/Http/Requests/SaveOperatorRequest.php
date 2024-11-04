@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Operator;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
 
@@ -25,13 +26,44 @@ class SaveOperatorRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'phone' => 'required|min_digits:7|max_digits:15|unique:'.Operator::class,
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255'
+
+            ],
+            'phone' => [
+                'required',
+                'min_digits:7',
+                'max_digits:15'
+            ],
             'areas' => 'required|array',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'sometimes', // validate Only if present...
+                'required',
+                'confirmed',
+                Rules\Password::defaults()
+            ],
         ];
+
+        if($this->id) {
+            $rules['email'][] = Rule::unique('users')->ignore(Operator::with('user')->find($this->id)->user->id);
+            $rules['phone'][] = Rule::unique('operators')->ignore($this->id);
+
+            if(auth()->user()->hasRole('admin')) {
+                unset($rules['password']);
+            }
+
+        } else {
+            $rules['email'][] = Rule::unique('users');
+            $rules['phone'][] = Rule::unique('operators');
+        }
+
+        return $rules;
     }
 
     public function messages() : array

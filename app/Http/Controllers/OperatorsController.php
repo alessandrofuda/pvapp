@@ -124,18 +124,20 @@ class OperatorsController extends Controller
         ];
 
         if($operator) {
-            $user = $operator->user();
-            dd($user);
-            $user->update($user_attr);
-            dd($user);
-            dd('edit.. todo');
+
+            if(auth()->user()->hasRole('admin')){
+                unset($user_attr['password']);  // password remains the same
+            }
+
+            $operator->user()->update($user_attr);
+            $operator->update(['phone' => $request->phone]);
+            $this->operators->assignOrSyncOperatorAreas($request->areas, $operator);
 
         }else{
             $user = User::create($user_attr);
-
             $user->assignRole('operator');
             $user->operator()->create(['phone' => $request->phone]);
-            $this->operators->assignOperatorAreas($request->areas, $user);
+            $this->operators->assignOrSyncOperatorAreas($request->areas, $user->operator);
 
             event(new Registered($user));
         }

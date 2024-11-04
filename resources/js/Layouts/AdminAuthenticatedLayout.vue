@@ -3,6 +3,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import NavLink from "@/Components/NavLink.vue";
+import {useTrans} from "../composables/trans.js";
 </script>
 <template>
     <AuthenticatedLayout>
@@ -12,16 +13,16 @@ import NavLink from "@/Components/NavLink.vue";
                     Admin Dashboard
                 </NavLink>
                 <NavLink :href="route('operators')" :active="route().current('operators')">
-                    Operators
+                    {{ useTrans('Operators') }}
                 </NavLink>
                 <NavLink :href="route('leads')" :active="route().current('leads')">
                     Leads
                 </NavLink>
                 <NavLink :href="route('users')" :active="route().current('users')">
-                    Users
+                    {{ useTrans('Users') }}
                 </NavLink>
                 <NavLink :href="route('transactions')" :active="route().current('transactions')">
-                    Transactions
+                    {{ useTrans('Transactions') }}
                 </NavLink>
             </div>
         </template>

@@ -2,7 +2,7 @@
 
 namespace App\Domain;
 
-use App\Models\User;
+use App\Models\Operator;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -47,13 +47,13 @@ class Operators
     /**
      * @throws Exception
      */
-    public function assignOperatorAreas(array $areas, User $user) : void
+    public function assignOrSyncOperatorAreas(array $areas, Operator $operator) : void
     {
         try{
             $regions_ids = $this->getIdsByAreaType($areas, 'regione');
             $provinces_ids = $this->getIdsByAreaType($areas, 'provincia');
-            $user->operator->regions()->sync($regions_ids);
-            $user->operator->provinces()->sync($provinces_ids);
+            $operator->regions()->sync($regions_ids);
+            $operator->provinces()->sync($provinces_ids);
 
         }catch(Exception $e) {
             $err = 'Error in '.__METHOD__.': '.$e->getMessage();
@@ -147,5 +147,4 @@ class Operators
 
         return $result;
     }
-
 }

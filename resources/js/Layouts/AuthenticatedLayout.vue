@@ -6,6 +6,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import {useTrans} from "../composables/trans.js";
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -59,7 +60,7 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink :href="route('profile.edit')">Profile</DropdownLink>
+                                        <DropdownLink :href="route('profile.edit')">{{ useTrans('Profile') }}</DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">Log Out</DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -119,7 +120,7 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('profile.edit')"> {{useTrans('Profile')}} </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Log Out
                             </ResponsiveNavLink>

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class RegisteredOperatorController extends Controller
+class RegisterOperatorController extends Controller
 {
     private Operators $operators;
 
@@ -48,7 +48,7 @@ class RegisteredOperatorController extends Controller
 
         $user->assignRole('operator');
         $user->operator()->create(['phone' => $request->phone]);
-        $this->operators->assignOperatorAreas($request->areas, $user);
+        $this->operators->assignOrSyncOperatorAreas($request->areas, $user->operator);
 
         event(new Registered($user));
 
