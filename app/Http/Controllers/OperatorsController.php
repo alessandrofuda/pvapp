@@ -58,6 +58,7 @@ class OperatorsController extends Controller
                     'users.name',
                     'users.email',
                     'operators.phone',
+                    'users.email_verified_at',
                     DB::raw("GROUP_CONCAT(regions.name SEPARATOR ', ') AS region_names"),
                     DB::raw("GROUP_CONCAT(provinces.name,' (provincia)' SEPARATOR ', ') AS province_names")
                 )

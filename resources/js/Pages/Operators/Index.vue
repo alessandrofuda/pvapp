@@ -19,7 +19,6 @@ const reset = () => {
 
 const editOperatorLink = (operatorId) => { return `/operator/${operatorId}` }
 
-
 const concatOperatorAreas = (region_names = null, province_names = null) => {
     let areasArr = []
     if(region_names) {
@@ -31,7 +30,6 @@ const concatOperatorAreas = (region_names = null, province_names = null) => {
 
     return areasArr.join(', ')
 }
-
 
 // Watch the form object deeply with throttling
 watch(
@@ -69,7 +67,8 @@ watch(
                                     <th class="pb-4 pt-6 px-6">Nome</th>
                                     <th class="pb-4 pt-6 px-6">E-mail</th>
                                     <th class="pb-4 pt-6 px-6">Telefono</th>
-                                    <th class="pb-4 pt-6 px-6" colspan="2">Aree geografiche</th>
+                                    <th class="pb-4 pt-6 px-6">Aree geografiche</th>
+                                    <th class="pb-4 pt-6 px-6" colspan="2">Mail verificata</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -93,6 +92,11 @@ watch(
                                     <td class="border-t">
                                         <Link class="flex items-center px-6 py-4" :href="editOperatorLink(operator.id)" tabindex="-1">
                                             {{ concatOperatorAreas(operator.region_names, operator.province_names) }}
+                                        </Link>
+                                    </td>
+                                    <td class="border-t">
+                                        <Link class="flex items-center px-6 py-4" :href="editOperatorLink(operator.id)" tabindex="-1">
+                                            {{ operator.email_verified_at }}
                                         </Link>
                                     </td>
                                     <td class="w-px border-t">
