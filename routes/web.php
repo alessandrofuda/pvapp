@@ -28,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/operator/{operator?}', [OperatorsController::class, 'operator'])->name('operator')->where('operator', '[0-9]+');
         Route::post('/operator', [OperatorsController::class, 'saveOperator'])->name('save_operator');
         Route::put('/operator/edit-{operator}', [OperatorsController::class, 'saveOperator'])->name('edit_operator')->where('operator', '[0-9]+');
+        Route::delete('/operator/delete-{operator}', [OperatorsController::class, 'deleteOperator'])->name('delete_operator')->where('operator', '[0-9]+');
 
         // leads
         Route::get('/leads', [LeadsController::class, 'leads'])->name('leads');

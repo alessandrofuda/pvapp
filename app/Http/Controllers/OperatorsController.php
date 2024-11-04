@@ -144,4 +144,22 @@ class OperatorsController extends Controller
 
         return redirect(route('operators', absolute: false));
     }
+
+    /**
+     * @throws Exception
+     */
+    public function deleteOperator(Operator $operator) : RedirectResponse
+    {
+        try{
+            $operator->user->roles()->detach();
+            $operator->user()->delete();
+
+            return redirect(route('operators', absolute: false));
+
+        }catch(Exception $e){
+            $err = 'Error in '.__METHOD__.': '.$e->getMessage();
+            Log::error($err);
+            throw new Exception($err);
+        }
+    }
 }
