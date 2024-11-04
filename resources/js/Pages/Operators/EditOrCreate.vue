@@ -14,7 +14,7 @@ import {Head, Link, useForm} from '@inertiajs/vue3';
     })
 
     const operatorProfile = useForm({
-        id: props.operator.id,
+        id: props.operator?.id,
     });
 
     const submit = (form) => {
@@ -74,7 +74,7 @@ import {Head, Link, useForm} from '@inertiajs/vue3';
             </Link>
         </operator-form>
 
-        <div class="max-w-7xl mx-auto my-4 pb-12 py-4 px-4 sm:px-6 lg:px-8">
+        <div v-if="operator" class="max-w-7xl mx-auto my-4 pb-12 py-4 px-4 sm:px-6 lg:px-8">
             <DangerButton @click="confirmProfileDeletion">{{ useTrans('Delete Profile') }}</DangerButton>
 
             <Modal :show="confirmingProfileDeletion" @close="closeModal">
