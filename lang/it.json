@@ -18,5 +18,9 @@
     "Users": "Utenti",
     "Transactions": "Transazioni",
     "Profile": "Profilo",
-    "Delete Profile": "Cancella Profilo"
+    "Delete Profile": "Cancella Profilo",
+    "Add": "Registra",
+    "Operator": "Operatore",
+    "Installers and Operators": "Installatori ed Operatori",
+    "Counter": "Contatore"
 }

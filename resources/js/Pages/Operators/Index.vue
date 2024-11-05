@@ -6,6 +6,7 @@ import Pagination from "@/Components/Pagination.vue";
 import Icon from "@/Components/Icon.vue";
 import {pickBy, throttle} from "lodash";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout.vue";
+import {useTrans} from "../../composables/trans.js";
 
 const props = defineProps({
     operators: Array
@@ -46,7 +47,7 @@ watch(
     <AdminAuthenticatedLayout>
 
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Operators</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{useTrans('Installers and Operators')}}</h2>
         </template>
 
         <div class="py-12">
@@ -55,11 +56,11 @@ watch(
                     <div class="flex items-center justify-between mb-6 p-6">
                         <search-filter v-model="form.search" class="mr-4 w-full max-w-md" @reset="reset"></search-filter>
                         <Link class="btn-indigo" href="/operator">
-                            <span>Add</span>
-                            <span class="hidden md:inline">&nbsp;Operator</span>
+                            <span>{{useTrans('Add')}}</span>
+                            <span class="hidden md:inline">&nbsp{{useTrans('Operator')}}</span>
                         </Link>
                     </div>
-                    <div class="counter text-sm/relaxed px-5 text-gray-500">Counter: {{operators.total || 0}} records</div>
+                    <div class="counter text-sm/relaxed px-5 text-gray-500">{{useTrans('Counter')}}: {{operators.total || 0}} records</div>
                     <div class="bg-white rounded-md shadow overflow-x-auto p-5">
                         <table class="w-full whitespace-nowrap">
                             <thead>

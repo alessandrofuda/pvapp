@@ -31,6 +31,9 @@ import {useTrans} from "../composables/trans.js";
             <ResponsiveNavLink :href="route('admin_dashboard')" :active="route().current('admin_dashboard')">
                 Dashboard
             </ResponsiveNavLink>
+            <ResponsiveNavLink>
+                todo
+            </ResponsiveNavLink>
         </template>
 
         <template #header>
