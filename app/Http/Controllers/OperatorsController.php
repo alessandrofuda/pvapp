@@ -87,7 +87,7 @@ class OperatorsController extends Controller
     }
 
     /**
-     * Display the create / edit operator view for admin.
+     * Display the creation / edit operator view for admin.
      * @throws Exception
      */
     public function operator(Operator $operator = null): Response

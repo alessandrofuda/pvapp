@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Leads;
 use App\Http\Requests\saveLeadRequest;
 use App\Models\Lead;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -13,16 +15,19 @@ use Inertia\Response;
 
 class QuotesController extends Controller
 {
+    /**
+     * @throws Exception
+     */
     public function quoteForm() : Response
     {
-        $towns_opts = DB::table('areas')->select('id', 'region_name AS region', 'province_code AS prov', 'town')->get()->toArray();
+        $towns_opts = (new Leads)->getTownsOpts();
         return Inertia::render('QuotesForm', ['towns_opts' => $towns_opts]);
     }
 
     /**
      * @throws Exception
      */
-    public function saveLead(SaveLeadRequest $request)
+    public function saveQuotationRequest(SaveLeadRequest $request) : void
     {
         try{
             $fields = $request->except('town');
@@ -35,7 +40,5 @@ class QuotesController extends Controller
             Log::error($err);
             throw new Exception($err);
         }
-
-        return redirect(route('quotes_form'));
     }
 }

@@ -1,52 +1,30 @@
 <script setup>
+    import GuestLayout from "@/Layouts/GuestLayout.vue";
+    import {Head} from "@inertiajs/vue3";
+    import {useTrans} from "../composables/trans.js";
+    import AlertComponent from "@/Components/AlertComponent.vue";
+    import {ref} from "vue";
+    import LeadForm from "@/Components/LeadForm.vue";
 
-import GuestLayout from "@/Layouts/GuestLayout.vue";
-import {Head, Link, useForm} from "@inertiajs/vue3";
-import {useTrans} from "../composables/trans.js";
-import VueMultiselect from "vue-multiselect";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import InputError from "@/Components/InputError.vue";
-import TextInput from "@/Components/TextInput.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import TextArea from "@/Components/TextArea.vue";
-import AlertComponent from "@/Components/AlertComponent.vue";
-import {ref, onMounted} from "vue";
+    const props = defineProps({ towns_opts: Object })
 
+    let successMessage = ref('')
 
-defineProps({ towns_opts: Object })
+    //onMounted(() => {
+        // console.log('mounted component!')
+    //})
 
-const form = useForm({
-    name: null,
-    lastname: null,
-    email: null,
-    phone: null,
-    town: null,
-    description: null
-});
-
-let successMessage = ref('')
-
-onMounted(() => {
-    console.log('mounted component!')
-})
-
-
-const submit = () => {
-    form.post(route('save_lead'), {  // <-- inertia.js
-
-        preserveScroll: true,
-        onSuccess: () => {
-            successMessage = 'La tua richiesta è stata inviata correttamente. Ti ricontatteremo per ulteriori dettagli.'
-            form.reset()
-        },
-        // onError: () => console.log('error'),
-        // onFinish: () => console.log('finish')
-    });
-};
-
-function townWithProvAndReg({town, prov, region}) {
-    return `${town}, ${prov}, ${region}`
-}
+    const submit = (form) => {
+        form.post(route('save_quotation_req'), {  // <-- inertia.js
+            preserveScroll: true,
+            onSuccess: () => {
+                successMessage.value = 'La tua richiesta è stata inviata correttamente. Ti ricontatteremo per ulteriori dettagli.'
+                form.reset()
+            },
+            onError: () => console.log('error'),
+            // onFinish: () => console.log('finish')
+        });
+    };
 
 </script>
 <template>
@@ -54,16 +32,12 @@ function townWithProvAndReg({town, prov, region}) {
         <Head title="Preventivi" />
         <div class="text-lg text-center my-3">{{useTrans('Ask for a quote')}}</div>
 
+        <AlertComponent color="green" :message="successMessage"/>
 
+        <lead-form :towns_opts="towns_opts" @formSubmitted="submit"></lead-form>
 
-       <AlertComponent color="green" :message="successMessage"/>
-
-
-
-
-        <form @submit.prevent="submit">
+        <!--form @submit.prevent="submit">
             <div class="my-5">
-                <!--InputLabel for="name" :value="useTrans('Name')" /-->
                 <TextInput
                     id="name"
                     type="text"
@@ -76,7 +50,6 @@ function townWithProvAndReg({town, prov, region}) {
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
             <div class="my-5">
-                <!--InputLabel for="lastname" :value="useTrans('Last Name') +' ('+useTrans('Not mandatory')+')'" /-->
                 <TextInput
                     id="lastname"
                     type="text"
@@ -89,7 +62,6 @@ function townWithProvAndReg({town, prov, region}) {
                 <InputError class="mt-2" :message="form.errors.lastname" />
             </div>
             <div class="my-5">
-                <!--InputLabel for="email" value="Email" /-->
                 <TextInput
                     id="email"
                     type="text"
@@ -101,7 +73,6 @@ function townWithProvAndReg({town, prov, region}) {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
             <div class="my-5">
-                <!--InputLabel for="phone" :value="useTrans('Phone')" /-->
                 <TextInput
                     id="phone"
                     type="text"
@@ -143,8 +114,7 @@ function townWithProvAndReg({town, prov, region}) {
                     {{ useTrans('Send Request') }}
                 </PrimaryButton>
             </div>
-        </form>
+        </form-->
     </guestLayout>
 </template>
-<!-- Add Multiselect CSS. Can be added as a static asset or inside a component. -->
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+

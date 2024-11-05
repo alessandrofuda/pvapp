@@ -16,7 +16,7 @@ use Inertia\Inertia;
 Route::get('/', [HomepageController::class, 'homepage']);
 
 Route::get('quotes-form', [QuotesController::class, 'quoteForm'])->name('quotes_form');
-Route::post('save-lead', [QuotesController::class, 'saveLead'])->name('save_lead');
+Route::post('save-quotation-request', [QuotesController::class, 'saveQuotationRequest'])->name('save_quotation_req');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -32,6 +32,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         // leads
         Route::get('/leads', [LeadsController::class, 'leads'])->name('leads');
+        Route::get('/lead/{lead?}', [LeadsController::class, 'lead'])->name('lead')->where('lead', '[0-9]+');
+        Route::post('/lead', [LeadsController::class, 'saveLead'])->name('save_lead');
+        Route::put('/lead/edit-{lead}', [LeadsController::class, 'saveLead'])->name('edit_lead')->where('lead', '[0-9]+');
+        Route::delete('/lead/delete-{lead}', [LeadsController::class, 'deleteLead'])->name('delete_lead')->where('lead', '[0-9]+');
+
         // users
         Route::get('/users', [UsersController::class, 'users'])->name('users');
         // transactions
