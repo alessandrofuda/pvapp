@@ -64,6 +64,17 @@ class OperatorsController extends Controller
                 )
                 ->groupBy('id', 'name', 'email', 'phone')
                 ->orderBy('users.id')
+                // search text
+                ->when($this->search, function($query) {
+                    $query->where(function($query) {
+
+                        $columns = ['users.name', 'users.email', 'operators.phone', 'regions.name', 'provinces.name'];
+                        foreach ($columns as $column) {
+                            $query->orWhere($column, 'LIKE', '%'.$this->search.'%');
+                        }
+
+                    });
+                })
                 ->paginate(25);
                 // ->get();
 
