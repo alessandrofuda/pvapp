@@ -12,7 +12,7 @@
 </script>
 
 <template>
-    <div v-if="message" :class="`mt-5 flex items-center justify-between p-5 leading-normal text-${color}-600 bg-${color}-100 rounded-lg`" role="alert">
+    <div v-if="message" :class="`mt-5 flex items-center justify-between p-5 leading-normal bg-${color}-100 text-${color}-600 rounded-lg`" role="alert">
         <p>{{message}}</p>
 
         <svg onclick="return this.parentNode.remove();" class="inline w-4 h-4 fill-current ml-2 hover:opacity-80 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

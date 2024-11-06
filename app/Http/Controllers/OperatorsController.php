@@ -166,12 +166,12 @@ class OperatorsController extends Controller
             $operator->user->roles()->detach();
             $operator->user()->delete();
 
-            return redirect(route('operators', absolute: false));
-
         }catch(Exception $e){
             $err = 'Error in '.__METHOD__.': '.$e->getMessage();
             Log::error($err);
             throw new Exception($err);
         }
+
+        return redirect(route('operators', absolute: false));
     }
 }

@@ -1,6 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
-import { useTrans } from "@/composables/trans";
+import { useTrans } from "@/Composables/trans";
 
 defineProps({
     canLogin: {

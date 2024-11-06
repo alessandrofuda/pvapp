@@ -6,6 +6,7 @@ use App\Domain\Helpers;
 use App\Domain\Leads;
 use App\Http\Requests\saveLeadRequest;
 use App\Models\Lead;
+use App\Models\Operator;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -77,28 +78,8 @@ class LeadsController extends Controller
      */
     public function lead(Lead $lead = null): Response
     {
-        // dump($lead->with('area')->first());
         if ($lead) {
             $lead = Lead::with('area')->find($lead->id);
-            //            $lead = DB::table('leads')
-            //                ->where('leads.id', $lead->id)
-            //                ->leftJoin('areas', 'leads.area_id', '=', 'areas.id')
-            //                ->select(
-            //                    'leads.id AS id',
-            //                    'name',
-            //                    'lastname',
-            //                    'email',
-            //                    'phone',
-            //                    'areas.id AS area_id',
-            //                    'areas.town AS town',
-            //                    'areas.province_code AS prov_code',
-            //                    'areas.province_name AS province',
-            //                    'areas.region_name AS region',
-            //                    'description'
-            //                )
-            //                ->first();
-            //
-            //            dd($lead);
         }
         $towns_opts = (new Leads)->getTownsOpts();
 
@@ -135,4 +116,22 @@ class LeadsController extends Controller
 
         return redirect(route('leads', absolute: false));
     }
+
+    /**
+     * @throws Exception
+     */
+    public function deleteLead(Lead $lead) : RedirectResponse
+    {
+        try{
+            $lead->delete();
+
+        }catch(Exception $e){
+            $err = 'Error in '.__METHOD__.': '.$e->getMessage();
+            Log::error($err);
+            throw new Exception($err);
+        }
+
+        return redirect(route('leads', absolute: false));
+    }
+
 }

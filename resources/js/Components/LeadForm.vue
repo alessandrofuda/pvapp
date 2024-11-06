@@ -1,5 +1,5 @@
 <script setup>
-    import {useTrans} from "@/composables/trans.js";
+    import {useTrans} from "@/Composables/trans.js";
     import TextInput from "@/Components/TextInput.vue";
     import TextArea from "@/Components/TextArea.vue";
     import InputError from "@/Components/InputError.vue";
@@ -7,6 +7,8 @@
     import PrimaryButton from "@/Components/PrimaryButton.vue";
     import VueMultiselect from "vue-multiselect";
     import {useForm} from "@inertiajs/vue3";
+    import AlertComponent from "@/Components/AlertComponent.vue";
+    import {computed, reactive} from "vue";
 
     const props = defineProps({
         lead: Object,
@@ -14,6 +16,7 @@
         submitButtonLabel: String
     })
 
+    // IMP: 'form' object even handle: 'form.errors', 'form.hasErrors', 'form.processing', 'form.progress', ..see https://inertiajs.com/forms and https://inertiajs.com/validation
     const form = useForm({
         id: props.lead?.id || null,
         name: props.lead?.name || '',
@@ -23,6 +26,9 @@
         town: props.lead?.area ? getTownObject(props.lead.area) : null,
         description: props.lead?.description || ''
     });
+
+    const alertColor = computed(() => form.hasErrors ? 'red' : 'green' )
+    const alertMessage = computed(() => form.hasErrors ? Object.keys(form.errors).map(key => form.errors[key]).join(', ') : null)
 
     const emit = defineEmits(['formSubmitted']);
 
@@ -40,6 +46,9 @@
 
 <!-- SharedForm.vue -->
 <template>
+
+    <AlertComponent :color="alertColor" :message="alertMessage"/>
+
     <form @submit.prevent="submit">
         <div class="my-5">
             <TextInput

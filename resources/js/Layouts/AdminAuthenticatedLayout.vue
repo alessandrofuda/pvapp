@@ -3,7 +3,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import NavLink from "@/Components/NavLink.vue";
-import {useTrans} from "../composables/trans.js";
+import {useTrans} from "../Composables/trans.js";
 </script>
 <template>
     <AuthenticatedLayout>

@@ -1,7 +1,7 @@
 <script setup>
     import GuestLayout from '@/Layouts/GuestLayout.vue';
     import { Head, Link } from '@inertiajs/vue3';
-    import { useTrans } from '@/composables/trans';
+    import { useTrans } from '@/Composables/trans';
     import OperatorForm from "@/Components/OperatorForm.vue";
 
     defineProps({ areas_opts: Object })

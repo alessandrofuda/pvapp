@@ -34,3 +34,11 @@
 .form-error {
   @apply text-red-700 mt-2 text-sm;
 }
+
+.bg-green-100 {
+    background-color: rgb(220 252 231);
+}
+
+.bg-red-100 {
+    background-color: rgb(254 226 226);
+}

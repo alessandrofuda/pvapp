@@ -1,6 +1,6 @@
 <script setup>
 import {Head, Link, useForm} from '@inertiajs/vue3';
-    import { useTrans } from '@/composables/trans.js';
+    import { useTrans } from '@/Composables/trans.js';
     import OperatorForm from "@/Components/OperatorForm.vue";
     import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout.vue";
     import {computed, nextTick, ref} from "vue";

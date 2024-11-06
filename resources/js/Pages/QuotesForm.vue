@@ -1,7 +1,7 @@
 <script setup>
     import GuestLayout from "@/Layouts/GuestLayout.vue";
     import {Head} from "@inertiajs/vue3";
-    import {useTrans} from "../composables/trans.js";
+    import {useTrans} from "@/Composables/trans.js";
     import AlertComponent from "@/Components/AlertComponent.vue";
     import {ref} from "vue";
     import LeadForm from "@/Components/LeadForm.vue";
@@ -17,7 +17,7 @@
                 successMessage.value = 'La tua richiesta è stata inviata correttamente. Ti ricontatteremo per ulteriori dettagli.'
                 form.reset()
             },
-            onError: () => console.log('error'),
+            onError: () => console.log('Error see logs for details'),
             // onFinish: () => console.log('finish')
         });
     };

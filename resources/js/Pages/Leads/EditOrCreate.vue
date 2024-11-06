@@ -1,8 +1,8 @@
 <script setup>
 import {Head, Link, useForm} from '@inertiajs/vue3';
-import { useTrans } from '@/composables/trans.js';
+import { useTrans } from '@/Composables/trans.js';
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout.vue";
-import {computed, nextTick, ref} from "vue";
+import {computed, nextTick, reactive, ref} from "vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import Modal from "@/Components/Modal.vue";
@@ -45,10 +45,12 @@ const deleteLead = () => {
     leadProfile.delete(route('delete_lead', {lead: leadProfile.id}), {
         preserveScroll: true,
         onSuccess: () => closeModal(),
+        onError: (e) => {
+            // console.error(e)
+        }
         // onFinish: () =>
     });
 };
-
 
 </script>
 <template>
@@ -57,7 +59,6 @@ const deleteLead = () => {
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{useTrans('Add manually a new Lead')}}</h2>
         </template>
-
         <lead-form
             :submitButtonLabel=submitBtnLabel
             :lead="lead"

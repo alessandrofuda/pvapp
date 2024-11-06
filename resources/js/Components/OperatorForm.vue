@@ -1,5 +1,5 @@
 <script setup>
-    import {useTrans} from "@/composables/trans.js";
+    import {useTrans} from "@/Composables/trans.js";
     import InputError from "@/Components/InputError.vue";
     import InputLabel from "@/Components/InputLabel.vue";
     import {useForm} from "@inertiajs/vue3";

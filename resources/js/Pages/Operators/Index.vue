@@ -6,7 +6,7 @@ import Pagination from "@/Components/Pagination.vue";
 import Icon from "@/Components/Icon.vue";
 import {pickBy, throttle} from "lodash";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout.vue";
-import {useTrans} from "../../composables/trans.js";
+import {useTrans} from "@/Composables/trans.js";
 
 const props = defineProps({
     operators: Array
