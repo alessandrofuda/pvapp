@@ -19,11 +19,12 @@
     "Transactions": "Transazioni",
     "Profile": "Profilo",
     "Delete Profile": "Cancella Profilo",
-    "Add": "Registra",
+    "Add": "Inserisci",
     "Operator": "Operatore",
     "Installers and Operators": "Installatori ed Operatori",
     "Counter": "Contatore",
     "Add manually a new Lead": "Aggiungi manualmente un nuovo Lead",
     "Back to Leads": "Torna ai Leads",
-    "Delete Lead": "Elimina Lead"
+    "Delete Lead": "Elimina Lead",
+    "New Lead": "Nuovo Lead"
 }

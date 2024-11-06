@@ -29,7 +29,7 @@ const submit = (form) => {
     }
 };
 
-const submitBtnLabel = computed(() => props.lead ? 'Aggiorna' : 'Salva')
+const submitBtnLabel = computed(() => (props.lead ? 'Aggiorna' : 'Salva nuovo') + ' Lead')
 const confirmingLeadDeletion = ref(false);
 
 

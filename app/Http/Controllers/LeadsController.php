@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Domain\Helpers;
 use App\Domain\Leads;
+use App\Http\Requests\saveLeadRequest;
 use App\Models\Lead;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -75,25 +77,62 @@ class LeadsController extends Controller
      */
     public function lead(Lead $lead = null): Response
     {
+        // dump($lead->with('area')->first());
         if ($lead) {
-            $lead = DB::table('leads')
-                ->where('leads.id', $lead->id)
-                ->leftJoin('areas', 'leads.area_id', '=', 'areas.id')
-                ->select('leads.id AS id',
-                    'name',
-                    'lastname',
-                    'email',
-                    'phone',
-                    'areas.town AS town',
-                    'areas.province_code AS prov_code',
-                    'areas.province_name AS province',
-                    'areas.region_name AS region',
-                    'description'
-                )
-                ->get();
+            $lead = Lead::with('area')->find($lead->id);
+            //            $lead = DB::table('leads')
+            //                ->where('leads.id', $lead->id)
+            //                ->leftJoin('areas', 'leads.area_id', '=', 'areas.id')
+            //                ->select(
+            //                    'leads.id AS id',
+            //                    'name',
+            //                    'lastname',
+            //                    'email',
+            //                    'phone',
+            //                    'areas.id AS area_id',
+            //                    'areas.town AS town',
+            //                    'areas.province_code AS prov_code',
+            //                    'areas.province_name AS province',
+            //                    'areas.region_name AS region',
+            //                    'description'
+            //                )
+            //                ->first();
+            //
+            //            dd($lead);
         }
         $towns_opts = (new Leads)->getTownsOpts();
 
         return Inertia::render('Leads/EditOrCreate', ['lead' => $lead, 'towns_opts' => $towns_opts]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function saveLead(SaveLeadRequest $request, Lead $lead = null) : RedirectResponse
+    {
+        try{
+            $lead_attr = [
+                'name' => $request->name,
+                'lastname' => $request->lastname,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'area_id' => $request->town['id'],
+                'description' => $request->description
+            ];
+
+            if($lead) {
+                $lead->update($lead_attr);
+
+            }else{
+                Lead::create($lead_attr);
+            }
+
+        }catch(Exception $e){
+            $err = 'Error in '.__METHOD__.': '.$e->getMessage();
+            Log::error($err);
+            throw new Exception($err);
+        }
+
+        return redirect(route('leads', absolute: false));
     }
 }

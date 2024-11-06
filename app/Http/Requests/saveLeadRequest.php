@@ -25,7 +25,7 @@ class saveLeadRequest extends FormRequest
             'name' => 'required|string',
             'lastname' => 'nullable|string',
             'email' => 'required|email',
-            'phone' => 'required|string',
+            'phone' => 'required|string', // todo make better validation
             'town' => 'required|array',
             'description' => 'nullable|string',
         ];
@@ -37,7 +37,7 @@ class saveLeadRequest extends FormRequest
             'name.required' => 'Inserisci un nome di riferimento',
             'email.required' => 'Inserisci una mail valida',
             'email.email' => 'Indirizzo e-mail non valido',
-            'phone.required' => 'Inserisci il numero di telefono',
+            'phone.required' => 'Inserisci il numero di telefono', // todo make better validation
             'town.required' => 'Seleziona il Comune di Installazione'
         ];
     }

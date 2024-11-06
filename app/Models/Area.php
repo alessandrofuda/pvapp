@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Area extends Model
 {
@@ -24,6 +25,11 @@ class Area extends Model
     {
         return $this->belongsToMany(Operator::class, 'operator_areas', 'region_id', 'operator_id');
             // ->withPivot('province_id');  // include even province_id from pivot table
+    }
+
+    public function leads() : HasMany
+    {
+        return $this->hasMany(Lead::class);
     }
 
 

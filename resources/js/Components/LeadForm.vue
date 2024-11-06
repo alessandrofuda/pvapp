@@ -8,15 +8,20 @@
     import VueMultiselect from "vue-multiselect";
     import {useForm} from "@inertiajs/vue3";
 
-    const props = defineProps({ towns_opts: Object })
+    const props = defineProps({
+        lead: Object,
+        towns_opts: Object,
+        submitButtonLabel: String
+    })
 
     const form = useForm({
-        name: '',
-        lastname: '',
-        email: '',
-        phone: '',
-        town: '',
-        description: ''
+        id: props.lead?.id || null,
+        name: props.lead?.name || '',
+        lastname: props.lead?.lastname || '',
+        email: props.lead?.email || '',
+        phone: props.lead?.phone || '',
+        town: props.lead?.area ? getTownObject(props.lead.area) : null,
+        description: props.lead?.description || ''
     });
 
     const emit = defineEmits(['formSubmitted']);
@@ -27,6 +32,9 @@
 
     function townWithProvAndReg({town, prov, region}) {
         return `${town}, ${prov}, ${region}`
+    }
+    function getTownObject(areaObject) {
+        return { id: areaObject.id, region: areaObject.region_name, prov: areaObject.province_code, town: areaObject.town }
     }
 </script>
 
@@ -110,7 +118,7 @@
         </div>
         <div class="items-center text-center my-6 pt-4">
             <PrimaryButton class="!text-base" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                {{ useTrans('Send Request') }}
+                {{ submitButtonLabel || useTrans('Send Request') }}
             </PrimaryButton>
         </div>
     </form>
