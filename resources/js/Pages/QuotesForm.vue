@@ -30,7 +30,9 @@
 
         <AlertComponent color="green" :message="successMessage"/>
 
-        <lead-form :towns_opts="towns_opts" @formSubmitted="submit"></lead-form>
+        <lead-form :towns_opts="towns_opts" @formSubmitted="submit">
+
+        </lead-form>
 
     </guestLayout>
 </template>

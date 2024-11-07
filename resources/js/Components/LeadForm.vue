@@ -9,6 +9,7 @@
     import {useForm} from "@inertiajs/vue3";
     import AlertComponent from "@/Components/AlertComponent.vue";
     import {computed, reactive} from "vue";
+    import {dateFormatter} from "@/Composables/utilities.js";
 
     const props = defineProps({
         lead: Object,
@@ -50,6 +51,10 @@
     <AlertComponent :color="alertColor" :message="alertMessage"/>
 
     <form @submit.prevent="submit">
+        <div v-if="lead" class="ml-1 mb-6">
+            <div><b>Lead ID:</b> {{ lead.id }}</div>
+            <div><b>{{ useTrans('Date') }}:</b> {{ dateFormatter(lead.created_at) }}</div>
+        </div>
         <div class="my-5">
             <TextInput
                 id="name"
@@ -125,7 +130,15 @@
             />
             <InputError class="mt-2" :message="form.errors.description" />
         </div>
+
+        <!-- see parent component -->
+        <slot name="changeLeadStatus"></slot>
+
         <div class="items-center text-center my-6 pt-4">
+
+            <!-- Slot for additional fields or div -->
+            <slot name="backToLeads"></slot>
+
             <PrimaryButton class="!text-base" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                 {{ submitButtonLabel || useTrans('Send Request') }}
             </PrimaryButton>

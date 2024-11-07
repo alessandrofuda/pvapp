@@ -7,6 +7,7 @@ import Icon from "@/Components/Icon.vue";
 import {pickBy, throttle} from "lodash";
 import AdminAuthenticatedLayout from "@/Layouts/AdminAuthenticatedLayout.vue";
 import {useTrans} from "@/Composables/trans.js";
+import {truncateString} from "@/Composables/utilities.js";
 
 const props = defineProps({
     leads: Array
@@ -50,9 +51,10 @@ watch(
                     </div>
                     <div class="counter text-sm/relaxed px-5 text-gray-500">{{useTrans('Counter')}}: {{leads.total || 0}} records</div>
                     <div class="bg-white rounded-md shadow overflow-x-auto p-5">
-                        <table class="w-full whitespace-nowrap">
+                        <table class="w-full whitespace-nowrap table-auto table-fix__ed">
                             <thead>
                             <tr class="text-left font-bold bg-indigo-100 border-indigo-400 border-b-2">
+                                <th class="pb-4 pt-6 px-6">ID</th>
                                 <th class="pb-4 pt-6 px-6">Nome</th>
                                 <th class="pb-4 pt-6 px-6">Cognome</th>
                                 <th class="pb-4 pt-6 px-6">Email</th>
@@ -60,15 +62,20 @@ watch(
                                 <th class="pb-4 pt-6 px-6">Comune</th>
                                 <th class="pb-4 pt-6 px-6">Regione</th>
                                 <th class="pb-4 pt-6 px-6">Provincia</th>
-                                <th class="pb-4 pt-6 px-6" colspan="2">Descrizione</th>
+                                <th class="pb-4 pt-6 px-6">Descrizione</th>
+                                <th class="pb-4 pt-6 px-6" colspan="2">Data</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="lead in leads.data" :key="lead.id" class="hover:bg-gray-100 focus-within:bg-gray-100">
                                 <td class="border-t">
                                     <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="editLeadLink(lead.id)">
+                                        {{ lead.id }}
+                                    </Link>
+                                </td>
+                                <td class="border-t">
+                                    <Link class="flex items-center px-6 py-4 focus:text-indigo-500" :href="editLeadLink(lead.id)">
                                         {{ lead.name }}
-                                        <icon v-if="lead.deleted_at" name="trash" class="shrink-0 ml-2 w-3 h-3 fill-gray-400" />
                                     </Link>
                                 </td>
                                 <td class="border-t">
@@ -101,12 +108,16 @@ watch(
                                         {{ lead.province_name }}
                                     </Link>
                                 </td>
-                                <td class="border-t">
+                                <td class="border-t whitespace-normal break-words">
                                     <Link class="flex items-center px-6 py-4" :href="editLeadLink(lead.id)" tabindex="-1">
-                                        {{ lead.description }}
+                                        {{ truncateString(lead.description) }}
                                     </Link>
                                 </td>
-
+                                <td class="border-t whitespace-normal break-words">
+                                    <Link class="flex items-center px-6 py-4" :href="editLeadLink(lead.id)" tabindex="-1">
+                                        {{ lead.date }}
+                                    </Link>
+                                </td>
                                 <td class="w-px border-t">
                                     <Link class="flex items-center px-4" :href="editLeadLink(lead.id)" tabindex="-1">
                                         <icon name="cheveron-right" class="block w-6 h-6 fill-gray-400" />

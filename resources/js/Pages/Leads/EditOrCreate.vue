@@ -59,23 +59,27 @@ const deleteLead = () => {
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{useTrans('Add manually a new Lead')}}</h2>
         </template>
-        <lead-form
-            :submitButtonLabel=submitBtnLabel
-            :lead="lead"
-            :towns_opts="towns_opts"
-            @formSubmitted="submit"
-            class="max-w-7xl mx-auto my-4 py-4 px-4 sm:px-6 lg:px-8"
-        >
-            <!-- not shared fields, slot -->
-            <Link
-                :href="route('leads')"
-                class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        <div class="max-w-7xl mx-auto my-4 pb-12 py-4 px-4 sm:px-6 lg:px-8">
+            <lead-form
+                :submitButtonLabel=submitBtnLabel
+                :lead="lead"
+                :towns_opts="towns_opts"
+                @formSubmitted="submit"
             >
-                {{ useTrans('Back to Leads') }}
-            </Link>
-        </lead-form>
+                <!-- not shared fields, <slot name=""></slot> in child component -->
+                <template #changeLeadStatus>
+                    select here, default: 'pending'
+                    <select>LeadStatus Options</select>
+                </template>
 
-        <div v-if="lead" class="max-w-7xl mx-auto my-4 pb-12 py-4 px-4 sm:px-6 lg:px-8">
+                <template #backToLeads>
+                    <Link :href="route('leads')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-6">
+                        {{ useTrans('Back to Leads') }}
+                    </Link>
+                </template>
+            </lead-form>
+        </div>
+        <div id="delete-lead" v-if="lead" class="max-w-7xl mx-auto my-4 pb-12 py-4 px-4 sm:px-6 lg:px-8">
             <DangerButton @click="confirmLeadDeletion">{{ useTrans('Delete Lead') }}</DangerButton>
 
             <Modal :show="confirmingLeadDeletion" @close="closeModal">

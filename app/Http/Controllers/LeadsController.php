@@ -47,7 +47,8 @@ class LeadsController extends Controller
                     'region_name',
                     'province_name',
                     'town',
-                    'description'
+                    'description',
+                    'leads.created_at AS date'
                 )
                 ->orderByDesc('leads.id')
                 // search text
