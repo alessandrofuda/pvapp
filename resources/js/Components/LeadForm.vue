@@ -48,7 +48,7 @@
 <!-- SharedForm.vue -->
 <template>
 
-    <AlertComponent :color="alertColor" :message="alertMessage"/>
+    <AlertComponent :color="alertColor" :message="alertMessage" :key="alertMessage"/>
 
     <form @submit.prevent="submit">
         <div v-if="lead" class="ml-1 mb-6">
@@ -132,7 +132,7 @@
         </div>
 
         <!-- see parent component -->
-        <slot name="changeLeadStatus"></slot>
+        <!--slot name="changeLeadStatus"></slot-->
 
         <div class="items-center text-center my-6 pt-4">
 

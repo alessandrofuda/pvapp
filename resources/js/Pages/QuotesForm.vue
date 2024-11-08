@@ -28,7 +28,7 @@
         <Head title="Preventivi" />
         <div class="text-lg text-center my-3">{{useTrans('Ask for a quote')}}</div>
 
-        <AlertComponent color="green" :message="successMessage"/>
+        <AlertComponent color="green" :message="successMessage" :key="successMessage"/>
 
         <lead-form :towns_opts="towns_opts" @formSubmitted="submit">
 

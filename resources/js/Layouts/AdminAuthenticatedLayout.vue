@@ -25,6 +25,9 @@ import {useTrans} from "../Composables/trans.js";
                     {{ useTrans('Transactions') }}
                 </NavLink>
             </div>
+            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="inline-flex items-center ml-6 px-1 pt-1 text-sm text-red-500">Role: {{ $page.props.auth.user.roles[0].name }}</div>
+            </div>
         </template>
 
         <template #mobile-nav-menu-links>

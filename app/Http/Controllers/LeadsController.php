@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Domain\Helpers;
 use App\Domain\Leads;
+use App\Enums\LeadStatus;
 use App\Http\Requests\saveLeadRequest;
 use App\Models\Lead;
 use App\Models\Operator;
@@ -48,6 +49,7 @@ class LeadsController extends Controller
                     'province_name',
                     'town',
                     'description',
+                    'status',
                     'leads.created_at AS date'
                 )
                 ->orderByDesc('leads.id')
@@ -83,8 +85,9 @@ class LeadsController extends Controller
             $lead = Lead::with('area')->find($lead->id);
         }
         $towns_opts = (new Leads)->getTownsOpts();
+        $leads_status_opts = LeadStatus::options_for_select();
 
-        return Inertia::render('Leads/EditOrCreate', ['lead' => $lead, 'towns_opts' => $towns_opts]);
+        return Inertia::render('Leads/EditOrCreate', ['lead' => $lead, 'towns_opts' => $towns_opts, 'leads_status_opts' => $leads_status_opts]);
     }
 
     /**
@@ -116,6 +119,22 @@ class LeadsController extends Controller
         }
 
         return redirect(route('leads', absolute: false));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function changeLeadStatus(Request $request) : void
+    {
+        try{
+            // dd($request->all());
+            Lead::find($request->lead_id)->update(['status' => $request->value]);
+
+        }catch(Exception $e){
+            $err = 'Error in '.__METHOD__.': '.$e->getMessage();
+            Log::error($err);
+            throw new Exception($err);
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 <script setup>
 import {Head, Link, router} from "@inertiajs/vue3";
 import SearchFilter from "@/Components/SearchFilter.vue";
-import {reactive, watch} from "vue";
+import {computed, reactive, watch} from "vue";
 import Pagination from "@/Components/Pagination.vue";
 import Icon from "@/Components/Icon.vue";
 import {pickBy, throttle} from "lodash";
@@ -30,7 +30,13 @@ watch(
     }, 150),
     { deep: true }
 );
+
+const statusColor = (leadStatus) => {
+    return leadStatus === 'pending' ? 'yellow' : (leadStatus === 'approved' ? 'green' : 'red' )
+}
+
 </script>
+
 <template>
     <Head title="Leads" />
     <AdminAuthenticatedLayout>
@@ -63,6 +69,7 @@ watch(
                                 <th class="pb-4 pt-6 px-6">Regione</th>
                                 <th class="pb-4 pt-6 px-6">Provincia</th>
                                 <th class="pb-4 pt-6 px-6">Descrizione</th>
+                                <th class="pb-4 pt-6 px-6">Status</th>
                                 <th class="pb-4 pt-6 px-6" colspan="2">Data</th>
                             </tr>
                             </thead>
@@ -111,6 +118,11 @@ watch(
                                 <td class="border-t whitespace-normal break-words">
                                     <Link class="flex items-center px-6 py-4" :href="editLeadLink(lead.id)" tabindex="-1">
                                         {{ truncateString(lead.description) }}
+                                    </Link>
+                                </td>
+                                <td class="border-t">
+                                    <Link :class="`flex items-center px-6 py-4 bg-${statusColor(lead.status)}-100`" :href="editLeadLink(lead.id)" tabindex="-1">
+                                        {{ lead.status }}
                                     </Link>
                                 </td>
                                 <td class="border-t whitespace-normal break-words">

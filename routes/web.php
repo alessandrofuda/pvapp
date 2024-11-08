@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/lead/{lead?}', [LeadsController::class, 'lead'])->name('lead')->where('lead', '[0-9]+');
         Route::post('/lead', [LeadsController::class, 'saveLead'])->name('save_lead');
         Route::put('/lead/edit-{lead}', [LeadsController::class, 'saveLead'])->name('edit_lead')->where('lead', '[0-9]+');
+        Route::put('/lead/change-status', [LeadsController::class, 'changeLeadStatus'])->name('change_lead_status');
         Route::delete('/lead/delete-{lead}', [LeadsController::class, 'deleteLead'])->name('delete_lead')->where('lead', '[0-9]+');
 
         // users

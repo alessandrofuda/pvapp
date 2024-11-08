@@ -10,6 +10,15 @@ export default {
         './resources/js/**/*.vue',
     ],
 
+    // custom ale 08/11/24
+    safelist: [
+        'bg-yellow-100',
+        'border-yellow-500',
+        'border-green-500',
+        'border-red-500',
+        // Add more classes if needed
+    ],
+
     theme: {
         extend: {
             fontFamily: {
