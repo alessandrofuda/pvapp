@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LeadsController;
 use App\Http\Controllers\OperatorDashboardController;
@@ -20,6 +21,10 @@ Route::post('save-quotation-request', [QuotesController::class, 'saveQuotationRe
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    // redirect dashboard by Role
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+
     Route::group(['middleware' => ['role:admin']], function () {
         // admin dashboard
         Route::get('/admin-dashboard', [AdminDashboardController::class, 'adminDashboard'])->name('admin_dashboard');
