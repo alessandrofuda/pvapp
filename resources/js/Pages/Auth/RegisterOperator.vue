@@ -1,5 +1,5 @@
 <script setup>
-    import GuestLayout from '@/Layouts/GuestLayout.vue';
+    import AuthenticationLayout from '@/Layouts/AuthenticationLayout.vue';
     import { Head, Link } from '@inertiajs/vue3';
     import { useTrans } from '@/Composables/trans';
     import OperatorForm from "@/Components/OperatorForm.vue";
@@ -13,7 +13,7 @@
     };
 </script>
 <template>
-    <GuestLayout>
+    <AuthenticationLayout>
         <Head title="Register Operator" />
         <div class="text-lg text-center my-3">Iscriviti al Servizio Installatori</div>
 
@@ -26,5 +26,5 @@
                 {{ useTrans('Already registered?') }}
             </Link>
         </operator-form>
-    </GuestLayout>
+    </AuthenticationLayout>
 </template>

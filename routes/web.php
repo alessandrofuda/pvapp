@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LeadsController;
+use App\Http\Controllers\LeadsStreamController;
 use App\Http\Controllers\OperatorDashboardController;
 use App\Http\Controllers\OperatorsController;
 use App\Http\Controllers\ProfileController;
@@ -18,6 +19,8 @@ Route::get('/', [HomepageController::class, 'homepage']);
 
 Route::get('quotes-form', [QuotesController::class, 'quoteForm'])->name('quotes_form');
 Route::post('save-quotation-request', [QuotesController::class, 'saveQuotationRequest'])->name('save_quotation_req');
+
+Route::get('leads-stream', [LeadsStreamController::class, 'leadsStream'])->name('leads_stream');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {

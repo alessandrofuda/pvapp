@@ -6,7 +6,7 @@ enum LeadStatus: string
 {
     case Pending = 'pending';
     case Approved = 'approved';
-    case Canceled = 'canceled';
+    case Invalid = 'invalid';
 
     // Optional method to get all values as an array for convenience
     public static function options_for_select(): array

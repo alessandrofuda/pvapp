@@ -25,13 +25,13 @@ defineProps({
     <div class="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
         <div class="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
             <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-2">
-                    <div class="flex lg:col-start-1">
+                <header class="grid grid-cols-3 items-center gap-2 py-10 lg:grid-cols-3">
+                    <div class="col-span-1 flex lg:col-start-1">
                         LOGO
                     </div>
-                    <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end">
+                    <nav v-if="canLogin" class="col-span-2 -mx-3 flex flex-1 justify-end">
                         <Link v-if="$page.props.auth.user" :href="route('dashboard')" class="nav-link">
-                            Dashboard of {{ $page.props.auth.user.name }}
+                            Homepage of {{ $page.props.auth.user.name }}
                         </Link>
                         <template v-else>
                             <Link :href="route('login')" class="nav-link">
@@ -40,11 +40,14 @@ defineProps({
                             <Link v-if="canRegister" :href="route('register')" class="nav-link">
                                 {{ useTrans('Register') }}
                             </Link>
-                            <Link v-if="canRegister" :href="route('operator_register')" class="nav-link-bordered">
+                            <Link v-if="canRegister" :href="route('operator_register')" class="nav-link-bordered mr-3">
                                 {{ useTrans('Operators Sign Up') }}
                             </Link>
-                            <Link :href="route('quotes_form')" class="nav-link-bordered">
+                            <Link :href="route('quotes_form')" class="nav-link-bordered mr-3">
                                 {{ useTrans('Ask for a quote') }}
+                            </Link>
+                            <Link :href="route('leads_stream')" class="nav-link-bordered mr-3">
+                                {{ useTrans('Available Leads Stream') }}
                             </Link>
                         </template>
                     </nav>

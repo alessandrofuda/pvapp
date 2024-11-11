@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('status', [
                 LeadStatus::Pending->value,
                 LeadStatus::Approved->value,
-                LeadStatus::Canceled->value
+                LeadStatus::Invalid->value
             ])->after('description')->default(LeadStatus::Pending->value);
         });
     }

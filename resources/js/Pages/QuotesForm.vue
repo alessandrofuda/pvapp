@@ -24,16 +24,14 @@
 
 </script>
 <template>
-    <guestLayout>
+    <GuestLayout>
         <Head title="Preventivi" />
         <div class="text-lg text-center my-3">{{useTrans('Ask for a quote')}}</div>
 
         <AlertComponent color="green" :message="successMessage" :key="successMessage"/>
-
-        <lead-form :towns_opts="towns_opts" @formSubmitted="submit">
-
-        </lead-form>
-
-    </guestLayout>
+        <div class="quotes-form sm:max-w-xl mx-auto">
+            <lead-form :towns_opts="towns_opts" @formSubmitted="submit"></lead-form>
+        </div>
+    </GuestLayout>
 </template>
 
