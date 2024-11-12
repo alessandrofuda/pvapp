@@ -12,10 +12,10 @@ const props = defineProps({
             <h3 class="text-base/7 text-gray-900">Richiesta per:</h3>
             <p class="mt-1 text-gray-500 font-semibold">Installazione Impianto Fotovoltaico</p>
         </div>
-        <div class="my-6 border-t border-gray-300">
-            <dl class="divid__e-y div_____ide-gray-100 ">
+        <div class="my-6 border-y border-gray-300">
+            <dl class="">
 
-
+                todo ottimizzare per mobile
                 <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt class="font-medium text-gray-900">ID</dt>
                     <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0 font-bold">{{ lead.id }}</dd>
@@ -60,7 +60,12 @@ const props = defineProps({
 
                 <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0  border-t border-gray-300">
                     <dt class="font-medium text-gray-900">Testo della richiesta</dt>
-                    <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0">{{ lead.description}}</dd>
+                    <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0">{{ lead.description || 'Nessun dettaglio.'}}</dd>
+                </div>
+
+                <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0  border-t border-gray-300">
+                    <dt class="font-medium text-gray-900">Prezzo</dt>
+                    <dd class="mt-1 text-gray-700 sm:col-span-2 sm:mt-0">{{ 'todo' }}</dd>
                 </div>
             </dl>
         </div>
