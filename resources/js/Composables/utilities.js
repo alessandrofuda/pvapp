@@ -8,9 +8,9 @@ export function truncateString(str, maxLength = 100, ending = ' .....') {
     return str;
 }
 
-export function dateFormatter(dateString) {
+export function dateFormatter(dateString, format = 'YYYY-MM-DD HH:mm:ss') {
     if(!dateString) return '';
-    return moment(dateString).format('YYYY-MM-DD HH:mm:ss');
+    return moment(dateString).format(format);
 }
 
 // export function exampleFunc2(param) {

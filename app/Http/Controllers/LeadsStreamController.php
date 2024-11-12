@@ -19,7 +19,11 @@ class LeadsStreamController extends Controller
     public function leadsStream() : Response
     {
         try{
-            $leads = DB::table('leads')->where('status', 'approved')->orderByDesc('id')->paginate(25);
+            $leads = Lead::with('area')
+                ->where('status', 'approved')
+                ->orderByDesc('id')
+                ->limit(500)
+                ->paginate(25);
 
         }catch (Exception $e){
             $err = 'Error in '.__METHOD__.': '.$e->getMessage();

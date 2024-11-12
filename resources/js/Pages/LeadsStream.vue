@@ -18,12 +18,7 @@ const props = defineProps({
         <div class="filters my-5 py-4">Filters .. todo..</div>
 
         <div v-if="leads" v-for="lead in leads.data" :key="lead?.id" class="">
-            -------------<br>
-            TODO .. {{ lead }}<br>
-            ------------<br><br>
-
             <LeadCard :lead="lead"></LeadCard>
-
         </div>
     </GuestLayout>
 </template>
