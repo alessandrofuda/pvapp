@@ -69,6 +69,7 @@ const statusColor = (leadStatus) => {
                                 <th class="pb-4 pt-6 px-6">Provincia</th>
                                 <th class="pb-4 pt-6 px-6">Regione</th>
                                 <th class="pb-4 pt-6 px-6">Descrizione</th>
+                                <th class="pb-4 pt-6 px-6">Prezzo</th>
                                 <th class="pb-4 pt-6 px-6">Status</th>
                                 <th class="pb-4 pt-6 px-6" colspan="2">Data</th>
                             </tr>
@@ -120,6 +121,13 @@ const statusColor = (leadStatus) => {
                                         {{ truncateString(lead.description) }}
                                     </Link>
                                 </td>
+
+                                <td class="border-t">
+                                    <Link class="flex items-center px-6 py-4" :href="editLeadLink(lead.id)" tabindex="-1">
+                                        {{ lead.price }}
+                                    </Link>
+                                </td>
+
                                 <td class="border-t">
                                     <Link :class="`flex items-center px-6 py-4 bg-${statusColor(lead.status)}-100`" :href="editLeadLink(lead.id)" tabindex="-1">
                                         {{ lead.status }}

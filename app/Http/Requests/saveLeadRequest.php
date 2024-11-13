@@ -28,6 +28,7 @@ class saveLeadRequest extends FormRequest
             'phone' => 'required|string', // todo make better validation
             'town' => 'required|array',
             'description' => 'nullable|string',
+            'price' => 'required|string',
         ];
     }
 

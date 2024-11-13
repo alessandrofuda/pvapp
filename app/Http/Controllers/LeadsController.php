@@ -49,6 +49,7 @@ class LeadsController extends Controller
                     'province_name',
                     'town',
                     'description',
+                    'price',
                     'status',
                     'leads.created_at AS date'
                 )
@@ -102,7 +103,8 @@ class LeadsController extends Controller
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'area_id' => $request->town['id'],
-                'description' => $request->description
+                'description' => $request->description,
+                'price' => $request->price
             ];
 
             if($lead) {

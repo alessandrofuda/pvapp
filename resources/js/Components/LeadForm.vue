@@ -25,7 +25,8 @@
         email: props.lead?.email || '',
         phone: props.lead?.phone || '',
         town: props.lead?.area ? getTownObject(props.lead.area) : null,
-        description: props.lead?.description || ''
+        description: props.lead?.description || '',
+        price: props.lead?.price || null,
     });
 
     const alertColor = computed(() => form.hasErrors ? 'red' : 'green' )
@@ -131,8 +132,23 @@
             <InputError class="mt-2" :message="form.errors.description" />
         </div>
 
-        <!-- see parent component -->
-        <!--slot name="changeLeadStatus"></slot-->
+
+
+        <div class="my-5 pt-3">
+            <InputLabel class="inline-block mr-4 font-bold" for="price" :value="useTrans('Price')+' €'" />
+            <TextInput
+                id="price"
+                type="text"
+                class="mt-1 inline-block w-full max-w-20"
+                v-model="form.price"
+                autocomplete="price"
+                placeholder="12.00"
+            />
+            <InputError class="mt-2" :message="form.errors.price" />
+        </div>
+
+
+
 
         <div class="items-center text-center my-6 pt-4">
 
